@@ -1,0 +1,11 @@
+{
+    "name": "Summarizer",
+    "displayName": "Summarizer",
+    "version": "0.1.0",
+    "author": "JanitorialMess",
+    "donate": "https://ko-fi.com/Z8Z2NV2H6",
+    "authorId": "671095271412727854",
+    "source": "https://github.com/JanitorialMess/Summarizer",
+    "updateURL": "https://github.com/JanitorialMess/Summarizer/releases/latest/download/Summarizer.plugin.js",
+    "description": "Summarizes the content of articles linked in messages."
+}
