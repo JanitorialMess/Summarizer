@@ -10,10 +10,10 @@ module.exports = {
         es2021: true,
     },
     parserOptions: {
-        ecmaVersion: 2021,
+        ecmaVersion: 2022,
         sourceType: 'module',
     },
-    ignorePatterns: ['*.plugin.js'],
+    ignorePatterns: ['**/dist/*.plugin.js'],
     rules: {
         'react/display-name': 'off',
         'react/prop-types': 'off',

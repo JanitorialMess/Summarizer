@@ -166,6 +166,7 @@ class MissingZeresDummy {
 export default !global.ZeresPluginLibrary
     ? MissingZeresDummy
     : (([Pl, Lib]) => {
+          // eslint-disable-next-line no-unused-vars
           const plugin = (Plugin, Library) => {
               const { Readability } = require('@mozilla/readability');
               const {
@@ -228,6 +229,7 @@ export default !global.ZeresPluginLibrary
                                   },
                                   color: 'premium',
                                   icon: () =>
+                                      // eslint-disable-next-line react/no-children-prop
                                       React.createElement('svg', {
                                           className: 'icon__0bfbf',
                                           ariaHidden: true,
@@ -297,11 +299,13 @@ export default !global.ZeresPluginLibrary
 
                       try {
                           const article = await this.fetchArticleText(link);
+                          if (!article) return;
+
                           const res = await ai.invoke([
                               ['system', this.settings.systemPrompt],
                               ['human', template.replace('{{articleText}}', article).replace('{{aiName}}', model)],
                           ]);
-                          let summary = res.content;
+                          const summary = res.content;
                           message.content = summary;
                           BdApi.showToast('Article summarized successfully!', {
                               type: 'success',
