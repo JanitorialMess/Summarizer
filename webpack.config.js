@@ -13,13 +13,11 @@ const meta = (() => {
     return lines.join('\n');
 })();
 
-module.exports = {
-    mode: 'development',
+const commonConfig = {
     target: 'node',
     devtool: false,
     entry: './src/index.js',
     output: {
-        filename: 'Summarizer.plugin.js',
         // eslint-disable-next-line no-undef
         path: path.join(__dirname, 'dist'),
         libraryTarget: 'commonjs2',
@@ -35,26 +33,11 @@ module.exports = {
             { test: /\.jsx$/, exclude: /node_modules/, use: 'babel-loader' },
         ],
     },
-    optimization: {
-        minimize: true,
-        minimizer: [
-            new TerserPlugin({
-                terserOptions: {
-                    output: {
-                        comments: /@/,
-                    },
-                },
-                extractComments: false,
-            }),
-        ],
-    },
     plugins: [
         new webpack.BannerPlugin({ raw: true, banner: meta }),
         {
             apply: (compiler) => {
                 compiler.hooks.assetEmitted.tap('Summarizer', (filename, info) => {
-                    console.info(`\n\nℹ️  Plugin built as ${filename}\n`);
-
                     const userConfig = (() => {
                         if (process.platform === 'win32') return process.env.APPDATA;
 
@@ -72,7 +55,6 @@ module.exports = {
                     const fs = require('fs');
                     const bdFolder = path.join(userConfig, 'BetterDiscord');
                     fs.copyFileSync(info.targetPath, path.join(bdFolder, 'plugins', filename));
-                    console.info(`\n\n✅ Copied to BD folder\n`);
                 });
             },
         },
@@ -81,3 +63,52 @@ module.exports = {
         }),
     ],
 };
+
+// Configuration for minified output
+const minifiedConfig = {
+    ...commonConfig,
+    mode: 'production',
+    output: {
+        ...commonConfig.output,
+        filename: 'Summarizer.min.plugin.js',
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    output: {
+                        comments: /@/,
+                    },
+                },
+                extractComments: false,
+            }),
+        ],
+    },
+};
+
+// Configuration for non-minified output
+const nonMinifiedConfig = {
+    ...commonConfig,
+    mode: 'development',
+    output: {
+        ...commonConfig.output,
+        filename: 'Summarizer.plugin.js',
+    },
+    optimization: {
+        minimize: false,
+    },
+};
+
+function selectConfig() {
+    switch (process.env.BUILD_TYPE) {
+        case 'minified':
+            return minifiedConfig;
+        case 'non-minified':
+            return nonMinifiedConfig;
+        default:
+            return nonMinifiedConfig;
+    }
+}
+
+module.exports = selectConfig();
