@@ -14,18 +14,17 @@ const meta = (() => {
 })();
 
 const commonConfig = {
-    target: 'node',
+    target: 'electron-renderer',
     devtool: false,
     entry: './src/index.js',
     output: {
-        // eslint-disable-next-line no-undef
         path: path.join(__dirname, 'dist'),
         libraryTarget: 'commonjs2',
         libraryExport: 'default',
         compareBeforeEmit: false,
     },
     resolve: {
-        extensions: ['.js', '.css', '.jsx'],
+        extensions: ['.jsx', '.js', '.css'],
     },
     module: {
         rules: [
@@ -97,6 +96,7 @@ const nonMinifiedConfig = {
     },
     optimization: {
         minimize: false,
+        splitChunks: false,
     },
 };
 

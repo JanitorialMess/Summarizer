@@ -1,6 +1,6 @@
 const { ChatGoogleGenerativeAI } = require('@langchain/google-genai');
-// const { ChatOpenAI } = require('@langchain/openai');
-// const { ChatGroq } = require('@langchain/groq');
+const { ChatOpenAI } = require('@langchain/openai');
+const { ChatGroq } = require('@langchain/groq');
 
 class BaseProvider {
     static id = 'base';
@@ -45,8 +45,6 @@ class GoogleProvider extends BaseProvider {
         ];
     }
 }
-
-// FIXME: Requires Node.js stream module to work. Need polyfill to work
 class OpenAIProvider extends BaseProvider {
     static id = 'openai';
     constructor(model, apiKey) {
@@ -71,8 +69,6 @@ class OpenAIProvider extends BaseProvider {
         ];
     }
 }
-
-// FIXME: Requires Node.js stream module to work. Need polyfill to work
 class GroqProvider extends BaseProvider {
     static id = 'groq';
     constructor(model, apiKey) {
@@ -114,8 +110,8 @@ class ProviderFactory {
     static getAvailableProviders() {
         return [
             { id: GoogleProvider.id, label: 'Google Gemini', classRef: GoogleProvider },
-            // { id: OpenAIProvider.id, label: 'OpenAI', classRef: OpenAIProvider },
-            // { id: GroqProvider.id, label: 'Groq', classRef: GroqProvider },
+            { id: OpenAIProvider.id, label: 'OpenAI', classRef: OpenAIProvider },
+            { id: GroqProvider.id, label: 'Groq', classRef: GroqProvider },
         ];
     }
 }
