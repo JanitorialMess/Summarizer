@@ -7,9 +7,16 @@ const config = {
                 discord_id: '671095271412727854',
             },
         ],
-        version: '1.0.0',
+        version: '0.2.0',
         description: 'Summarizes the content of articles linked in messages.',
     },
+    changelog: [
+        {
+            title: 'Feature',
+            type: 'added',
+            items: ['Added support for new AI providers and models'],
+        },
+    ],
     defaultConfig: [
         {
             type: 'dropdown',
@@ -17,18 +24,7 @@ const config = {
             name: 'Provider',
             note: 'Select the provider for article summarization.',
             value: 'GoogleGemini',
-            options: [
-                // { label: 'OpenAI', value: 'OpenAI' },
-                // { label: 'Azure OpenAI', value: 'AzureOpenAI' },
-                // { label: 'Together', value: 'Together' },
-                // { label: 'Cohere', value: 'Cohere' },
-                // { label: 'Anthropic', value: 'Anthropic' },
-                // { label: 'Mistral', value: 'Mistral' },
-                // { label: 'Groq', value: 'Groq' },
-                // { label: 'DeepSeek', value: 'DeepSeek' },
-                // { label: 'Ollama', value: 'Ollama' },
-                { label: 'Google Gemini', value: 'GoogleGemini' },
-            ],
+            options: [],
         },
         {
             type: 'dropdown',
@@ -36,16 +32,7 @@ const config = {
             name: 'Model',
             note: 'Select the LLM model.',
             value: 'gemini-1.5-flash',
-            options: [
-                { label: 'Gemini 1.5 Flash', value: 'gemini-1.5-flash' },
-                { label: 'Gemini 1.5 Pro', value: 'gemini-1.5-pro' },
-                { label: 'Gemini 1.0 Pro', value: 'gemini-1.0-pro' },
-                // { label: 'GPT-4o', value: 'gpt-4o' },
-                // { label: 'GPT-4', value: 'gpt-4' },
-                // { label: 'GPT-4-32k', value: 'gpt-4-32k' },
-                // { label: 'GPT-3.5-turbo', value: 'gpt-3.5-turbo' },
-                // { label: 'GPT-3.5-turbo-16k', value: 'gpt-3.5-turbo-16k' },
-            ],
+            options: [],
         },
         {
             type: 'textbox',
@@ -185,18 +172,15 @@ export default !global.ZeresPluginLibrary
                   /* Library */
                   Utilities,
                   Logger,
-                  ReactTools,
 
                   /* Settings */
                   SettingField,
                   SettingPanel,
-                  SettingGroup,
                   Dropdown,
                   Textbox,
 
                   /* Discord Modules (From lib) */
                   React,
-                  ReactDOM,
                   MessageStore,
 
                   /* BdApi */
@@ -408,7 +392,7 @@ export default !global.ZeresPluginLibrary
                           new Dropdown(
                               'Provider',
                               'Select the provider for article summarization.',
-                              this.settings.provider,
+                              this.settings.provider || availableProviders[0].id,
                               providerOptions,
                               (value) => {
                                   this.settings.provider = value;
