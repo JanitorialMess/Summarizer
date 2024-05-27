@@ -7,10 +7,15 @@ const config = {
                 discord_id: '671095271412727854',
             },
         ],
-        version: '0.2.0',
+        version: '0.2.1',
         description: 'Summarizes the content of articles linked in messages.',
     },
     changelog: [
+        {
+            title: 'Bugfixes',
+            type: 'fixed',
+            items: ['Fixed delay in rendering the summary'],
+        },
         {
             title: 'Feature',
             type: 'added',
@@ -173,6 +178,7 @@ export default !global.ZeresPluginLibrary
                   /* Library */
                   Utilities,
                   Logger,
+                  Dispatcher,
 
                   /* Settings */
                   SettingField,
@@ -307,11 +313,15 @@ export default !global.ZeresPluginLibrary
                           ]);
                           const summary = res.content;
                           message.content = summary;
+                          Dispatcher.dispatch({
+                              type: 'MESSAGE_UPDATE',
+                              message: message,
+                          });
                           BdApi.showToast('Article summarized successfully!', {
                               type: 'success',
                           });
                       } catch (error) {
-                          Logger.error('Error summarizing article:', error);
+                          Logger.err('Error summarizing article:', error);
                           BdApi.showToast('Failed to summarize article. Please try again.', {
                               type: 'error',
                           });
@@ -329,7 +339,7 @@ export default !global.ZeresPluginLibrary
                           });
 
                           if (!response.ok) {
-                              Logger.error(`HTTP error! status: ${response.status}`);
+                              Logger.err(`HTTP error! status: ${response.status}`);
                               BdApi.showToast('Failed to fetch article content', {});
                               return;
                           }
@@ -348,7 +358,7 @@ export default !global.ZeresPluginLibrary
                               return;
                           }
                       } catch (error) {
-                          Logger.error('Error fetching article text:', error);
+                          Logger.err('Error fetching article text:', error);
                           BdApi.showToast('Failed to fetch article content', {
                               type: 'error',
                           });

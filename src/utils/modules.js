@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const FallbackLibrary = {
     Logger: {
         info: console.info,
@@ -34,6 +35,7 @@ const UsedModules = {
     Logger,
     ReactTools,
     Modals,
+    Dispatcher,
 
     /* Settings */
     SettingField,
