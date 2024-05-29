@@ -1,7 +1,7 @@
 /**
  * @name Summarizer
  * @displayName Summarizer
- * @version 0.2.2
+ * @version 0.3.0
  * @author JanitorialMess
  * @donate https://ko-fi.com/Z8Z2NV2H6
  * @authorId 671095271412727854
@@ -44563,7 +44563,7 @@ const config = {
                 discord_id: '671095271412727854',
             },
         ],
-        version: '0.2.2',
+        version: '0.3.0',
         description: 'Summarizes the content of articles linked in messages.',
     },
     changelog: [

@@ -1,0 +1,62 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - 'v*'
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '18'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build plugin
+              run: npm run build
+
+            - name: Generate Release Changelog
+              run: npm run changelog:release
+
+            - name: Determine Previous Tag
+              id: prev-tag
+              run: |
+                  # Check if there are any tags
+                  if [ $(git tag | wc -l) -eq 0 ]; then
+                    echo "PREV_TAG=" >> $GITHUB_ENV
+                  else
+                    # Get the previous tag
+                    PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ || echo "")
+                    echo "PREV_TAG=$PREV_TAG" >> $GITHUB_ENV
+                  fi
+
+            - name: Append Full Changelog URL
+              run: |
+                  CURRENT_TAG=${GITHUB_REF#refs/tags/}
+                  if [ -z "$PREV_TAG" ]; then
+                    # First release
+                    echo "**Full Changelog**: https://github.com/${{ github.repository }}/commits/$CURRENT_TAG" >> RELEASE_CHANGELOG.md
+                  else
+                    # Compare with previous tag
+                    echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/$PREV_TAG...$CURRENT_TAG" >> RELEASE_CHANGELOG.md
+                  fi
+
+            - name: Create Release
+              uses: softprops/action-gh-release@v2
+              if: startsWith(github.ref, 'refs/tags/')
+              with:
+                  body_path: RELEASE_CHANGELOG.md
+                  files: './dist/Summarizer.plugin.js'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

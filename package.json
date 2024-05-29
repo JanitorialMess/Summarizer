@@ -2,13 +2,16 @@
     "name": "summarizer",
     "description": "A plugin which displays all hidden Channels and allows users to view information about them, this won't allow you to read them (impossible)",
     "main": "Summarizer.plugin.js",
+    "version": "0.2.1",
     "scripts": {
         "build": "webpack --progress --color",
         "build:min": "cross-env BUILD_TYPE=minified webpack --progress --color",
-        "dev": "webpack --watch --progress --color",
+        "dev": "cross-env COPY_TO_BD=true webpack --watch --progress --color",
         "prepare": "husky",
         "lint": "prettier --check .",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "version": "conventional-changelog -i CHANGELOG.md -s -r 0 --config changelog.config.mjs && git add CHANGELOG.md",
+        "changelog:release": "conventional-changelog -i RELEASE_CHANGELOG.md -s --config changelog.config.mjs"
     },
     "author": "JanitorialMess",
     "license": "GPL-3.0-only",
@@ -17,6 +20,8 @@
         "@babel/preset-env": "^7.24.0",
         "@babel/preset-react": "^7.23.3",
         "babel-loader": "^9.1.3",
+        "conventional-changelog-cli": "^5.0.0",
+        "conventional-changelog-conventionalcommits": "^8.0.0",
         "cross-env": "^7.0.3",
         "eslint": "^8.57.0",
         "eslint-plugin-react": "^7.34.1",
