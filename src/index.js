@@ -7,7 +7,7 @@ const config = {
                 discord_id: '671095271412727854',
             },
         ],
-        version: '0.2.1',
+        version: '0.2.2',
         description: 'Summarizes the content of articles linked in messages.',
     },
     changelog: [
@@ -17,63 +17,9 @@ const config = {
             items: ['Fixed delay in rendering the summary'],
         },
         {
-            title: 'Feature',
+            title: 'Features',
             type: 'added',
-            items: ['Added support for new AI providers and models'],
-        },
-    ],
-    defaultConfig: [
-        {
-            type: 'dropdown',
-            id: 'provider',
-            name: 'Provider',
-            note: 'Select the provider for article summarization.',
-            value: 'GoogleGemini',
-            options: [],
-        },
-        {
-            type: 'dropdown',
-            id: 'model',
-            name: 'Model',
-            note: 'Select the LLM model.',
-            value: 'gemini-1.5-flash',
-            options: [],
-        },
-        {
-            type: 'textbox',
-            id: 'apiKey',
-            name: 'API Key',
-            note: 'Enter your API key for the selected provider.',
-            value: '',
-        },
-        {
-            type: 'textbox',
-            id: 'systemPrompt',
-            name: 'System Prompt',
-            note: 'Enter the system prompt for the AI assistant. Leave empty to use the default prompt.',
-            value: 'You are an AI assistant that summarizes articles. You are not allowed to modify the template in any way besides inserting the necessary text. You are not allowed to remove any of the markdown symbols. Your answers should be relevant, concise, and informative. You are explicitly given permission to generate as many or few key points as necessary, in which case you can modify the template to increment or decrement the key points. The same is valid for main topics',
-        },
-        {
-            type: 'textbox',
-            id: 'summaryTemplate',
-            name: 'Summary Template',
-            note: 'Enter the template for the article summary in markdown format. Use {{link}} as a placeholder for the article URL.',
-            value: `## 📰 Article Summary
-> **🌟 Key Highlights**
-> 1. {{keyPoints1}}.
-> 2. {{keyPoints2}}.
-> 3. {{keyPoints3}}.
-> 4. {{keyPoints4}}.
-> N. {{keyPointsN}}.
-> **📌 Main Topic(s)**
-> - {{mainTopics1}}
-> - {{mainTopics2}}
-> - {{mainTopicsN}}
-> **💡 Takeaway**
-> {{takeaway}}
-> 
-> *Disclaimer: This summary is generated based on AI algorithms and may not capture all nuances of the original article. For the most accurate and complete information, please refer to the **[full article]({{link}})**.*
-`,
+            items: ['Support content proxy for fetching url content'],
         },
     ],
     main: 'Summarizer.plugin.js',
@@ -173,7 +119,6 @@ export default !global.ZeresPluginLibrary
     : (([Pl, Lib]) => {
           // eslint-disable-next-line no-unused-vars
           const plugin = (Plugin, Library) => {
-              const { Readability } = require('@mozilla/readability');
               const {
                   /* Library */
                   Utilities,
@@ -183,6 +128,7 @@ export default !global.ZeresPluginLibrary
                   /* Settings */
                   SettingField,
                   SettingPanel,
+                  SettingGroup,
                   Dropdown,
                   Textbox,
 
@@ -192,17 +138,41 @@ export default !global.ZeresPluginLibrary
 
                   /* BdApi */
                   ContextMenu,
-                  Net,
 
                   /* Manually found modules */
                   TextArea,
+                  EmbedUtils,
               } = require('./utils/modules').ModuleStore;
               const ProviderFactory = require('./providers/providers');
+              const ArticleSummarizer = require('./utils/summarizer');
 
-              const defaultSettings = config.defaultConfig.reduce((acc, cur) => {
-                  acc[cur.id] = cur.value;
-                  return acc;
-              }, {});
+              const ogSanitizeEmbed = EmbedUtils.sanitizeEmbed;
+              const defaultSettings = {
+                  providerId: 'google',
+                  model: 'gemini-1.5-flash',
+                  apiKey: '',
+                  localMode: true,
+                  contentProxyUrl: '',
+                  userAgent: 'Robot/1.0.0 (+http://search.mobilesl.com/robot)',
+                  systemPrompt:
+                      'You are an AI assistant that summarizes articles. You are not allowed to modify the template in any way besides inserting the necessary text. You are not allowed to remove any of the markdown symbols. Your answers should be relevant, concise, and informative. You are explicitly given permission to generate as many or few key points as necessary, in which case you can modify the template to increment or decrement the key points. The same is valid for main topics',
+                  summaryTemplate: `## 📰 Article Summary
+> **🌟 Key Highlights**
+> 1. {{keyPoints1}}.
+> 2. {{keyPoints2}}.
+> 3. {{keyPoints3}}.
+> 4. {{keyPoints4}}.
+> N. {{keyPointsN}}.
+> **📌 Main Topic(s)**
+> - {{mainTopics1}}
+> - {{mainTopics2}}
+> - {{mainTopicsN}}
+> **💡 Takeaway**
+> {{takeaway}}
+> 
+> *Disclaimer: This summary is generated by {{aiName}} and may not capture all nuances of the original article. For the most accurate and complete information, please refer to the **[full article]({{link}})**.*
+`,
+              };
 
               return class Summarizer extends Plugin {
                   constructor() {
@@ -222,7 +192,7 @@ export default !global.ZeresPluginLibrary
                           message &&
                           message.content &&
                           message.content.match(/https?:\/\/\S+/gi) &&
-                          !message.content.includes('📝 Article Summary')
+                          !message.content.includes('Article Summary')
                       ) {
                           children.push(
                               ContextMenu.buildItem({
@@ -258,111 +228,55 @@ export default !global.ZeresPluginLibrary
                   };
 
                   validateSettings() {
-                      if (!this.settings.apiKey) {
-                          BdApi.showToast('Please enter an API key', {
-                              type: 'error',
-                          });
-                          return false;
-                      }
-                      if (!this.settings.systemPrompt) {
-                          BdApi.showToast('Please enter a system prompt', {
-                              type: 'error',
-                          });
-                          return false;
-                      }
-                      if (!this.settings.summaryTemplate) {
-                          BdApi.showToast('Please enter a summary template', {
-                              type: 'error',
-                          });
-                          return false;
+                      const requiredSettings = ['apiKey', 'systemPrompt', 'summaryTemplate'];
+                      for (const setting of requiredSettings) {
+                          if (!this.settings[setting]) {
+                              BdApi.showToast(`Please enter a valid ${setting}`, {
+                                  type: 'error',
+                              });
+                              return false;
+                          }
                       }
                       return true;
                   }
 
                   async summarizeArticle(message) {
-                      const link = message.content.match(/https?:\/\/\S+/gi)[0];
-                      const { provider: providerId, model, apiKey } = this.settings;
-
                       if (!this.validateSettings()) {
+                          BdApi.showToast('Invalid plugin settings detected. Please check your configuration.', {
+                              type: 'error',
+                          });
                           return;
                       }
 
-                      const ai = ProviderFactory.createProvider(providerId, model, apiKey);
-
-                      const template = `
-                      Please summarize the following article using the provided template:
-              
-                      Article URL: ${link}
-              
-                      Template:
-                      ${this.settings.summaryTemplate.replace('{{link}}', link)}
-              
-                      Article Text:
-                      {{articleText}}
-                      
-                      Summary:
-                      `;
-
+                      const link = message.content.match(/https?:\/\/\S+/gi)[0];
                       try {
-                          const article = await this.fetchArticleText(link);
-                          if (!article) return;
-
-                          const res = await ai.invoke([
-                              ['system', this.settings.systemPrompt],
-                              ['human', template.replace('{{articleText}}', article).replace('{{aiName}}', model)],
-                          ]);
-                          const summary = res.content;
+                          const summarizer = new ArticleSummarizer(ProviderFactory, this.settings);
+                          const summary = await summarizer.summarize(link);
                           message.content = summary;
+                          EmbedUtils.sanitizeEmbed = (channelId, embedId, embed) => embed;
                           Dispatcher.dispatch({
                               type: 'MESSAGE_UPDATE',
                               message: message,
                           });
-                          BdApi.showToast('Article summarized successfully!', {
-                              type: 'success',
-                          });
+                          BdApi.showToast('Article summarized successfully!', { type: 'success' });
                       } catch (error) {
-                          Logger.err('Error summarizing article:', error);
-                          BdApi.showToast('Failed to summarize article. Please try again.', {
-                              type: 'error',
-                          });
+                          this.handleError(error);
+                      } finally {
+                          EmbedUtils.sanitizeEmbed = ogSanitizeEmbed;
                       }
                   }
 
-                  async fetchArticleText(link) {
-                      try {
-                          const response = await Net.fetch(link, {
-                              method: 'GET',
-                              headers: {
-                                  'User-Agent':
-                                      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
-                              },
-                          });
-
-                          if (!response.ok) {
-                              Logger.err(`HTTP error! status: ${response.status}`);
-                              BdApi.showToast('Failed to fetch article content', {});
-                              return;
-                          }
-
-                          const html = await response.text();
-                          const doc = new DOMParser().parseFromString(html, 'text/html');
-                          const reader = new Readability(doc);
-                          const article = reader.parse();
-
-                          if (article) {
-                              return article.textContent.trim();
-                          } else {
-                              BdApi.showToast('Failed to extract article content', {
-                                  type: 'error',
-                              });
-                              return;
-                          }
-                      } catch (error) {
-                          Logger.err('Error fetching article text:', error);
-                          BdApi.showToast('Failed to fetch article content', {
-                              type: 'error',
-                          });
+                  handleError(error) {
+                      Logger.err('Error summarizing article: ', error);
+                      let errorMessage = 'Failed to summarize article. Please try again.';
+                      if (error.message.includes('API request failed') || error.message.includes('Invalid API key')) {
+                          errorMessage = 'Failed to summarize article. Please check your API key.';
+                      } else if (error.message.includes('Failed to fetch article content')) {
+                          errorMessage = 'Failed to fetch article content. Please check the URL.';
+                      } else if (error.message.includes('Invalid settings.')) {
+                          errorMessage = 'Invalid plugin settings detected. Please check your configuration.';
                       }
+                      BdApi.showToast(errorMessage, { type: 'error' });
                   }
 
                   onStop() {
@@ -400,16 +314,24 @@ export default !global.ZeresPluginLibrary
                               });
                           }
                       }
+
                       return SettingPanel.build(
                           this.saveSettings.bind(this),
-
+                          //   new Switch(
+                          //       'Keep Changes Local',
+                          //       'Choose whether to keep the message edits local or send the modified message.',
+                          //       this.settings.localMode,
+                          //       (value) => {
+                          //           this.settings.localMode = value;
+                          //       }
+                          //   ),
                           new Dropdown(
                               'Provider',
-                              'Select the provider for article summarization.',
-                              this.settings.provider || availableProviders[0].id,
+                              'Select the provider for content summarization.',
+                              this.settings.providerId || availableProviders[0].id,
                               providerOptions,
                               (value) => {
-                                  this.settings.provider = value;
+                                  this.settings.providerId = value;
                               }
                           ),
                           new Dropdown('Model', 'Select the LLM model.', this.settings.model, modelOptions, (value) => {
@@ -418,24 +340,52 @@ export default !global.ZeresPluginLibrary
                           new Textbox('API Key', 'Enter your API key for the selected provider.', this.settings.apiKey, (value) => {
                               this.settings.apiKey = value;
                           }),
-                          new TextAreaField(
-                              'System Prompt',
-                              'Enter the system prompt for the AI assistant. Leave empty to use the default prompt.',
-                              this.settings.systemPrompt,
-                              (value) => {
-                                  this.settings.systemPrompt = value;
-                              },
-                              { placeholder: 'Enter the system prompt here...' }
-                          ),
-                          new TextAreaField(
-                              'Summary Template',
-                              'Enter the template for the article summary in markdown format. Use {{link}} as a placeholder for the article URL.',
-                              this.settings.summaryTemplate,
-                              (value) => {
-                                  this.settings.summaryTemplate = value;
-                              },
-                              { placeholder: 'Enter the summary template here...' }
-                          )
+                          new SettingGroup('Content Fetching Options')
+                              .append(
+                                  new Textbox(
+                                      'Content Proxy URL',
+                                      'Specify the URL of the proxy server for retrieving content. Use {{link}} as a placeholder for the actual URL.',
+                                      this.settings.contentProxyUrl,
+                                      (value) => {
+                                          this.settings.contentProxyUrl = value;
+                                      },
+                                      { placeholder: 'https://example.com/proxy?url={{link}}' }
+                                  )
+                              )
+                              .append(
+                                  new Textbox(
+                                      'User Agent',
+                                      'Specify the user agent to use for fetching content.',
+                                      this.settings.userAgent,
+                                      (value) => {
+                                          this.settings.userAgent = value;
+                                      },
+                                      { placeholder: 'Enter the user agent here...' }
+                                  )
+                              ),
+                          new SettingGroup('AI Options')
+                              .append(
+                                  new TextAreaField(
+                                      'System Prompt',
+                                      'Enter the system prompt for the AI assistant. Leave empty to use the default prompt.',
+                                      this.settings.systemPrompt,
+                                      (value) => {
+                                          this.settings.systemPrompt = value;
+                                      },
+                                      { placeholder: 'Enter the system prompt here...' }
+                                  )
+                              )
+                              .append(
+                                  new TextAreaField(
+                                      'Summary Template',
+                                      'Enter the template for the content summary in markdown format. Use {{link}} as a placeholder for the article URL.',
+                                      this.settings.summaryTemplate,
+                                      (value) => {
+                                          this.settings.summaryTemplate = value;
+                                      },
+                                      { placeholder: 'Enter the summary template here...' }
+                                  )
+                              )
                       );
                   };
 

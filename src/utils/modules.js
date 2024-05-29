@@ -27,6 +27,7 @@ const Net = window.BdApi?.Net;
 const Utils = window.BdApi?.Utils;
 const BetterWebpackModules = window.BdApi.Webpack;
 const TextArea = WebpackModules.getModule((m) => m.TextArea)?.TextArea;
+const EmbedUtils = WebpackModules.getByProps('sanitizeEmbed');
 
 const UsedModules = {
     /* Library */
@@ -57,6 +58,7 @@ const UsedModules = {
 
     /* Manually found modules */
     TextArea,
+    EmbedUtils,
 };
 
 function checkVariables() {
