@@ -136,6 +136,7 @@ export default !global.ZeresPluginLibrary
 
                   /* Discord Modules (From lib) */
                   React,
+                  UserStore,
                   MessageStore,
                   MessageActions,
 
@@ -276,7 +277,7 @@ export default !global.ZeresPluginLibrary
                       try {
                           const summarizer = new ArticleSummarizer(ProviderFactory, this.settings);
                           const summary = await summarizer.summarize(link);
-                          if (this.settings.localMode) {
+                          if (this.settings.localMode || message.author.id !== UserStore.getCurrentUser().id) {
                               message.content = summary;
                               EmbedUtils.sanitizeEmbed = (channelId, embedId, embed) => embed;
                               Dispatcher.dispatch({

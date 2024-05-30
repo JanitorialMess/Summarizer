@@ -13482,7 +13482,7 @@ const {
 
     Settings: { SettingField, SettingPanel, SettingGroup, Switch, Textbox, Dropdown },
 
-    DiscordModules: { MessageStore, TextElement, React, ReactDOM, Dispatcher, MessageActions },
+    DiscordModules: { MessageStore, TextElement, React, ReactDOM, Dispatcher, UserStore, MessageActions },
 } = global.ZeresPluginLibrary ?? FallbackLibrary;
 
 const ContextMenu = window.BdApi?.ContextMenu;
@@ -13513,6 +13513,7 @@ const UsedModules = {
     React,
     ReactDOM,
     MessageStore,
+    UserStore,
     MessageActions,
     TextElement,
 
@@ -47384,6 +47385,7 @@ class MissingZeresDummy {
 
                   /* Discord Modules (From lib) */
                   React,
+                  UserStore,
                   MessageStore,
                   MessageActions,
 
@@ -47524,7 +47526,7 @@ class MissingZeresDummy {
                       try {
                           const summarizer = new ArticleSummarizer(ProviderFactory, this.settings);
                           const summary = await summarizer.summarize(link);
-                          if (this.settings.localMode) {
+                          if (this.settings.localMode || message.author.id !== UserStore.getCurrentUser().id) {
                               message.content = summary;
                               EmbedUtils.sanitizeEmbed = (channelId, embedId, embed) => embed;
                               Dispatcher.dispatch({

@@ -19,7 +19,7 @@ const {
 
     Settings: { SettingField, SettingPanel, SettingGroup, Switch, Textbox, Dropdown },
 
-    DiscordModules: { MessageStore, TextElement, React, ReactDOM, Dispatcher, MessageActions },
+    DiscordModules: { MessageStore, TextElement, React, ReactDOM, Dispatcher, UserStore, MessageActions },
 } = global.ZeresPluginLibrary ?? FallbackLibrary;
 
 const ContextMenu = window.BdApi?.ContextMenu;
@@ -50,6 +50,7 @@ const UsedModules = {
     React,
     ReactDOM,
     MessageStore,
+    UserStore,
     MessageActions,
     TextElement,
 
