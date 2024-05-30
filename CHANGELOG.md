@@ -1,4 +1,8 @@
-## [0.3.2](/JanitorialMess/Summarizer/compare/v0.3.1...v0.3.2) (2024-05-30)
+## [0.3.3](/JanitorialMess/Summarizer/compare/v0.3.1...v0.3.3) (2024-05-30)
+
+### ✨ Features
+
+* support for youtube videos ([984a58e](/JanitorialMess/Summarizer/commit/984a58e1575406b558a5e49ae754fd3d7c76e25b))
 
 ### 🐛 Bug Fixes
 
