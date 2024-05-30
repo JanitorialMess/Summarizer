@@ -1,3 +1,12 @@
+## [0.3.2](/JanitorialMess/Summarizer/compare/v0.3.1...v0.3.2) (2024-05-30)
+
+### 🐛 Bug Fixes
+
+* summarizing content sent by other users when localMode is off ([45c6f4f](/JanitorialMess/Summarizer/commit/45c6f4f90039b799a3955427423508e9f132eaf1))
+
+### 📚 Documentation
+
+* **README:** update features and usage ([1adf811](/JanitorialMess/Summarizer/commit/1adf811dbb7a415b111e3027fb0d5ac9ec0d0f80))
 ## [0.3.1](/JanitorialMess/Summarizer/compare/v0.3.0...v0.3.1) (2024-05-30)
 
 ### ✨ Features
