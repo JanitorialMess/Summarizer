@@ -14,11 +14,11 @@
 
 ## Features
 
--   [x] Generates summaries using advanced AI models
--   [x] Allows users to click on the original article link to read the full content
--   [x] Provides customizable settings for AI model selection
--   [ ] Support for multiple AI providers (currently only Google Gemini is supported)
--   [ ] Soft paywall bypass
+-   [x] Generate summaries using advanced AI models
+-   [x] Support for multiple AI providers (OpenAI, Google Gemini, and Groq)
+-   [x] Customizable system prompts and message responses through templating
+-   [x] Mitagate content retrieval errors with request proxying (cors, archives, etc)
+-   [ ] Rewrite summaries using different AI models
 
 ## Installation
 
@@ -35,30 +35,23 @@ To use the Summarizer plugin, you need to provide an API key for the AI provider
 1. Go to User Settings > Plugins.
 2. In the settings panel, enter your API key for the selected AI provider (e.g., Google Gemini).
 3. Choose the desired AI model from the dropdown list (default is "gemini-1.5-flash").
-4. Edit the system prompt or summary template to your liking
+4. Edit the system prompt, summary template and output template to your liking.
 
 ## Usage
 
 Once the Summarizer plugin is installed and configured, it will automatically detect article links in Discord messages. When a message contains a link, you will see a "✨ Summarize" button in the message context menu (right-click on the message).
 
-Click on the "✨ Summarize" button to generate a summary of the linked article. The summary will be appended to the original message, formatted as follows:
+Click on the "✨ Summarize" button to generate a summary of the linked article. The message will be edited to include the summary using your template.
 
+### Default template
 ```
 ## 📰 Article Summary
 > **🌟 Key Highlights**
-> 1. {{keyPoints1}}.
-> 2. {{keyPoints2}}.
-> 3. {{keyPoints3}}.
-> 4. {{keyPoints4}}.
-> N. {{keyPointsN}}.
+> - {keyPoints}
 > **📌 Main Topic(s)**
-> - {{mainTopics1}}
-> - {{mainTopics2}}
-> - {{mainTopicsN}}
+> - {mainTopics}
 > **💡 Takeaway**
-> {{takeaway}}
->
-> *Disclaimer: This summary is generated based on AI algorithms and may not capture all nuances of the original article. For the most accurate and complete information, please refer to the **[full article]({{link}})**.*
+> {takeaway}
 ```
 
 ## Contributing
