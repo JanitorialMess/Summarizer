@@ -13430,6 +13430,213 @@ module.exports = ProviderFactory;
 
 /***/ }),
 
+/***/ "./src/services/summarizer.js":
+/*!************************************!*\
+  !*** ./src/services/summarizer.js ***!
+  \************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const { Readability } = __webpack_require__(/*! @mozilla/readability */ "./node_modules/@mozilla/readability/index.js");
+const HttpClient = __webpack_require__(/*! ../utils/httpClient */ "./src/utils/httpClient.js");
+const YouTubeTranscriptService = __webpack_require__(/*! ./youtubeTranscript */ "./src/services/youtubeTranscript.js");
+
+class SummarizerService {
+    constructor(ProviderFactory, settings) {
+        this.settings = settings;
+        this.provider = this.createProvider(ProviderFactory);
+        this.youtubeTranscriptService = new YouTubeTranscriptService(settings);
+        this.httpClient = new HttpClient({
+            'User-Agent': this.settings.userAgent || 'Robot/1.0.0 (+http://search.mobilesl.com/robot)',
+        });
+    }
+
+    createProvider(ProviderFactory) {
+        const { providerId, model, apiKey } = this.settings;
+        return ProviderFactory.createProvider(providerId, model, apiKey);
+    }
+
+    generateQuery(text) {
+        const { summaryTemplate } = this.settings;
+        return `
+          Please summarize the following article using the provided template:
+          
+          Template:
+          ${summaryTemplate}
+      
+          Article Content:
+          ${text}
+          
+          Summary:
+      `;
+    }
+
+    async summarize(url) {
+        try {
+            const contentText = await this.retrieveContent(url);
+            if (!contentText) return Promise.reject(new Error('Failed to fetch article text.'));
+
+            const summary = await this.generateSummary(url, contentText);
+            return summary;
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    async generateSummary(url, text) {
+        const response = await this.provider.invoke([
+            ['system', this.settings.systemPrompt],
+            ['human', this.generateQuery(text)],
+        ]);
+
+        const outputTemplate = this.settings.outputTemplate
+            .replaceAll('{{response}}', response.content.trim())
+            .replaceAll('{{url}}', url)
+            .replaceAll('{{aiName}}', this.settings.model)
+            // Backward compatibility
+            .replaceAll('{{link}}', url);
+
+        return outputTemplate;
+    }
+
+    async retrieveContent(url) {
+        if (YouTubeTranscriptService.isYouTubeLink(url)) {
+            try {
+                const transcript = await this.youtubeTranscriptService.fetchTranscript(url);
+                return transcript;
+            } catch (error) {
+                throw new Error(`Failed to fetch YouTube transcript | ${error.message}`);
+            }
+        }
+
+        try {
+            const urlToFetch = this.settings.contentProxyUrl ? this.settings.contentProxyUrl.replace('{{url}}', url) : url;
+
+            const response = await this.httpClient.get(urlToFetch);
+
+            const html = await response.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const reader = new Readability(doc);
+            const readablePage = reader.parse();
+
+            if (readablePage) {
+                return readablePage.textContent.trim();
+            } else {
+                throw new Error('Failed to extract article content');
+            }
+        } catch (error) {
+            throw new Error(`Failed to fetching article text: ${error.message}`);
+        }
+    }
+}
+
+module.exports = SummarizerService;
+
+
+/***/ }),
+
+/***/ "./src/services/youtubeTranscript.js":
+/*!*******************************************!*\
+  !*** ./src/services/youtubeTranscript.js ***!
+  \*******************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const HttpClient = __webpack_require__(/*! ../utils/httpClient */ "./src/utils/httpClient.js");
+
+const DEFAULT_YOUTUBE_TRANSCRIPT_URL = 'https://api.kome.ai/api/tools/youtube-transcripts';
+const YOUTUBE_REGEX =
+    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+class YouTubeTranscriptService {
+    constructor(settings) {
+        this.settings = settings;
+        this.httpClient = new HttpClient({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0',
+        });
+    }
+
+    extractVideoId(url) {
+        const match = url.match(YOUTUBE_REGEX);
+        return match ? match[1] : null;
+    }
+
+    static isYouTubeLink(url) {
+        return YOUTUBE_REGEX.test(url);
+    }
+
+    static templateToUrl(urlTemplate, url, videoId) {
+        return urlTemplate.replace('{{url}}', url).replace('{{videoId}}', videoId);
+    }
+
+    async fetchTranscript(url) {
+        const videoId = this.extractVideoId(url);
+        if (!videoId) {
+            throw new Error('Invalid YouTube URL');
+        }
+
+        try {
+            const response = await this.httpClient.post(DEFAULT_YOUTUBE_TRANSCRIPT_URL, { video_id: videoId, format: true });
+            const data = await response.json();
+            return data.transcript;
+        } catch (error) {
+            if (!this.settings.ytTranscriptFallbackUrl) {
+                throw error;
+            }
+
+            const fallbackUrl = YouTubeTranscriptService.templateToUrl(this.settings.ytTranscriptFallbackUrl, url, videoId);
+            const fallbackResponse = await this.httpClient.get(fallbackUrl);
+
+            const text = await fallbackResponse.text();
+            return text;
+        }
+    }
+}
+
+module.exports = YouTubeTranscriptService;
+
+
+/***/ }),
+
+/***/ "./src/utils/httpClient.js":
+/*!*********************************!*\
+  !*** ./src/utils/httpClient.js ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const { Net } = (__webpack_require__(/*! ../utils/modules */ "./src/utils/modules.js").ModuleStore);
+
+class HttpClient {
+    constructor(defaultHeaders = {}) {
+        this.defaultHeaders = defaultHeaders;
+    }
+
+    async fetch(url, options = {}) {
+        const headers = { ...this.defaultHeaders, ...options.headers };
+        const response = await Net.fetch(url, { ...options, headers });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error (status: ${response.status})`);
+        }
+
+        return response;
+    }
+
+    async get(url, headers = {}) {
+        return this.fetch(url, { method: 'GET', headers });
+    }
+
+    async post(url, body, headers = {}) {
+        return this.fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', ...headers },
+            body: JSON.stringify(body),
+        });
+    }
+}
+
+module.exports = HttpClient;
+
+
+/***/ }),
+
 /***/ "./src/utils/migrations.js":
 /*!*********************************!*\
   !*** ./src/utils/migrations.js ***!
@@ -13462,6 +13669,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   loaded_successfully: () => (/* binding */ loaded_successfully)
 /* harmony export */ });
 /* eslint-disable no-unused-vars */
+const pluginName = 'Summarizer';
+
 const FallbackLibrary = {
     Logger: {
         info: console.info,
@@ -13476,7 +13685,7 @@ const {
     WebpackModules,
     Utilities,
     DOMTools,
-    Logger,
+    Logger: _Logger,
     ReactTools,
     Modals,
 
@@ -13491,6 +13700,15 @@ const Utils = window.BdApi?.Utils;
 const BetterWebpackModules = window.BdApi.Webpack;
 const TextArea = WebpackModules.getModule((m) => m.TextArea)?.TextArea;
 const EmbedUtils = WebpackModules.getByProps('sanitizeEmbed');
+
+const Logger = {
+    info: (...args) => _Logger.info(pluginName, ...args),
+    warn: (...args) => _Logger.warn(pluginName, ...args),
+    err: (...args) => _Logger.err(pluginName, ...args),
+    log: (...args) => _Logger.info(pluginName, ...args),
+    debug: (...args) => _Logger.info(pluginName, ...args),
+    stacktrace: (...args) => _Logger.err(pluginName, ...args),
+};
 
 const UsedModules = {
     /* Library */
@@ -13547,103 +13765,6 @@ function checkVariables() {
 
 const loaded_successfully = checkVariables();
 const ModuleStore = UsedModules;
-
-
-/***/ }),
-
-/***/ "./src/utils/summarizer.js":
-/*!*********************************!*\
-  !*** ./src/utils/summarizer.js ***!
-  \*********************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const { Readability } = __webpack_require__(/*! @mozilla/readability */ "./node_modules/@mozilla/readability/index.js");
-const { Net } = (__webpack_require__(/*! ../utils/modules */ "./src/utils/modules.js").ModuleStore);
-
-class ArticleSummarizer {
-    constructor(ProviderFactory, settings) {
-        this.settings = settings;
-        this.provider = this.createProvider(ProviderFactory);
-    }
-
-    createProvider(ProviderFactory) {
-        const { providerId, model, apiKey } = this.settings;
-        return ProviderFactory.createProvider(providerId, model, apiKey);
-    }
-
-    generateQuery(text) {
-        const { summaryTemplate } = this.settings;
-        return `
-          Please summarize the following article using the provided template:
-          
-          Template:
-          ${summaryTemplate}
-      
-          Article Content:
-          ${text}
-          
-          Summary:
-      `;
-    }
-
-    async summarize(link) {
-        try {
-            const contentText = await this.retrieveContent(link);
-            if (!contentText) return Promise.reject(new Error('Failed to fetch article text.'));
-
-            const summary = await this.generateSummary(link, contentText);
-            return summary;
-        } catch (error) {
-            return Promise.reject(error);
-        }
-    }
-
-    async generateSummary(link, text) {
-        const response = await this.provider.invoke([
-            ['system', this.settings.systemPrompt],
-            ['human', this.generateQuery(text)],
-        ]);
-
-        const outputTemplate = this.settings.outputTemplate
-            .replaceAll('{{response}}', response.content.trim())
-            .replaceAll('{{link}}', link)
-            .replaceAll('{{aiName}}', this.settings.model);
-
-        return outputTemplate;
-    }
-
-    async retrieveContent(link) {
-        try {
-            const urlToFetch = this.settings.contentProxyUrl ? this.settings.contentProxyUrl.replace('{{link}}', link) : link;
-
-            const response = await Net.fetch(urlToFetch, {
-                method: 'GET',
-                headers: {
-                    'User-Agent': this.settings.userAgent || 'Robot/1.0.0 (+http://search.mobilesl.com/robot)',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to fetch article content: ${response.status}`);
-            }
-
-            const html = await response.text();
-            const doc = new DOMParser().parseFromString(html, 'text/html');
-            const reader = new Readability(doc);
-            const readablePage = reader.parse();
-
-            if (readablePage) {
-                return readablePage.textContent.trim();
-            } else {
-                throw new Error('Failed to extract article content.');
-            }
-        } catch (error) {
-            throw new Error(`Error fetching article text: ${error.message}`);
-        }
-    }
-}
-
-module.exports = ArticleSummarizer;
 
 
 /***/ }),
@@ -47397,7 +47518,7 @@ class MissingZeresDummy {
                   EmbedUtils,
               } = (__webpack_require__(/*! ./utils/modules */ "./src/utils/modules.js").ModuleStore);
               const ProviderFactory = __webpack_require__(/*! ./providers/providers */ "./src/providers/providers.js");
-              const ArticleSummarizer = __webpack_require__(/*! ./utils/summarizer */ "./src/utils/summarizer.js");
+              const SummarizerService = __webpack_require__(/*! ./services/summarizer */ "./src/services/summarizer.js");
               const migrations = __webpack_require__(/*! ./utils/migrations */ "./src/utils/migrations.js");
 
               const ogSanitizeEmbed = EmbedUtils.sanitizeEmbed;
@@ -47408,6 +47529,7 @@ class MissingZeresDummy {
                   apiKey: '',
                   localMode: true,
                   contentProxyUrl: '',
+                  ytTranscriptFallbackUrl: '',
                   userAgent: 'Robot/1.0.0 (+http://search.mobilesl.com/robot)',
                   systemPrompt:
                       'You are an AI assistant that summarizes articles. Provide a concise and informative summary of the given text. Do not include any additional formatting, explanations, or opinions in your response.',
@@ -47421,7 +47543,7 @@ class MissingZeresDummy {
 `,
                   outputTemplate: `{{response}}
 > 
-> *Disclaimer: This summary is generated by AI ({{aiName}}) and may not capture all nuances of the original article. For the most accurate and complete information, please refer to the **[full article]({{link}})**.*
+> *Disclaimer: This summary is generated by AI ({{aiName}}) and may not capture all nuances of the original article. For the most accurate and complete information, please refer to the **[full article]({{url}})**.*
 `,
               };
 
@@ -47522,10 +47644,10 @@ class MissingZeresDummy {
                           return;
                       }
 
-                      const link = message.content.match(/https?:\/\/\S+/gi)[0];
+                      const url = message.content.match(/https?:\/\/\S+/gi)[0];
                       try {
-                          const summarizer = new ArticleSummarizer(ProviderFactory, this.settings);
-                          const summary = await summarizer.summarize(link);
+                          const summarizer = new SummarizerService(ProviderFactory, this.settings);
+                          const summary = await summarizer.summarize(url);
                           if (this.settings.localMode || message.author.id !== UserStore.getCurrentUser().id) {
                               message.content = summary;
                               EmbedUtils.sanitizeEmbed = (channelId, embedId, embed) => embed;
@@ -47545,7 +47667,7 @@ class MissingZeresDummy {
                   }
 
                   handleError(error) {
-                      Logger.err('Error summarizing article: ', error);
+                      Logger.err(error);
                       let errorMessage = 'Failed to summarize article. Please try again.';
                       if (error.message.includes('API request failed') || error.message.includes('Invalid API key')) {
                           errorMessage = 'Failed to summarize article. Please check your API key.';
@@ -47553,6 +47675,8 @@ class MissingZeresDummy {
                           errorMessage = 'Failed to fetch article content. Please check the URL.';
                       } else if (error.message.includes('Invalid settings.')) {
                           errorMessage = 'Invalid plugin settings detected. Please check your configuration.';
+                      } else {
+                          errorMessage = error;
                       }
                       BdApi.showToast(errorMessage, { type: 'error' });
                   }
@@ -47616,27 +47740,38 @@ class MissingZeresDummy {
                               this.settings.model = value;
                           }),
                           new Textbox('API Key', 'Enter your API key for the selected provider.', this.settings.apiKey, (value) => {
-                              this.settings.apiKey = value;
+                              this.settings.apiKey = value.trim();
                           }),
                           new SettingGroup('Content Fetching Options')
                               .append(
                                   new Textbox(
                                       'Content Proxy URL',
-                                      'Specify the URL of the proxy server for retrieving content. Use {{link}} as a placeholder for the actual URL.',
+                                      'Specify the URL of the proxy server for retrieving content. Use {{url}} as a placeholder for the actual URL.',
                                       this.settings.contentProxyUrl,
                                       (value) => {
-                                          this.settings.contentProxyUrl = value;
+                                          this.settings.contentProxyUrl = value.trim();
                                       },
-                                      { placeholder: 'https://example.com/proxy?url={{link}}' }
+                                      { placeholder: 'https://example.com/proxy?url={{url}}' }
+                                  )
+                              )
+                              .append(
+                                  new Textbox(
+                                      'YouTube Transcript Fallback URL',
+                                      'Specify the URL of the fallback server for retrieving YouTube transcripts. Use {{url}} as a placeholder for the actual video URL or {{videoId}} for the video ID.',
+                                      this.settings.ytTranscriptFallbackUrl,
+                                      (value) => {
+                                          this.settings.ytTranscriptFallbackUrl = value.trim();
+                                      },
+                                      { placeholder: 'https://example.com/transcript?videoId={{videoId}}' }
                                   )
                               )
                               .append(
                                   new Textbox(
                                       'User Agent',
-                                      'Specify the user agent to use for fetching content.',
+                                      'Specify the user agent to use for fetching content (user only for content proxies).',
                                       this.settings.userAgent,
                                       (value) => {
-                                          this.settings.userAgent = value;
+                                          this.settings.userAgent = value.trim();
                                       },
                                       { placeholder: 'Enter the user agent here...' }
                                   )
@@ -47667,7 +47802,7 @@ class MissingZeresDummy {
                               .append(
                                   new TextAreaField(
                                       'Output Template',
-                                      'Enter the template for the final output. Use {{response}} as a placeholder for the AI-generated summary, {{link}} for the URL, and {{aiName}} for the AI model name.',
+                                      'Enter the template for the final output. Use {{response}} as a placeholder for the AI-generated summary, {{url}} for the URL, and {{aiName}} for the AI model name.',
                                       this.settings.outputTemplate,
                                       (value) => {
                                           this.settings.outputTemplate = value;

@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+const pluginName = 'Summarizer';
+
 const FallbackLibrary = {
     Logger: {
         info: console.info,
@@ -13,7 +15,7 @@ const {
     WebpackModules,
     Utilities,
     DOMTools,
-    Logger,
+    Logger: _Logger,
     ReactTools,
     Modals,
 
@@ -28,6 +30,15 @@ const Utils = window.BdApi?.Utils;
 const BetterWebpackModules = window.BdApi.Webpack;
 const TextArea = WebpackModules.getModule((m) => m.TextArea)?.TextArea;
 const EmbedUtils = WebpackModules.getByProps('sanitizeEmbed');
+
+const Logger = {
+    info: (...args) => _Logger.info(pluginName, ...args),
+    warn: (...args) => _Logger.warn(pluginName, ...args),
+    err: (...args) => _Logger.err(pluginName, ...args),
+    log: (...args) => _Logger.info(pluginName, ...args),
+    debug: (...args) => _Logger.info(pluginName, ...args),
+    stacktrace: (...args) => _Logger.err(pluginName, ...args),
+};
 
 const UsedModules = {
     /* Library */

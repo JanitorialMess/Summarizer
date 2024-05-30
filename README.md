@@ -15,9 +15,10 @@
 ## Features
 
 -   [x] Generate summaries using advanced AI models
--   [x] Support for multiple AI providers (OpenAI, Google Gemini, and Groq)
+-   [x] Select between multiple AI providers (OpenAI, Google Gemini, and Groq)
 -   [x] Customizable system prompts and message responses through templating
 -   [x] Mitagate content retrieval errors with request proxying (cors, archives, etc)
+-   [x] Support for YouTube videos and other media links
 -   [ ] Rewrite summaries using different AI models
 
 ## Installation
@@ -44,6 +45,7 @@ Once the Summarizer plugin is installed and configured, it will automatically de
 Click on the "✨ Summarize" button to generate a summary of the linked article. The message will be edited to include the summary using your template.
 
 ### Default template
+
 ```
 ## 📰 Article Summary
 > **🌟 Key Highlights**
