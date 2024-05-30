@@ -12,6 +12,21 @@ class ArticleSummarizer {
         return ProviderFactory.createProvider(providerId, model, apiKey);
     }
 
+    generateQuery(text) {
+        const { summaryTemplate } = this.settings;
+        return `
+          Please summarize the following article using the provided template:
+          
+          Template:
+          ${summaryTemplate}
+      
+          Article Content:
+          ${text}
+          
+          Summary:
+      `;
+    }
+
     async summarize(link) {
         try {
             const contentText = await this.retrieveContent(link);
@@ -25,29 +40,17 @@ class ArticleSummarizer {
     }
 
     async generateSummary(link, text) {
-        const template = this.prepareSummaryTemplate(link);
         const response = await this.provider.invoke([
             ['system', this.settings.systemPrompt],
-            ['human', template.replace('{{text}}', text)],
+            ['human', this.generateQuery(text)],
         ]);
-        return response.content;
-    }
 
-    prepareSummaryTemplate(link) {
-        const { model } = this.settings;
-        return `
-          Please summarize the following article using the provided template:
-      
-          Article URL: ${link}
-      
-          Template:
-          ${this.settings.summaryTemplate.replaceAll('{{link}}', link).replaceAll('{{aiName}}', model)}
-      
-          Article Content:
-          {{text}}
-          
-          Summary:
-      `;
+        const outputTemplate = this.settings.outputTemplate
+            .replaceAll('{{response}}', response.content.trim())
+            .replaceAll('{{link}}', link)
+            .replaceAll('{{aiName}}', this.settings.model);
+
+        return outputTemplate;
     }
 
     async retrieveContent(link) {

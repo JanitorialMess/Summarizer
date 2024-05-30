@@ -19,7 +19,7 @@ const {
 
     Settings: { SettingField, SettingPanel, SettingGroup, Switch, Textbox, Dropdown },
 
-    DiscordModules: { MessageStore, TextElement, React, ReactDOM, Dispatcher },
+    DiscordModules: { MessageStore, TextElement, React, ReactDOM, Dispatcher, MessageActions },
 } = global.ZeresPluginLibrary ?? FallbackLibrary;
 
 const ContextMenu = window.BdApi?.ContextMenu;
@@ -50,6 +50,7 @@ const UsedModules = {
     React,
     ReactDOM,
     MessageStore,
+    MessageActions,
     TextElement,
 
     /* BdApi */
@@ -77,7 +78,6 @@ function checkVariables() {
         return false;
     }
 
-    Logger.info('All variables found.');
     return true;
 }
 
