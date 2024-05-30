@@ -10877,7 +10877,7 @@ class ArticleSummarizer {
     }
 
     createProvider(ProviderFactory) {
-        const { provider: providerId, model, apiKey } = this.settings;
+        const { providerId, model, apiKey } = this.settings;
         return ProviderFactory.createProvider(providerId, model, apiKey);
     }
 

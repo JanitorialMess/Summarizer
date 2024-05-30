@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const pluginConfig = require('./src/config.json');
 const TerserPlugin = require('terser-webpack-plugin');
 const process = require('process');
+const fs = require('fs');
 
 const meta = (() => {
     const lines = ['/**'];
@@ -35,36 +36,39 @@ const commonConfig = {
     },
     plugins: [
         new webpack.BannerPlugin({ raw: true, banner: meta }),
-        {
-            apply: (compiler) => {
-                compiler.hooks.assetEmitted.tap('Summarizer', (filename, info) => {
-                    const userConfig = (() => {
-                        if (process.platform === 'win32') return process.env.APPDATA;
-
-                        if (process.platform === 'darwin') {
-                            return path.join(process.env.HOME, 'Library', 'Application Support');
-                        }
-
-                        if (process.env.XDG_CONFIG_HOME) {
-                            return process.env.XDG_CONFIG_HOME;
-                        }
-
-                        return path.join(process.env.HOME, 'Library', '.config');
-                    })();
-
-                    const fs = require('fs');
-                    const bdFolder = path.join(userConfig, 'BetterDiscord');
-                    fs.copyFileSync(info.targetPath, path.join(bdFolder, 'plugins', filename));
-                });
-            },
-        },
         new webpack.DefinePlugin({
             __VERSION__: JSON.stringify(pluginConfig.version),
         }),
     ],
 };
 
-// Configuration for minified output
+if (process.env.COPY_TO_BD === 'true') {
+    commonConfig.plugins.push({
+        apply: (compiler) => {
+            compiler.hooks.assetEmitted.tap('Summarizer', (filename, info) => {
+                const userConfig = (() => {
+                    if (process.platform === 'win32') return process.env.APPDATA;
+
+                    if (process.platform === 'darwin') {
+                        return path.join(process.env.HOME, 'Library', 'Application Support');
+                    }
+
+                    if (process.env.XDG_CONFIG_HOME) {
+                        return process.env.XDG_CONFIG_HOME;
+                    }
+
+                    return path.join(process.env.HOME, '.config');
+                })();
+
+                const bdFolder = path.join(userConfig, 'BetterDiscord');
+                if (fs.existsSync(bdFolder)) {
+                    fs.copyFileSync(info.targetPath, path.join(bdFolder, 'plugins', filename));
+                }
+            });
+        },
+    });
+}
+
 const minifiedConfig = {
     ...commonConfig,
     mode: 'production',
