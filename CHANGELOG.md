@@ -1,3 +1,8 @@
+## [0.3.1](/JanitorialMess/Summarizer/compare/v0.3.0...v0.3.1) (2024-05-30)
+
+### ✨ Features
+
+* improve templating and support settings migration ([d868691](/JanitorialMess/Summarizer/commit/d8686912863946a55aeb3dac60897d6033138473))
 ## [0.3.0](/JanitorialMess/Summarizer/compare/v0.2.0...v0.3.0) (2024-05-30)
 
 ### ✨ Features
