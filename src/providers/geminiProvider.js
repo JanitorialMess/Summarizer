@@ -1,5 +1,5 @@
 const BaseProvider = require('./baseProvider');
-const GeminiApi = require('../api/GeminiApi');
+const GeminiApi = require('../api/geminiApi');
 
 const HarmBlockThreshold = {
     HARM_BLOCK_THRESHOLD_UNSPECIFIED: 'HARM_BLOCK_THRESHOLD_UNSPECIFIED',

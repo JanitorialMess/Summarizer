@@ -1,7 +1,7 @@
 /**
  * @name Summarizer
  * @displayName Summarizer
- * @version 0.3.3
+ * @version 0.3.4
  * @author JanitorialMess
  * @donate https://ko-fi.com/Z8Z2NV2H6
  * @authorId 671095271412727854
@@ -5142,9 +5142,9 @@ module.exports = validRange
 
 /***/ }),
 
-/***/ "./src/api/GeminiApi.js":
+/***/ "./src/api/geminiApi.js":
 /*!******************************!*\
-  !*** ./src/api/GeminiApi.js ***!
+  !*** ./src/api/geminiApi.js ***!
   \******************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -5284,7 +5284,7 @@ module.exports = BaseProvider;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const BaseProvider = __webpack_require__(/*! ./baseProvider */ "./src/providers/baseProvider.js");
-const GeminiApi = __webpack_require__(/*! ../api/GeminiApi */ "./src/api/GeminiApi.js");
+const GeminiApi = __webpack_require__(/*! ../api/geminiApi */ "./src/api/geminiApi.js");
 
 const HarmBlockThreshold = {
     HARM_BLOCK_THRESHOLD_UNSPECIFIED: 'HARM_BLOCK_THRESHOLD_UNSPECIFIED',
@@ -5976,7 +5976,7 @@ const config = {
                 discord_id: '671095271412727854',
             },
         ],
-        version: '0.3.3',
+        version: '0.3.4',
         description: 'Summarizes the content of articles linked in messages.',
     },
     changelog: [],

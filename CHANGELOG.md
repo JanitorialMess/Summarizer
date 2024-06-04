@@ -1,4 +1,13 @@
-## [0.3.3](/JanitorialMess/Summarizer/compare/v0.3.1...v0.3.3) (2024-05-30)
+## [0.3.4](/JanitorialMess/Summarizer/compare/v0.3.3...v0.3.4) (2024-06-04)
+
+### ✨ Features
+
+* custom Groq API implementation ([0962223](/JanitorialMess/Summarizer/commit/0962223834b270a707368043c79084c3a04e8db6))
+
+### ⚡ Performance Improvements
+
+* optimize size by replacing langchain.js with custom LLM API wrappers ([45d015d](/JanitorialMess/Summarizer/commit/45d015d31d2ff0c8a186b99e7b4b79b0911fa449))
+## [0.3.3](/JanitorialMess/Summarizer/compare/v0.3.1...v0.3.3) (2024-06-04)
 
 ### ✨ Features
 

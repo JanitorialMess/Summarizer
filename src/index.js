@@ -7,7 +7,7 @@ const config = {
                 discord_id: '671095271412727854',
             },
         ],
-        version: '0.3.3',
+        version: '0.3.4',
         description: 'Summarizes the content of articles linked in messages.',
     },
     changelog: [],
