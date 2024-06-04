@@ -147,16 +147,47 @@ export default !global.ZeresPluginLibrary
                   TextArea,
                   EmbedUtils,
               } = require('./utils/modules').ModuleStore;
-              const ProviderFactory = require('./providers/providers');
+              const ProviderFactory = require('./providers');
               const SummarizerService = require('./services/summarizer');
               const migrations = require('./utils/migrations');
 
               const ogSanitizeEmbed = EmbedUtils.sanitizeEmbed;
               const defaultSettings = {
                   version: config.info.version,
-                  providerId: 'google',
+                  providerId: 'gemini',
                   model: 'gemini-1.5-flash',
                   apiKey: '',
+                  providers: [
+                      {
+                          id: 'gemini',
+                          label: 'Google Gemini',
+                          models: [
+                              { label: 'Gemini 1.5 Pro', value: 'gemini-1.5-pro' },
+                              { label: 'Gemini 1.5 Flash', value: 'gemini-1.5-flash' },
+                              { label: 'Gemini 1.0 Pro', value: 'gemini-1.0-pro' },
+                          ],
+                      },
+                      {
+                          id: 'openai',
+                          label: 'OpenAI',
+                          models: [
+                              { label: 'GPT-4o', value: 'gpt-4o' },
+                              { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
+                              { label: 'GPT-4', value: 'gpt-4' },
+                              { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
+                          ],
+                      },
+                      {
+                          id: 'groq',
+                          label: 'Groq',
+                          models: [
+                              { label: 'Llama 3 70B', value: 'llama3-70b-8192' },
+                              { label: 'Llama 3 8B', value: 'llama3-8b-8192' },
+                              { label: 'Gemma 7B IT', value: 'gemma-7b-it' },
+                              { label: 'Mixtral 8x7B', value: 'mixtral-8x7b-32768' },
+                          ],
+                      },
+                  ],
                   localMode: true,
                   contentProxyUrl: '',
                   ytTranscriptFallbackUrl: '',
@@ -181,6 +212,7 @@ export default !global.ZeresPluginLibrary
                   constructor() {
                       super();
                       this.settings = this.migrateSettings(Utilities.loadSettings(config.info.name, 'settings', defaultSettings));
+                      this.updateInterval = null;
                   }
 
                   migrateSettings(settings) {
@@ -202,12 +234,30 @@ export default !global.ZeresPluginLibrary
 
                           return migratedSettings;
                       }
-
-                      return settings;
+                      const mergedSettings = { ...defaultSettings, ...settings };
+                      mergedSettings.version = currentVersion;
+                      return mergedSettings;
                   }
 
                   async onStart() {
-                      ContextMenu.patch('message', this.messageContextPatch);
+                      try {
+                          // Print all providers
+                          //   const availableProviders = await Promise.all(
+                          //       ProviderFactory.getAvailableProviders().map(async (provider) => ({
+                          //           ...provider,
+                          //           models: await provider.classRef.getAvailableModels(),
+                          //       }))
+                          //   );
+                          // this.settings.providers = availableProviders;
+                          // this.saveSettings();
+                          ContextMenu.patch('message', this.messageContextPatch);
+                      } catch (error) {
+                          Logger.err('Failed to fetch and cache providers:', error);
+                      }
+
+                      //   if (this.updateInterval === null) {
+                      //       this.updateInterval = setInterval(this.updateProviderCache.bind(this), 24 * 60 * 60 * 1000);
+                      //   }
                   }
 
                   messageContextPatch = (ret, props) => {
@@ -253,8 +303,23 @@ export default !global.ZeresPluginLibrary
                       }
                   };
 
+                  async updateProviderCache() {
+                      try {
+                          const availableProviders = await Promise.all(
+                              ProviderFactory.getAvailableProviders().map(async (provider) => ({
+                                  ...provider,
+                                  models: await provider.classRef.getAvailableModels(),
+                              }))
+                          );
+                          this.settings.cachedProviders = availableProviders;
+                          this.saveSettings();
+                      } catch (error) {
+                          Logger.err('Failed to update provider cache:', error);
+                      }
+                  }
+
                   validateSettings() {
-                      const requiredSettings = ['apiKey'];
+                      const requiredSettings = ['apiKey', 'providerId', 'model'];
                       const invalidSettings = requiredSettings.filter((setting) => !this.settings[setting]);
 
                       if (invalidSettings.length) {
@@ -263,6 +328,25 @@ export default !global.ZeresPluginLibrary
                           });
                           return false;
                       }
+
+                      const selectedProvider = this.settings.providers.find((provider) => provider.id === this.settings.providerId);
+
+                      if (!selectedProvider) {
+                          BdApi.showToast('Invalid provider selected', {
+                              type: 'error',
+                          });
+                          return false;
+                      }
+
+                      const selectedModel = selectedProvider.models.find((model) => model.value === this.settings.model);
+
+                      if (!selectedModel) {
+                          BdApi.showToast('Invalid model selected for the current provider', {
+                              type: 'error',
+                          });
+                          return false;
+                      }
+
                       return true;
                   }
 
@@ -313,17 +397,21 @@ export default !global.ZeresPluginLibrary
 
                   onStop() {
                       ContextMenu.unpatch('message', this.messageContextPatch);
+                      if (this.updateInterval !== null) {
+                          clearInterval(this.updateInterval);
+                          this.updateInterval = null;
+                      }
                   }
 
                   getSettingsPanel = () => {
-                      const availableProviders = ProviderFactory.getAvailableProviders();
+                      const availableProviders = this.settings.providers;
                       const providerOptions = availableProviders.map((provider) => ({
                           label: provider.label,
                           value: provider.id,
                       }));
 
                       const modelOptions = availableProviders.reduce((options, provider) => {
-                          const providerModels = provider.classRef.getAvailableModels().map((model) => ({
+                          const providerModels = provider.models.map((model) => ({
                               label: `${model.label}`,
                               value: model.value,
                           }));

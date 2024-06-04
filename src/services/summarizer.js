@@ -8,13 +8,16 @@ class SummarizerService {
         this.provider = this.createProvider(ProviderFactory);
         this.youtubeTranscriptService = new YouTubeTranscriptService(settings);
         this.httpClient = new HttpClient({
-            'User-Agent': this.settings.userAgent || 'Robot/1.0.0 (+http://search.mobilesl.com/robot)',
+            headers: {
+                'User-Agent': this.settings.userAgent || 'Robot/1.0.0 (+http://search.mobilesl.com/robot)',
+            },
+            parseResponse: async (response) => response,
         });
     }
 
     createProvider(ProviderFactory) {
-        const { providerId, model, apiKey } = this.settings;
-        return ProviderFactory.createProvider(providerId, model, apiKey);
+        const { providerId, model, apiKey, providerConfig } = this.settings;
+        return ProviderFactory.createProvider(providerId, model, apiKey, providerConfig);
     }
 
     generateQuery(text) {
@@ -46,12 +49,12 @@ class SummarizerService {
 
     async generateSummary(url, text) {
         const response = await this.provider.invoke([
-            ['system', this.settings.systemPrompt],
-            ['human', this.generateQuery(text)],
+            { role: 'system', content: this.settings.systemPrompt },
+            { role: 'user', content: this.generateQuery(text) },
         ]);
 
         const outputTemplate = this.settings.outputTemplate
-            .replaceAll('{{response}}', response.content.trim())
+            .replaceAll('{{response}}', response.trim())
             .replaceAll('{{url}}', url)
             .replaceAll('{{aiName}}', this.settings.model)
             // Backward compatibility

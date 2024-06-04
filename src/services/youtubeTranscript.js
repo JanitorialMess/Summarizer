@@ -7,7 +7,12 @@ class YouTubeTranscriptService {
     constructor(settings) {
         this.settings = settings;
         this.httpClient = new HttpClient({
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0',
+            headers: {
+                Origin: 'https://kome.ai',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0',
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
         });
     }
 
@@ -31,8 +36,7 @@ class YouTubeTranscriptService {
         }
 
         try {
-            const response = await this.httpClient.post(DEFAULT_YOUTUBE_TRANSCRIPT_URL, { video_id: videoId, format: true });
-            const data = await response.json();
+            const data = await this.httpClient.post(DEFAULT_YOUTUBE_TRANSCRIPT_URL, { video_id: videoId, format: true });
             return data.transcript;
         } catch (error) {
             if (!this.settings.ytTranscriptFallbackUrl) {
