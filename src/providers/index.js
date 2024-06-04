@@ -1,4 +1,5 @@
 const GeminiProvider = require('./geminiProvider');
+const GroqProvider = require('./groqProvider');
 
 class ProviderFactory {
     static createProvider(providerId, model, apiKey, config = {}) {
@@ -15,7 +16,10 @@ class ProviderFactory {
     }
 
     static getAvailableProviders() {
-        return [{ id: GeminiProvider.getId(), label: GeminiProvider.getLabel(), classRef: GeminiProvider }];
+        return [
+            { id: GeminiProvider.getId(), label: GeminiProvider.getLabel(), classRef: GeminiProvider },
+            { id: GroqProvider.getId(), label: GroqProvider.getLabel(), classRef: GroqProvider },
+        ];
     }
 }
 

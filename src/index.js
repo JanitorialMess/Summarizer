@@ -10,18 +10,7 @@ const config = {
         version: '0.3.3',
         description: 'Summarizes the content of articles linked in messages.',
     },
-    changelog: [
-        {
-            title: 'Bugfixes',
-            type: 'fixed',
-            items: ['Fixed delay in rendering the summary'],
-        },
-        {
-            title: 'Features',
-            type: 'added',
-            items: ['Support content proxy for fetching url content'],
-        },
-    ],
+    changelog: [],
     main: 'Summarizer.plugin.js',
 };
 
@@ -167,16 +156,16 @@ export default !global.ZeresPluginLibrary
                               { label: 'Gemini 1.0 Pro', value: 'gemini-1.0-pro' },
                           ],
                       },
-                      {
-                          id: 'openai',
-                          label: 'OpenAI',
-                          models: [
-                              { label: 'GPT-4o', value: 'gpt-4o' },
-                              { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
-                              { label: 'GPT-4', value: 'gpt-4' },
-                              { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
-                          ],
-                      },
+                      //   {
+                      //       id: 'openai',
+                      //       label: 'OpenAI',
+                      //       models: [
+                      //           { label: 'GPT-4o', value: 'gpt-4o' },
+                      //           { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
+                      //           { label: 'GPT-4', value: 'gpt-4' },
+                      //           { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
+                      //       ],
+                      //   },
                       {
                           id: 'groq',
                           label: 'Groq',
@@ -268,6 +257,7 @@ export default !global.ZeresPluginLibrary
                           message &&
                           message.content &&
                           message.content.match(/https?:\/\/\S+/gi) &&
+                          // FIXME: Improve check to prevent summarizing the summary
                           !message.content.includes('Article Summary')
                       ) {
                           children.push(

@@ -5192,6 +5192,50 @@ module.exports = GeminiApi;
 
 /***/ }),
 
+/***/ "./src/api/groqApi.js":
+/*!****************************!*\
+  !*** ./src/api/groqApi.js ***!
+  \****************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const HttpClient = __webpack_require__(/*! ../utils/httpClient */ "./src/utils/httpClient.js");
+
+class GroqAPI {
+    constructor(apiKey, apiVersion = 'v1') {
+        this.apiKey = apiKey;
+        this.apiVersion = apiVersion;
+        this.baseURL = `https://api.groq.com/openai/${this.apiVersion}`;
+
+        this.httpClient = new HttpClient({
+            baseUrl: this.baseURL,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.apiKey}`,
+            },
+        });
+    }
+
+    async listModels() {
+        const response = await this.httpClient.get('/models');
+        return response.data;
+    }
+
+    async retrieveModel(model) {
+        const response = await this.httpClient.get(`/models/${model}`);
+        return response;
+    }
+
+    async createChatCompletion(params) {
+        const response = await this.httpClient.post('/chat/completions', params);
+        return response;
+    }
+}
+
+module.exports = GroqAPI;
+
+
+/***/ }),
+
 /***/ "./src/providers/baseProvider.js":
 /*!***************************************!*\
   !*** ./src/providers/baseProvider.js ***!
@@ -5355,6 +5399,84 @@ module.exports = GeminiProvider;
 
 /***/ }),
 
+/***/ "./src/providers/groqProvider.js":
+/*!***************************************!*\
+  !*** ./src/providers/groqProvider.js ***!
+  \***************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const BaseProvider = __webpack_require__(/*! ./baseProvider */ "./src/providers/baseProvider.js");
+const GroqAPI = __webpack_require__(/*! ../api/groqApi */ "./src/api/groqApi.js");
+
+const DEFAULT_GENERATION_CONFIG = {
+    temperature: 1,
+    max_tokens: 2048,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+};
+
+class GroqProvider extends BaseProvider {
+    static id = 'groq';
+    static label = 'Groq';
+
+    constructor(model, apiKey, config = {}) {
+        super(model, apiKey, config);
+        this.groqAPI = new GroqAPI(apiKey);
+    }
+
+    async invoke(messages) {
+        const options = {
+            messages,
+            temperature: this.config.temperature,
+            max_tokens: this.config.max_tokens,
+        };
+
+        return this.generateContent(options);
+    }
+
+    async generateContent(options = {}) {
+        const generationConfig = {
+            ...DEFAULT_GENERATION_CONFIG,
+            ...options,
+        };
+
+        const requestBody = {
+            model: this.model,
+            ...generationConfig,
+        };
+
+        const response = await this.groqAPI.createChatCompletion(requestBody);
+        return response.choices[0].message.content;
+    }
+
+    async getAvailableModels() {
+        const response = await this.groqAPI.listModels();
+        return response.map((model) => ({
+            label: model.id,
+            value: model.id,
+        }));
+    }
+
+    async getModel(model) {
+        const response = await this.groqAPI.retrieveModel(model);
+        return response;
+    }
+
+    static getId() {
+        return GroqProvider.id;
+    }
+
+    static getLabel() {
+        return GroqProvider.label;
+    }
+}
+
+module.exports = GroqProvider;
+
+
+/***/ }),
+
 /***/ "./src/providers/index.js":
 /*!********************************!*\
   !*** ./src/providers/index.js ***!
@@ -5362,6 +5484,7 @@ module.exports = GeminiProvider;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const GeminiProvider = __webpack_require__(/*! ./geminiProvider */ "./src/providers/geminiProvider.js");
+const GroqProvider = __webpack_require__(/*! ./groqProvider */ "./src/providers/groqProvider.js");
 
 class ProviderFactory {
     static createProvider(providerId, model, apiKey, config = {}) {
@@ -5378,7 +5501,10 @@ class ProviderFactory {
     }
 
     static getAvailableProviders() {
-        return [{ id: GeminiProvider.getId(), label: GeminiProvider.getLabel(), classRef: GeminiProvider }];
+        return [
+            { id: GeminiProvider.getId(), label: GeminiProvider.getLabel(), classRef: GeminiProvider },
+            { id: GroqProvider.getId(), label: GroqProvider.getLabel(), classRef: GroqProvider },
+        ];
     }
 }
 
@@ -5641,6 +5767,7 @@ module.exports = HttpClient;
   \*********************************/
 /***/ ((module) => {
 
+/* eslint-disable no-unused-vars */
 module.exports = {
     '0.3.1': (settings, defaultSettings) => {
         const preservedSettings = ['apiKey', 'localMode', 'contentProxyUrl', 'userAgent'];
@@ -5648,6 +5775,12 @@ module.exports = {
             ...defaultSettings,
             ...Object.fromEntries(preservedSettings.map((key) => [key, settings[key]])),
         };
+    },
+    '0.3.2': (settings, defaultSettings) => {
+        if (settings.providerId === 'google') {
+            settings.providerId = 'gemini';
+        }
+        return settings;
     },
 };
 
@@ -5846,18 +5979,7 @@ const config = {
         version: '0.3.3',
         description: 'Summarizes the content of articles linked in messages.',
     },
-    changelog: [
-        {
-            title: 'Bugfixes',
-            type: 'fixed',
-            items: ['Fixed delay in rendering the summary'],
-        },
-        {
-            title: 'Features',
-            type: 'added',
-            items: ['Support content proxy for fetching url content'],
-        },
-    ],
+    changelog: [],
     main: 'Summarizer.plugin.js',
 };
 
@@ -6003,16 +6125,16 @@ class MissingZeresDummy {
                               { label: 'Gemini 1.0 Pro', value: 'gemini-1.0-pro' },
                           ],
                       },
-                      {
-                          id: 'openai',
-                          label: 'OpenAI',
-                          models: [
-                              { label: 'GPT-4o', value: 'gpt-4o' },
-                              { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
-                              { label: 'GPT-4', value: 'gpt-4' },
-                              { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
-                          ],
-                      },
+                      //   {
+                      //       id: 'openai',
+                      //       label: 'OpenAI',
+                      //       models: [
+                      //           { label: 'GPT-4o', value: 'gpt-4o' },
+                      //           { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
+                      //           { label: 'GPT-4', value: 'gpt-4' },
+                      //           { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
+                      //       ],
+                      //   },
                       {
                           id: 'groq',
                           label: 'Groq',
@@ -6104,6 +6226,7 @@ class MissingZeresDummy {
                           message &&
                           message.content &&
                           message.content.match(/https?:\/\/\S+/gi) &&
+                          // FIXME: Improve check to prevent summarizing the summary
                           !message.content.includes('Article Summary')
                       ) {
                           children.push(
