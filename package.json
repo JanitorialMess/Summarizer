@@ -2,7 +2,7 @@
     "name": "summarizer",
     "description": "A plugin which displays all hidden Channels and allows users to view information about them, this won't allow you to read them (impossible)",
     "main": "Summarizer.plugin.js",
-    "version": "0.3.4",
+    "version": "0.3.5",
     "scripts": {
         "build": "webpack --progress --color",
         "build:min": "cross-env BUILD_TYPE=minified webpack --progress --color",
@@ -30,7 +30,7 @@
         "prettier": "^3.2.5",
         "raw-loader": "^4.0.2",
         "terser-webpack-plugin": "^5.3.10",
-        "webpack": "^5.90.3",
+        "webpack": "^5.92.1",
         "webpack-cli": "^5.1.4"
     },
     "babel": {
@@ -60,7 +60,8 @@
         "printWidth": 140
     },
     "dependencies": {
-        "@mozilla/readability": "^0.5.0"
+        "@mozilla/readability": "^0.5.0",
+        "semver": "^7.6.2"
     },
     "lint-staged": {
         "*.{js,jsx}": [

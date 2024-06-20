@@ -12,12 +12,12 @@ const FallbackLibrary = {
 };
 
 const {
-    WebpackModules,
     Utilities,
     DOMTools,
     Logger: _Logger,
     ReactTools,
     Modals,
+    Toasts,
 
     Settings: { SettingField, SettingPanel, SettingGroup, Switch, Textbox, Dropdown },
 
@@ -26,10 +26,14 @@ const {
 
 const ContextMenu = window.BdApi?.ContextMenu;
 const Net = window.BdApi?.Net;
-const Utils = window.BdApi?.Utils;
 const BetterWebpackModules = window.BdApi.Webpack;
-const TextArea = WebpackModules.getModule((m) => m.TextArea)?.TextArea;
-const EmbedUtils = WebpackModules.getByProps('sanitizeEmbed');
+const TextArea = BetterWebpackModules.getModule((m) => m.TextArea)?.TextArea;
+const EmbedUtils = BetterWebpackModules.getModule(
+    (m) => typeof m === 'object' && Object.values(m).some((v) => typeof v === 'function' && v.toString().includes('1492472454139'))
+);
+const sanitizeEmbedProp =
+    EmbedUtils &&
+    Object.keys(EmbedUtils).find((k) => typeof EmbedUtils[k] === 'function' && EmbedUtils[k].toString().includes('1492472454139'));
 
 const Logger = {
     info: (...args) => _Logger.info(pluginName, ...args),
@@ -48,6 +52,7 @@ const UsedModules = {
     ReactTools,
     Modals,
     Dispatcher,
+    Toasts,
 
     /* Settings */
     SettingField,
@@ -72,6 +77,9 @@ const UsedModules = {
     /* Manually found modules */
     TextArea,
     EmbedUtils,
+
+    /* Props */
+    sanitizeEmbedProp,
 };
 
 function checkVariables() {
@@ -83,6 +91,7 @@ function checkVariables() {
     for (const variable in UsedModules) {
         if (!UsedModules[variable]) {
             Logger.err('Variable not found: ' + variable);
+            return false;
         }
     }
 

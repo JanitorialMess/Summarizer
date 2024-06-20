@@ -7,7 +7,7 @@ const config = {
                 discord_id: '671095271412727854',
             },
         ],
-        version: '0.3.4',
+        version: '0.3.5',
         description: 'Summarizes the content of articles linked in messages.',
     },
     changelog: [],
@@ -108,6 +108,7 @@ export default !global.ZeresPluginLibrary
     : (([Pl, Lib]) => {
           // eslint-disable-next-line no-unused-vars
           const plugin = (Plugin, Library) => {
+              const { loaded_successfully } = require('./utils/modules');
               const semver = require('semver');
               const {
                   /* Library */
@@ -135,12 +136,17 @@ export default !global.ZeresPluginLibrary
                   /* Manually found modules */
                   TextArea,
                   EmbedUtils,
+
+                  /* Props */
+                  sanitizeEmbedProp,
               } = require('./utils/modules').ModuleStore;
+              const Toasts = require('./utils/toasts').default;
               const ProviderFactory = require('./providers');
               const SummarizerService = require('./services/summarizer');
               const migrations = require('./utils/migrations');
 
-              const ogSanitizeEmbed = EmbedUtils.sanitizeEmbed;
+              const ogSanitizeEmbed = EmbedUtils[sanitizeEmbedProp];
+
               const defaultSettings = {
                   version: config.info.version,
                   providerId: 'gemini',
@@ -180,7 +186,7 @@ export default !global.ZeresPluginLibrary
                   localMode: true,
                   contentProxyUrl: '',
                   ytTranscriptFallbackUrl: '',
-                  userAgent: 'Robot/1.0.0 (+http://search.mobilesl.com/robot)',
+                  userAgent: 'googlebot',
                   systemPrompt:
                       'You are an AI assistant that summarizes articles. Provide a concise and informative summary of the given text. Do not include any additional formatting, explanations, or opinions in your response.',
                   summaryTemplate: `## 📰 Article Summary
@@ -201,7 +207,6 @@ export default !global.ZeresPluginLibrary
                   constructor() {
                       super();
                       this.settings = this.migrateSettings(Utilities.loadSettings(config.info.name, 'settings', defaultSettings));
-                      this.updateInterval = null;
                   }
 
                   migrateSettings(settings) {
@@ -229,37 +234,22 @@ export default !global.ZeresPluginLibrary
                   }
 
                   async onStart() {
+                      if (!loaded_successfully) {
+                          BdApi.Plugins.disable(config.info.name);
+                          return;
+                      }
                       try {
-                          // Print all providers
-                          //   const availableProviders = await Promise.all(
-                          //       ProviderFactory.getAvailableProviders().map(async (provider) => ({
-                          //           ...provider,
-                          //           models: await provider.classRef.getAvailableModels(),
-                          //       }))
-                          //   );
-                          // this.settings.providers = availableProviders;
-                          // this.saveSettings();
                           ContextMenu.patch('message', this.messageContextPatch);
                       } catch (error) {
                           Logger.err('Failed to fetch and cache providers:', error);
                       }
-
-                      //   if (this.updateInterval === null) {
-                      //       this.updateInterval = setInterval(this.updateProviderCache.bind(this), 24 * 60 * 60 * 1000);
-                      //   }
                   }
 
                   messageContextPatch = (ret, props) => {
                       const children = ret.props.children;
                       const message = MessageStore.getMessage(props.channel.id, props.message.id);
 
-                      if (
-                          message &&
-                          message.content &&
-                          message.content.match(/https?:\/\/\S+/gi) &&
-                          // FIXME: Improve check to prevent summarizing the summary
-                          !message.content.includes('Article Summary')
-                      ) {
+                      if (message && message.content && message.content.match(/https?:\/\/\S+/gi)) {
                           children.push(
                               ContextMenu.buildItem({
                                   type: 'separator',
@@ -273,12 +263,12 @@ export default !global.ZeresPluginLibrary
                                   icon: () =>
                                       // eslint-disable-next-line react/no-children-prop
                                       React.createElement('svg', {
-                                          className: 'icon__0bfbf',
+                                          className: 'icon_d90b3d',
                                           ariaHidden: true,
                                           role: 'img',
                                           xmlns: 'http://www.w3.org/2000/svg',
-                                          width: 24,
-                                          height: 24,
+                                          width: 18,
+                                          height: 18,
                                           viewBox: '0 0 56 56',
                                           fill: 'none',
                                           children: [
@@ -342,6 +332,7 @@ export default !global.ZeresPluginLibrary
 
                   async summarizeArticle(message) {
                       if (!this.validateSettings()) {
+                          Logger.log('Invalid settings detected');
                           BdApi.showToast('Invalid plugin settings detected. Please check your configuration.', {
                               type: 'error',
                           });
@@ -349,28 +340,37 @@ export default !global.ZeresPluginLibrary
                       }
 
                       const url = message.content.match(/https?:\/\/\S+/gi)[0];
+                      const key = `summarize-${message.id}`;
+
                       try {
+                          Toasts.show(key, 'Summarizing...', { type: 'warning', expires: false, minDisplayTime: 2000 });
+
                           const summarizer = new SummarizerService(ProviderFactory, this.settings);
                           const summary = await summarizer.summarize(url);
+                          Logger.log('Summary received:', summary);
+
                           if (this.settings.localMode || message.author.id !== UserStore.getCurrentUser().id) {
                               message.content = summary;
+
                               EmbedUtils.sanitizeEmbed = (channelId, embedId, embed) => embed;
+
                               Dispatcher.dispatch({
                                   type: 'MESSAGE_UPDATE',
                                   message: message,
                               });
                           } else {
-                              MessageActions.editMessage(message.channel_id, message.id, { content: summary });
+                              await MessageActions.editMessage(message.channel_id, message.id, { content: summary });
                           }
-                          BdApi.showToast('Article summarized successfully!', { type: 'success' });
+
+                          Toasts.updateToast(key, 'Summarized successfully!', { type: 'success', expires: true });
                       } catch (error) {
-                          this.handleError(error);
+                          this.handleError(key, error);
                       } finally {
                           EmbedUtils.sanitizeEmbed = ogSanitizeEmbed;
                       }
                   }
 
-                  handleError(error) {
+                  handleError(key, error) {
                       Logger.err(error);
                       let errorMessage = 'Failed to summarize article. Please try again.';
                       if (error.message.includes('API request failed') || error.message.includes('Invalid API key')) {
@@ -382,15 +382,11 @@ export default !global.ZeresPluginLibrary
                       } else {
                           errorMessage = error;
                       }
-                      BdApi.showToast(errorMessage, { type: 'error' });
+                      Toasts.updateToast(key, errorMessage, { type: 'error', expires: true });
                   }
 
                   onStop() {
                       ContextMenu.unpatch('message', this.messageContextPatch);
-                      if (this.updateInterval !== null) {
-                          clearInterval(this.updateInterval);
-                          this.updateInterval = null;
-                      }
                   }
 
                   getSettingsPanel = () => {

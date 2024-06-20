@@ -13,4 +13,10 @@ module.exports = {
         }
         return settings;
     },
+    '0.3.4': (settings, defaultSettings) => {
+        return {
+            ...settings,
+            userAgent: defaultSettings.userAgent,
+        };
+    },
 };

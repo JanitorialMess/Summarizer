@@ -1,7 +1,7 @@
 /**
  * @name Summarizer
  * @displayName Summarizer
- * @version 0.3.4
+ * @version 0.3.5
  * @author JanitorialMess
  * @donate https://ko-fi.com/Z8Z2NV2H6
  * @authorId 671095271412727854
@@ -5782,6 +5782,12 @@ module.exports = {
         }
         return settings;
     },
+    '0.3.4': (settings, defaultSettings) => {
+        return {
+            ...settings,
+            userAgent: defaultSettings.userAgent,
+        };
+    },
 };
 
 
@@ -5813,12 +5819,12 @@ const FallbackLibrary = {
 };
 
 const {
-    WebpackModules,
     Utilities,
     DOMTools,
     Logger: _Logger,
     ReactTools,
     Modals,
+    Toasts,
 
     Settings: { SettingField, SettingPanel, SettingGroup, Switch, Textbox, Dropdown },
 
@@ -5827,10 +5833,14 @@ const {
 
 const ContextMenu = window.BdApi?.ContextMenu;
 const Net = window.BdApi?.Net;
-const Utils = window.BdApi?.Utils;
 const BetterWebpackModules = window.BdApi.Webpack;
-const TextArea = WebpackModules.getModule((m) => m.TextArea)?.TextArea;
-const EmbedUtils = WebpackModules.getByProps('sanitizeEmbed');
+const TextArea = BetterWebpackModules.getModule((m) => m.TextArea)?.TextArea;
+const EmbedUtils = BetterWebpackModules.getModule(
+    (m) => typeof m === 'object' && Object.values(m).some((v) => typeof v === 'function' && v.toString().includes('1492472454139'))
+);
+const sanitizeEmbedProp =
+    EmbedUtils &&
+    Object.keys(EmbedUtils).find((k) => typeof EmbedUtils[k] === 'function' && EmbedUtils[k].toString().includes('1492472454139'));
 
 const Logger = {
     info: (...args) => _Logger.info(pluginName, ...args),
@@ -5849,6 +5859,7 @@ const UsedModules = {
     ReactTools,
     Modals,
     Dispatcher,
+    Toasts,
 
     /* Settings */
     SettingField,
@@ -5873,6 +5884,9 @@ const UsedModules = {
     /* Manually found modules */
     TextArea,
     EmbedUtils,
+
+    /* Props */
+    sanitizeEmbedProp,
 };
 
 function checkVariables() {
@@ -5884,6 +5898,7 @@ function checkVariables() {
     for (const variable in UsedModules) {
         if (!UsedModules[variable]) {
             Logger.err('Variable not found: ' + variable);
+            return false;
         }
     }
 
@@ -5896,6 +5911,285 @@ function checkVariables() {
 
 const loaded_successfully = checkVariables();
 const ModuleStore = UsedModules;
+
+
+/***/ }),
+
+/***/ "./src/utils/toasts.js":
+/*!*****************************!*\
+  !*** ./src/utils/toasts.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Toasts)
+/* harmony export */ });
+const {
+    /* Library */
+    DOMTools,
+    Toasts: OriginalToasts,
+} = (__webpack_require__(/*! ./modules */ "./src/utils/modules.js").ModuleStore);
+
+/**
+ * @class Toasts
+ * @extends OriginalToasts
+ * @description Manages the creation, updating, and removal of toast notifications.
+ */
+class Toasts extends OriginalToasts {
+    static #toasts = new Map();
+    static #timeouts = new Map();
+    static #container = null;
+
+    /**
+     * @static
+     * @async
+     * @function show
+     * @description Shows a new toast or updates an existing one.
+     * @param {string|null} key - Unique identifier for the toast. If null, creates a new toast without tracking.
+     * @param {string} content - The content to display in the toast.
+     * @param {Object} [options={}] - Configuration options for the toast.
+     * @param {string} [options.type=''] - The type of toast (e.g., 'success', 'error').
+     * @param {string} [options.icon=''] - Icon to display with the toast.
+     * @param {number} [options.timeout=3000] - Duration in milliseconds before the toast auto-hides.
+     * @param {boolean} [options.expires=true] - Whether the toast should auto-hide.
+     * @param {number} [options.minDisplayTime=2000] - Minimum time in milliseconds the toast should be displayed.
+     * @returns {Promise<void>}
+     */
+    static async show(key = null, content, options = {}) {
+        const { type = '', icon = '', timeout = 3000, expires = true, minDisplayTime = 2000 } = options;
+        this.ensureContainer();
+
+        if (key && this.#toasts.has(key)) {
+            this.updateToast(key, content, options);
+        } else {
+            const toast = new Toast(key, content, { type, icon, timeout, expires, minDisplayTime }, this);
+            if (key) {
+                this.#toasts.set(key, toast);
+            }
+            this.#container.appendChild(toast.element);
+            toast.show();
+        }
+    }
+
+    /**
+     * @static
+     * @function updateToast
+     * @description Updates an existing toast.
+     * @param {string} key - The unique identifier of the toast to update.
+     * @param {string} content - The new content for the toast.
+     * @param {Object} [options={}] - New configuration options for the toast.
+     */
+    static updateToast(key, content, options = {}) {
+        const toast = this.#toasts.get(key);
+        if (toast) {
+            toast.update(content, options);
+        }
+    }
+
+    /**
+     * @static
+     * @function hideToast
+     * @description Hides a specific toast.
+     * @param {string} key - The unique identifier of the toast to hide.
+     */
+    static hideToast(key) {
+        const toast = this.#toasts.get(key);
+        if (toast) {
+            toast.hide();
+        }
+    }
+
+    /**
+     * @static
+     * @function ensureContainer
+     * @description Ensures that the toast container exists in the DOM.
+     * @private
+     */
+    static ensureContainer() {
+        if (this.#container) return;
+
+        super.ensureContainer();
+        this.#container = document.querySelector('.toasts');
+    }
+
+    /**
+     * @static
+     * @function removeToast
+     * @description Removes a toast from the internal tracking and potentially removes the container.
+     * @param {string} key - The unique identifier of the toast to remove.
+     * @private
+     */
+    static removeToast(key) {
+        this.#toasts.delete(key);
+        this.clearExpirationTimeout(key);
+        if (this.#container && this.#toasts.size === 0) {
+            this.#container.remove();
+            this.#container = null;
+        }
+    }
+
+    /**
+     * @static
+     * @function removeToast
+     * @description Removes a toast from the internal tracking and potentially removes the container.
+     * @param {string} key - The unique identifier of the toast to remove.
+     * @private
+     */
+    static setExpirationTimeout(key, duration) {
+        this.clearExpirationTimeout(key);
+        const timeout = setTimeout(() => this.hideToast(key), duration);
+        this.#timeouts.set(key, timeout);
+    }
+
+    /**
+     * @static
+     * @function clearExpirationTimeout
+     * @description Clears the expiration timeout for a specific toast.
+     * @param {string} key - The unique identifier of the toast.
+     * @private
+     */
+    static clearExpirationTimeout(key) {
+        if (this.#timeouts.has(key)) {
+            clearTimeout(this.#timeouts.get(key));
+            this.#timeouts.delete(key);
+        }
+    }
+}
+
+/**
+ * @class Toast
+ * @description Represents an individual toast notification.
+ * @private
+ */
+class Toast {
+    #key;
+    #element;
+    #options;
+    #toastsManager;
+    #displayStartTime;
+
+    /**
+     * @constructor
+     * @param {string|null} key - Unique identifier for the toast.
+     * @param {string} content - The content to display in the toast.
+     * @param {Object} options - Configuration options for the toast.
+     * @param {Toasts} toastsManager - Reference to the Toasts class for management operations.
+     */
+    constructor(key, content, options, toastsManager) {
+        this.#key = key;
+        this.#options = options;
+        this.#toastsManager = toastsManager;
+        this.#displayStartTime = Date.now();
+        this.#element = this.#createToastElement(content);
+    }
+
+    /**
+     * @getter
+     * @returns {HTMLElement} The DOM element of the toast.
+     */
+    get element() {
+        return this.#element;
+    }
+
+    /**
+     * @function show
+     * @description Displays the toast and sets up expiration if applicable.
+     */
+    show() {
+        if (this.#options.expires) {
+            this.#toastsManager.setExpirationTimeout(this.#key, Math.max(this.#options.timeout, this.#options.minDisplayTime));
+        }
+    }
+
+    /**
+     * @function update
+     * @description Updates the content and options of the toast.
+     * @param {string} content - The new content for the toast.
+     * @param {Object} options - New configuration options for the toast.
+     */
+    update(content, options) {
+        this.#options = { ...this.#options, ...options };
+        const newToastContent = Toasts.buildToast(content, Toasts.parseType(this.#options.type), this.#options.icon);
+        const newToast = DOMTools.parseHTML(newToastContent);
+        newToast.style.pointerEvents = 'auto';
+        newToast.style.cursor = 'pointer';
+
+        const updateToastContent = () => {
+            if (this.#element.parentNode) {
+                this.#element.parentNode.replaceChild(newToast, this.#element);
+                this.#element = newToast;
+                this.#addClickListener();
+
+                if (this.#options.expires) {
+                    this.#toastsManager.setExpirationTimeout(this.#key, this.#options.timeout);
+                } else {
+                    this.#toastsManager.clearExpirationTimeout(this.#key);
+                }
+            }
+        };
+
+        const elapsedTime = Date.now() - this.#displayStartTime;
+        if (elapsedTime < this.#options.minDisplayTime) {
+            setTimeout(updateToastContent, this.#options.minDisplayTime - elapsedTime);
+        } else {
+            updateToastContent();
+        }
+
+        this.#displayStartTime = Date.now();
+    }
+
+    /**
+     * @function hide
+     * @description Initiates the process of hiding and removing the toast.
+     */
+    hide() {
+        this.#toastsManager.clearExpirationTimeout(this.#key);
+
+        const elapsedTime = Date.now() - this.#displayStartTime;
+        const remainingTime = Math.max(this.#options.minDisplayTime - elapsedTime, 0);
+
+        setTimeout(async () => {
+            this.#element.classList.add('closing');
+
+            await new Promise((resolve) => {
+                this.#element.addEventListener('animationend', resolve, { once: true });
+            });
+
+            this.#element.remove();
+            this.#toastsManager.removeToast(this.#key);
+        }, remainingTime);
+    }
+
+    /**
+     * @function createToastElement
+     * @description Creates the DOM element for the toast.
+     * @param {string} content - The content to display in the toast.
+     * @returns {HTMLElement} The created toast element.
+     * @private
+     */
+    #createToastElement(content) {
+        const toast = DOMTools.parseHTML(Toasts.buildToast(content, Toasts.parseType(this.#options.type), this.#options.icon));
+        toast.style.pointerEvents = 'auto';
+        toast.style.cursor = 'pointer';
+        this.#addClickListener(toast);
+        return toast;
+    }
+
+    /**
+     * @function addClickListener
+     * @description Adds a click event listener to the toast for closing.
+     * @param {HTMLElement} [element=this.#element] - The element to attach the listener to.
+     * @private
+     */
+    #addClickListener(element = this.#element) {
+        element.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.#toastsManager.hideToast(this.#key);
+        });
+    }
+}
 
 
 /***/ })
@@ -5976,7 +6270,7 @@ const config = {
                 discord_id: '671095271412727854',
             },
         ],
-        version: '0.3.4',
+        version: '0.3.5',
         description: 'Summarizes the content of articles linked in messages.',
     },
     changelog: [],
@@ -6077,6 +6371,7 @@ class MissingZeresDummy {
     : (([Pl, Lib]) => {
           // eslint-disable-next-line no-unused-vars
           const plugin = (Plugin, Library) => {
+              const { loaded_successfully } = __webpack_require__(/*! ./utils/modules */ "./src/utils/modules.js");
               const semver = __webpack_require__(/*! semver */ "./node_modules/semver/index.js");
               const {
                   /* Library */
@@ -6104,12 +6399,17 @@ class MissingZeresDummy {
                   /* Manually found modules */
                   TextArea,
                   EmbedUtils,
+
+                  /* Props */
+                  sanitizeEmbedProp,
               } = (__webpack_require__(/*! ./utils/modules */ "./src/utils/modules.js").ModuleStore);
+              const Toasts = (__webpack_require__(/*! ./utils/toasts */ "./src/utils/toasts.js")["default"]);
               const ProviderFactory = __webpack_require__(/*! ./providers */ "./src/providers/index.js");
               const SummarizerService = __webpack_require__(/*! ./services/summarizer */ "./src/services/summarizer.js");
               const migrations = __webpack_require__(/*! ./utils/migrations */ "./src/utils/migrations.js");
 
-              const ogSanitizeEmbed = EmbedUtils.sanitizeEmbed;
+              const ogSanitizeEmbed = EmbedUtils[sanitizeEmbedProp];
+
               const defaultSettings = {
                   version: config.info.version,
                   providerId: 'gemini',
@@ -6149,7 +6449,7 @@ class MissingZeresDummy {
                   localMode: true,
                   contentProxyUrl: '',
                   ytTranscriptFallbackUrl: '',
-                  userAgent: 'Robot/1.0.0 (+http://search.mobilesl.com/robot)',
+                  userAgent: 'googlebot',
                   systemPrompt:
                       'You are an AI assistant that summarizes articles. Provide a concise and informative summary of the given text. Do not include any additional formatting, explanations, or opinions in your response.',
                   summaryTemplate: `## 📰 Article Summary
@@ -6170,7 +6470,6 @@ class MissingZeresDummy {
                   constructor() {
                       super();
                       this.settings = this.migrateSettings(Utilities.loadSettings(config.info.name, 'settings', defaultSettings));
-                      this.updateInterval = null;
                   }
 
                   migrateSettings(settings) {
@@ -6198,37 +6497,22 @@ class MissingZeresDummy {
                   }
 
                   async onStart() {
+                      if (!loaded_successfully) {
+                          BdApi.Plugins.disable(config.info.name);
+                          return;
+                      }
                       try {
-                          // Print all providers
-                          //   const availableProviders = await Promise.all(
-                          //       ProviderFactory.getAvailableProviders().map(async (provider) => ({
-                          //           ...provider,
-                          //           models: await provider.classRef.getAvailableModels(),
-                          //       }))
-                          //   );
-                          // this.settings.providers = availableProviders;
-                          // this.saveSettings();
                           ContextMenu.patch('message', this.messageContextPatch);
                       } catch (error) {
                           Logger.err('Failed to fetch and cache providers:', error);
                       }
-
-                      //   if (this.updateInterval === null) {
-                      //       this.updateInterval = setInterval(this.updateProviderCache.bind(this), 24 * 60 * 60 * 1000);
-                      //   }
                   }
 
                   messageContextPatch = (ret, props) => {
                       const children = ret.props.children;
                       const message = MessageStore.getMessage(props.channel.id, props.message.id);
 
-                      if (
-                          message &&
-                          message.content &&
-                          message.content.match(/https?:\/\/\S+/gi) &&
-                          // FIXME: Improve check to prevent summarizing the summary
-                          !message.content.includes('Article Summary')
-                      ) {
+                      if (message && message.content && message.content.match(/https?:\/\/\S+/gi)) {
                           children.push(
                               ContextMenu.buildItem({
                                   type: 'separator',
@@ -6242,12 +6526,12 @@ class MissingZeresDummy {
                                   icon: () =>
                                       // eslint-disable-next-line react/no-children-prop
                                       React.createElement('svg', {
-                                          className: 'icon__0bfbf',
+                                          className: 'icon_d90b3d',
                                           ariaHidden: true,
                                           role: 'img',
                                           xmlns: 'http://www.w3.org/2000/svg',
-                                          width: 24,
-                                          height: 24,
+                                          width: 18,
+                                          height: 18,
                                           viewBox: '0 0 56 56',
                                           fill: 'none',
                                           children: [
@@ -6311,6 +6595,7 @@ class MissingZeresDummy {
 
                   async summarizeArticle(message) {
                       if (!this.validateSettings()) {
+                          Logger.log('Invalid settings detected');
                           BdApi.showToast('Invalid plugin settings detected. Please check your configuration.', {
                               type: 'error',
                           });
@@ -6318,28 +6603,37 @@ class MissingZeresDummy {
                       }
 
                       const url = message.content.match(/https?:\/\/\S+/gi)[0];
+                      const key = `summarize-${message.id}`;
+
                       try {
+                          Toasts.show(key, 'Summarizing...', { type: 'warning', expires: false, minDisplayTime: 2000 });
+
                           const summarizer = new SummarizerService(ProviderFactory, this.settings);
                           const summary = await summarizer.summarize(url);
+                          Logger.log('Summary received:', summary);
+
                           if (this.settings.localMode || message.author.id !== UserStore.getCurrentUser().id) {
                               message.content = summary;
+
                               EmbedUtils.sanitizeEmbed = (channelId, embedId, embed) => embed;
+
                               Dispatcher.dispatch({
                                   type: 'MESSAGE_UPDATE',
                                   message: message,
                               });
                           } else {
-                              MessageActions.editMessage(message.channel_id, message.id, { content: summary });
+                              await MessageActions.editMessage(message.channel_id, message.id, { content: summary });
                           }
-                          BdApi.showToast('Article summarized successfully!', { type: 'success' });
+
+                          Toasts.updateToast(key, 'Summarized successfully!', { type: 'success', expires: true });
                       } catch (error) {
-                          this.handleError(error);
+                          this.handleError(key, error);
                       } finally {
                           EmbedUtils.sanitizeEmbed = ogSanitizeEmbed;
                       }
                   }
 
-                  handleError(error) {
+                  handleError(key, error) {
                       Logger.err(error);
                       let errorMessage = 'Failed to summarize article. Please try again.';
                       if (error.message.includes('API request failed') || error.message.includes('Invalid API key')) {
@@ -6351,15 +6645,11 @@ class MissingZeresDummy {
                       } else {
                           errorMessage = error;
                       }
-                      BdApi.showToast(errorMessage, { type: 'error' });
+                      Toasts.updateToast(key, errorMessage, { type: 'error', expires: true });
                   }
 
                   onStop() {
                       ContextMenu.unpatch('message', this.messageContextPatch);
-                      if (this.updateInterval !== null) {
-                          clearInterval(this.updateInterval);
-                          this.updateInterval = null;
-                      }
                   }
 
                   getSettingsPanel = () => {
