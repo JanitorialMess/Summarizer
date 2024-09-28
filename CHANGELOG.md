@@ -1,3 +1,8 @@
+## [0.3.6](/JanitorialMess/Summarizer/compare/v0.3.5...v0.3.6) (2024-09-28)
+
+### 🐛 Bug Fixes
+
+* update module lookup for EmbedUtils due to Discord code changes ([5c8cbb9](/JanitorialMess/Summarizer/commit/5c8cbb912c180c41eee57059846752ab2823fac1))
 ## [0.3.5](/JanitorialMess/Summarizer/compare/v0.3.4...v0.3.5) (2024-06-20)
 
 ### ✨ Features

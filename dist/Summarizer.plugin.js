@@ -1,7 +1,7 @@
 /**
  * @name Summarizer
  * @displayName Summarizer
- * @version 0.3.5
+ * @version 0.3.6
  * @author JanitorialMess
  * @donate https://ko-fi.com/Z8Z2NV2H6
  * @authorId 671095271412727854
@@ -12,10 +12,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability-readerable.js":
-/*!*******************************************************************************************************************!*\
-  !*** ./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability-readerable.js ***!
-  \*******************************************************************************************************************/
+/***/ "./node_modules/@mozilla/readability/Readability-readerable.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@mozilla/readability/Readability-readerable.js ***!
+  \*********************************************************************/
 /***/ ((module) => {
 
 /*
@@ -130,10 +130,10 @@ if (true) {
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability.js":
-/*!********************************************************************************************************!*\
-  !*** ./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability.js ***!
-  \********************************************************************************************************/
+/***/ "./node_modules/@mozilla/readability/Readability.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@mozilla/readability/Readability.js ***!
+  \**********************************************************/
 /***/ ((module) => {
 
 /*
@@ -2454,15 +2454,15 @@ if (true) {
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/index.js":
-/*!**************************************************************************************************!*\
-  !*** ./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/index.js ***!
-  \**************************************************************************************************/
+/***/ "./node_modules/@mozilla/readability/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@mozilla/readability/index.js ***!
+  \****************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /* eslint-env node */
-var Readability = __webpack_require__(/*! ./Readability */ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability.js");
-var isProbablyReaderable = __webpack_require__(/*! ./Readability-readerable */ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability-readerable.js");
+var Readability = __webpack_require__(/*! ./Readability */ "./node_modules/@mozilla/readability/Readability.js");
+var isProbablyReaderable = __webpack_require__(/*! ./Readability-readerable */ "./node_modules/@mozilla/readability/Readability-readerable.js");
 
 module.exports = {
   Readability: Readability,
@@ -2472,10 +2472,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js ***!
-  \***********************************************************************************/
+/***/ "./node_modules/semver/classes/comparator.js":
+/*!***************************************************!*\
+  !*** ./node_modules/semver/classes/comparator.js ***!
+  \***************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const ANY = Symbol('SemVer ANY')
@@ -2613,21 +2613,23 @@ class Comparator {
 
 module.exports = Comparator
 
-const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js")
-const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
-const cmp = __webpack_require__(/*! ../functions/cmp */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/cmp.js")
-const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js")
-const SemVer = __webpack_require__(/*! ./semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
-const Range = __webpack_require__(/*! ./range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/semver/internal/parse-options.js")
+const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/semver/internal/re.js")
+const cmp = __webpack_require__(/*! ../functions/cmp */ "./node_modules/semver/functions/cmp.js")
+const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/semver/internal/debug.js")
+const SemVer = __webpack_require__(/*! ./semver */ "./node_modules/semver/classes/semver.js")
+const Range = __webpack_require__(/*! ./range */ "./node_modules/semver/classes/range.js")
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js ***!
-  \******************************************************************************/
+/***/ "./node_modules/semver/classes/range.js":
+/*!**********************************************!*\
+  !*** ./node_modules/semver/classes/range.js ***!
+  \**********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const SPACE_CHARACTERS = /\s+/g
 
 // hoisted class for cyclic dependency
 class Range {
@@ -2649,7 +2651,7 @@ class Range {
       // just put it in the set and return
       this.raw = range.value
       this.set = [[range]]
-      this.format()
+      this.formatted = undefined
       return this
     }
 
@@ -2660,10 +2662,7 @@ class Range {
     // First reduce all whitespace as much as possible so we do not have to rely
     // on potentially slow regexes like \s*. This is then stored and used for
     // future error messages as well.
-    this.raw = range
-      .trim()
-      .split(/\s+/)
-      .join(' ')
+    this.raw = range.trim().replace(SPACE_CHARACTERS, ' ')
 
     // First, split on ||
     this.set = this.raw
@@ -2697,14 +2696,29 @@ class Range {
       }
     }
 
-    this.format()
+    this.formatted = undefined
+  }
+
+  get range () {
+    if (this.formatted === undefined) {
+      this.formatted = ''
+      for (let i = 0; i < this.set.length; i++) {
+        if (i > 0) {
+          this.formatted += '||'
+        }
+        const comps = this.set[i]
+        for (let k = 0; k < comps.length; k++) {
+          if (k > 0) {
+            this.formatted += ' '
+          }
+          this.formatted += comps[k].toString().trim()
+        }
+      }
+    }
+    return this.formatted
   }
 
   format () {
-    this.range = this.set
-      .map((comps) => comps.join(' ').trim())
-      .join('||')
-      .trim()
     return this.range
   }
 
@@ -2829,21 +2843,21 @@ class Range {
 
 module.exports = Range
 
-const LRU = __webpack_require__(/*! ../internal/lrucache */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/lrucache.js")
+const LRU = __webpack_require__(/*! ../internal/lrucache */ "./node_modules/semver/internal/lrucache.js")
 const cache = new LRU()
 
-const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js")
-const Comparator = __webpack_require__(/*! ./comparator */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js")
-const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js")
-const SemVer = __webpack_require__(/*! ./semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/semver/internal/parse-options.js")
+const Comparator = __webpack_require__(/*! ./comparator */ "./node_modules/semver/classes/comparator.js")
+const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/semver/internal/debug.js")
+const SemVer = __webpack_require__(/*! ./semver */ "./node_modules/semver/classes/semver.js")
 const {
   safeRe: re,
   t,
   comparatorTrimReplace,
   tildeTrimReplace,
   caretTrimReplace,
-} = __webpack_require__(/*! ../internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
-const { FLAG_INCLUDE_PRERELEASE, FLAG_LOOSE } = __webpack_require__(/*! ../internal/constants */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js")
+} = __webpack_require__(/*! ../internal/re */ "./node_modules/semver/internal/re.js")
+const { FLAG_INCLUDE_PRERELEASE, FLAG_LOOSE } = __webpack_require__(/*! ../internal/constants */ "./node_modules/semver/internal/constants.js")
 
 const isNullSet = c => c.value === '<0.0.0-0'
 const isAny = c => c.value === ''
@@ -3173,18 +3187,18 @@ const testSet = (set, version, options) => {
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js ***!
-  \*******************************************************************************/
+/***/ "./node_modules/semver/classes/semver.js":
+/*!***********************************************!*\
+  !*** ./node_modules/semver/classes/semver.js ***!
+  \***********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js")
-const { MAX_LENGTH, MAX_SAFE_INTEGER } = __webpack_require__(/*! ../internal/constants */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js")
-const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
+const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/semver/internal/debug.js")
+const { MAX_LENGTH, MAX_SAFE_INTEGER } = __webpack_require__(/*! ../internal/constants */ "./node_modules/semver/internal/constants.js")
+const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/semver/internal/re.js")
 
-const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js")
-const { compareIdentifiers } = __webpack_require__(/*! ../internal/identifiers */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/identifiers.js")
+const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/semver/internal/parse-options.js")
+const { compareIdentifiers } = __webpack_require__(/*! ../internal/identifiers */ "./node_modules/semver/internal/identifiers.js")
 class SemVer {
   constructor (version, options) {
     options = parseOptions(options)
@@ -3485,13 +3499,13 @@ module.exports = SemVer
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/clean.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/clean.js ***!
-  \********************************************************************************/
+/***/ "./node_modules/semver/functions/clean.js":
+/*!************************************************!*\
+  !*** ./node_modules/semver/functions/clean.js ***!
+  \************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const parse = __webpack_require__(/*! ./parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
+const parse = __webpack_require__(/*! ./parse */ "./node_modules/semver/functions/parse.js")
 const clean = (version, options) => {
   const s = parse(version.trim().replace(/^[=v]+/, ''), options)
   return s ? s.version : null
@@ -3501,18 +3515,18 @@ module.exports = clean
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/cmp.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/cmp.js ***!
-  \******************************************************************************/
+/***/ "./node_modules/semver/functions/cmp.js":
+/*!**********************************************!*\
+  !*** ./node_modules/semver/functions/cmp.js ***!
+  \**********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const eq = __webpack_require__(/*! ./eq */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/eq.js")
-const neq = __webpack_require__(/*! ./neq */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/neq.js")
-const gt = __webpack_require__(/*! ./gt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js")
-const gte = __webpack_require__(/*! ./gte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js")
-const lt = __webpack_require__(/*! ./lt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js")
-const lte = __webpack_require__(/*! ./lte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js")
+const eq = __webpack_require__(/*! ./eq */ "./node_modules/semver/functions/eq.js")
+const neq = __webpack_require__(/*! ./neq */ "./node_modules/semver/functions/neq.js")
+const gt = __webpack_require__(/*! ./gt */ "./node_modules/semver/functions/gt.js")
+const gte = __webpack_require__(/*! ./gte */ "./node_modules/semver/functions/gte.js")
+const lt = __webpack_require__(/*! ./lt */ "./node_modules/semver/functions/lt.js")
+const lte = __webpack_require__(/*! ./lte */ "./node_modules/semver/functions/lte.js")
 
 const cmp = (a, op, b, loose) => {
   switch (op) {
@@ -3563,15 +3577,15 @@ module.exports = cmp
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/coerce.js":
-/*!*********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/coerce.js ***!
-  \*********************************************************************************/
+/***/ "./node_modules/semver/functions/coerce.js":
+/*!*************************************************!*\
+  !*** ./node_modules/semver/functions/coerce.js ***!
+  \*************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
-const parse = __webpack_require__(/*! ./parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
-const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const parse = __webpack_require__(/*! ./parse */ "./node_modules/semver/functions/parse.js")
+const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/semver/internal/re.js")
 
 const coerce = (version, options) => {
   if (version instanceof SemVer) {
@@ -3633,13 +3647,13 @@ module.exports = coerce
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js ***!
-  \****************************************************************************************/
+/***/ "./node_modules/semver/functions/compare-build.js":
+/*!********************************************************!*\
+  !*** ./node_modules/semver/functions/compare-build.js ***!
+  \********************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
 const compareBuild = (a, b, loose) => {
   const versionA = new SemVer(a, loose)
   const versionB = new SemVer(b, loose)
@@ -3650,26 +3664,26 @@ module.exports = compareBuild
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-loose.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-loose.js ***!
-  \****************************************************************************************/
+/***/ "./node_modules/semver/functions/compare-loose.js":
+/*!********************************************************!*\
+  !*** ./node_modules/semver/functions/compare-loose.js ***!
+  \********************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
 const compareLoose = (a, b) => compare(a, b, true)
 module.exports = compareLoose
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js ***!
-  \**********************************************************************************/
+/***/ "./node_modules/semver/functions/compare.js":
+/*!**************************************************!*\
+  !*** ./node_modules/semver/functions/compare.js ***!
+  \**************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
 const compare = (a, b, loose) =>
   new SemVer(a, loose).compare(new SemVer(b, loose))
 
@@ -3678,13 +3692,13 @@ module.exports = compare
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/diff.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/diff.js ***!
-  \*******************************************************************************/
+/***/ "./node_modules/semver/functions/diff.js":
+/*!***********************************************!*\
+  !*** ./node_modules/semver/functions/diff.js ***!
+  \***********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const parse = __webpack_require__(/*! ./parse.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
+const parse = __webpack_require__(/*! ./parse.js */ "./node_modules/semver/functions/parse.js")
 
 const diff = (version1, version2) => {
   const v1 = parse(version1, null, true)
@@ -3753,52 +3767,52 @@ module.exports = diff
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/eq.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/eq.js ***!
-  \*****************************************************************************/
+/***/ "./node_modules/semver/functions/eq.js":
+/*!*********************************************!*\
+  !*** ./node_modules/semver/functions/eq.js ***!
+  \*********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
 const eq = (a, b, loose) => compare(a, b, loose) === 0
 module.exports = eq
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js ***!
-  \*****************************************************************************/
+/***/ "./node_modules/semver/functions/gt.js":
+/*!*********************************************!*\
+  !*** ./node_modules/semver/functions/gt.js ***!
+  \*********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
 const gt = (a, b, loose) => compare(a, b, loose) > 0
 module.exports = gt
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js ***!
-  \******************************************************************************/
+/***/ "./node_modules/semver/functions/gte.js":
+/*!**********************************************!*\
+  !*** ./node_modules/semver/functions/gte.js ***!
+  \**********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
 const gte = (a, b, loose) => compare(a, b, loose) >= 0
 module.exports = gte
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/inc.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/inc.js ***!
-  \******************************************************************************/
+/***/ "./node_modules/semver/functions/inc.js":
+/*!**********************************************!*\
+  !*** ./node_modules/semver/functions/inc.js ***!
+  \**********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
 
 const inc = (version, release, options, identifier, identifierBase) => {
   if (typeof (options) === 'string') {
@@ -3821,78 +3835,78 @@ module.exports = inc
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js ***!
-  \*****************************************************************************/
+/***/ "./node_modules/semver/functions/lt.js":
+/*!*********************************************!*\
+  !*** ./node_modules/semver/functions/lt.js ***!
+  \*********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
 const lt = (a, b, loose) => compare(a, b, loose) < 0
 module.exports = lt
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js ***!
-  \******************************************************************************/
+/***/ "./node_modules/semver/functions/lte.js":
+/*!**********************************************!*\
+  !*** ./node_modules/semver/functions/lte.js ***!
+  \**********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
 const lte = (a, b, loose) => compare(a, b, loose) <= 0
 module.exports = lte
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/major.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/major.js ***!
-  \********************************************************************************/
+/***/ "./node_modules/semver/functions/major.js":
+/*!************************************************!*\
+  !*** ./node_modules/semver/functions/major.js ***!
+  \************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
 const major = (a, loose) => new SemVer(a, loose).major
 module.exports = major
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/minor.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/minor.js ***!
-  \********************************************************************************/
+/***/ "./node_modules/semver/functions/minor.js":
+/*!************************************************!*\
+  !*** ./node_modules/semver/functions/minor.js ***!
+  \************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
 const minor = (a, loose) => new SemVer(a, loose).minor
 module.exports = minor
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/neq.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/neq.js ***!
-  \******************************************************************************/
+/***/ "./node_modules/semver/functions/neq.js":
+/*!**********************************************!*\
+  !*** ./node_modules/semver/functions/neq.js ***!
+  \**********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
 const neq = (a, b, loose) => compare(a, b, loose) !== 0
 module.exports = neq
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js ***!
-  \********************************************************************************/
+/***/ "./node_modules/semver/functions/parse.js":
+/*!************************************************!*\
+  !*** ./node_modules/semver/functions/parse.js ***!
+  \************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
 const parse = (version, options, throwErrors = false) => {
   if (version instanceof SemVer) {
     return version
@@ -3912,26 +3926,26 @@ module.exports = parse
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/patch.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/patch.js ***!
-  \********************************************************************************/
+/***/ "./node_modules/semver/functions/patch.js":
+/*!************************************************!*\
+  !*** ./node_modules/semver/functions/patch.js ***!
+  \************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
 const patch = (a, loose) => new SemVer(a, loose).patch
 module.exports = patch
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/prerelease.js":
-/*!*************************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/prerelease.js ***!
-  \*************************************************************************************/
+/***/ "./node_modules/semver/functions/prerelease.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/semver/functions/prerelease.js ***!
+  \*****************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const parse = __webpack_require__(/*! ./parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
+const parse = __webpack_require__(/*! ./parse */ "./node_modules/semver/functions/parse.js")
 const prerelease = (version, options) => {
   const parsed = parse(version, options)
   return (parsed && parsed.prerelease.length) ? parsed.prerelease : null
@@ -3941,39 +3955,39 @@ module.exports = prerelease
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rcompare.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rcompare.js ***!
-  \***********************************************************************************/
+/***/ "./node_modules/semver/functions/rcompare.js":
+/*!***************************************************!*\
+  !*** ./node_modules/semver/functions/rcompare.js ***!
+  \***************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
 const rcompare = (a, b, loose) => compare(b, a, loose)
 module.exports = rcompare
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rsort.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rsort.js ***!
-  \********************************************************************************/
+/***/ "./node_modules/semver/functions/rsort.js":
+/*!************************************************!*\
+  !*** ./node_modules/semver/functions/rsort.js ***!
+  \************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compareBuild = __webpack_require__(/*! ./compare-build */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js")
+const compareBuild = __webpack_require__(/*! ./compare-build */ "./node_modules/semver/functions/compare-build.js")
 const rsort = (list, loose) => list.sort((a, b) => compareBuild(b, a, loose))
 module.exports = rsort
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js":
-/*!************************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js ***!
-  \************************************************************************************/
+/***/ "./node_modules/semver/functions/satisfies.js":
+/*!****************************************************!*\
+  !*** ./node_modules/semver/functions/satisfies.js ***!
+  \****************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
 const satisfies = (version, range, options) => {
   try {
     range = new Range(range, options)
@@ -3987,26 +4001,26 @@ module.exports = satisfies
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/sort.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/sort.js ***!
-  \*******************************************************************************/
+/***/ "./node_modules/semver/functions/sort.js":
+/*!***********************************************!*\
+  !*** ./node_modules/semver/functions/sort.js ***!
+  \***********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compareBuild = __webpack_require__(/*! ./compare-build */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js")
+const compareBuild = __webpack_require__(/*! ./compare-build */ "./node_modules/semver/functions/compare-build.js")
 const sort = (list, loose) => list.sort((a, b) => compareBuild(a, b, loose))
 module.exports = sort
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/valid.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/valid.js ***!
-  \********************************************************************************/
+/***/ "./node_modules/semver/functions/valid.js":
+/*!************************************************!*\
+  !*** ./node_modules/semver/functions/valid.js ***!
+  \************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const parse = __webpack_require__(/*! ./parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
+const parse = __webpack_require__(/*! ./parse */ "./node_modules/semver/functions/parse.js")
 const valid = (version, options) => {
   const v = parse(version, options)
   return v ? v.version : null
@@ -4016,54 +4030,54 @@ module.exports = valid
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/index.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/index.js ***!
-  \**********************************************************************/
+/***/ "./node_modules/semver/index.js":
+/*!**************************************!*\
+  !*** ./node_modules/semver/index.js ***!
+  \**************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 // just pre-load all the stuff that index.js lazily exports
-const internalRe = __webpack_require__(/*! ./internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
-const constants = __webpack_require__(/*! ./internal/constants */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js")
-const SemVer = __webpack_require__(/*! ./classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
-const identifiers = __webpack_require__(/*! ./internal/identifiers */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/identifiers.js")
-const parse = __webpack_require__(/*! ./functions/parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
-const valid = __webpack_require__(/*! ./functions/valid */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/valid.js")
-const clean = __webpack_require__(/*! ./functions/clean */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/clean.js")
-const inc = __webpack_require__(/*! ./functions/inc */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/inc.js")
-const diff = __webpack_require__(/*! ./functions/diff */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/diff.js")
-const major = __webpack_require__(/*! ./functions/major */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/major.js")
-const minor = __webpack_require__(/*! ./functions/minor */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/minor.js")
-const patch = __webpack_require__(/*! ./functions/patch */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/patch.js")
-const prerelease = __webpack_require__(/*! ./functions/prerelease */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/prerelease.js")
-const compare = __webpack_require__(/*! ./functions/compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
-const rcompare = __webpack_require__(/*! ./functions/rcompare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rcompare.js")
-const compareLoose = __webpack_require__(/*! ./functions/compare-loose */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-loose.js")
-const compareBuild = __webpack_require__(/*! ./functions/compare-build */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js")
-const sort = __webpack_require__(/*! ./functions/sort */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/sort.js")
-const rsort = __webpack_require__(/*! ./functions/rsort */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rsort.js")
-const gt = __webpack_require__(/*! ./functions/gt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js")
-const lt = __webpack_require__(/*! ./functions/lt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js")
-const eq = __webpack_require__(/*! ./functions/eq */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/eq.js")
-const neq = __webpack_require__(/*! ./functions/neq */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/neq.js")
-const gte = __webpack_require__(/*! ./functions/gte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js")
-const lte = __webpack_require__(/*! ./functions/lte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js")
-const cmp = __webpack_require__(/*! ./functions/cmp */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/cmp.js")
-const coerce = __webpack_require__(/*! ./functions/coerce */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/coerce.js")
-const Comparator = __webpack_require__(/*! ./classes/comparator */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js")
-const Range = __webpack_require__(/*! ./classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
-const satisfies = __webpack_require__(/*! ./functions/satisfies */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js")
-const toComparators = __webpack_require__(/*! ./ranges/to-comparators */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/to-comparators.js")
-const maxSatisfying = __webpack_require__(/*! ./ranges/max-satisfying */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/max-satisfying.js")
-const minSatisfying = __webpack_require__(/*! ./ranges/min-satisfying */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-satisfying.js")
-const minVersion = __webpack_require__(/*! ./ranges/min-version */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-version.js")
-const validRange = __webpack_require__(/*! ./ranges/valid */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/valid.js")
-const outside = __webpack_require__(/*! ./ranges/outside */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js")
-const gtr = __webpack_require__(/*! ./ranges/gtr */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/gtr.js")
-const ltr = __webpack_require__(/*! ./ranges/ltr */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/ltr.js")
-const intersects = __webpack_require__(/*! ./ranges/intersects */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/intersects.js")
-const simplifyRange = __webpack_require__(/*! ./ranges/simplify */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/simplify.js")
-const subset = __webpack_require__(/*! ./ranges/subset */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/subset.js")
+const internalRe = __webpack_require__(/*! ./internal/re */ "./node_modules/semver/internal/re.js")
+const constants = __webpack_require__(/*! ./internal/constants */ "./node_modules/semver/internal/constants.js")
+const SemVer = __webpack_require__(/*! ./classes/semver */ "./node_modules/semver/classes/semver.js")
+const identifiers = __webpack_require__(/*! ./internal/identifiers */ "./node_modules/semver/internal/identifiers.js")
+const parse = __webpack_require__(/*! ./functions/parse */ "./node_modules/semver/functions/parse.js")
+const valid = __webpack_require__(/*! ./functions/valid */ "./node_modules/semver/functions/valid.js")
+const clean = __webpack_require__(/*! ./functions/clean */ "./node_modules/semver/functions/clean.js")
+const inc = __webpack_require__(/*! ./functions/inc */ "./node_modules/semver/functions/inc.js")
+const diff = __webpack_require__(/*! ./functions/diff */ "./node_modules/semver/functions/diff.js")
+const major = __webpack_require__(/*! ./functions/major */ "./node_modules/semver/functions/major.js")
+const minor = __webpack_require__(/*! ./functions/minor */ "./node_modules/semver/functions/minor.js")
+const patch = __webpack_require__(/*! ./functions/patch */ "./node_modules/semver/functions/patch.js")
+const prerelease = __webpack_require__(/*! ./functions/prerelease */ "./node_modules/semver/functions/prerelease.js")
+const compare = __webpack_require__(/*! ./functions/compare */ "./node_modules/semver/functions/compare.js")
+const rcompare = __webpack_require__(/*! ./functions/rcompare */ "./node_modules/semver/functions/rcompare.js")
+const compareLoose = __webpack_require__(/*! ./functions/compare-loose */ "./node_modules/semver/functions/compare-loose.js")
+const compareBuild = __webpack_require__(/*! ./functions/compare-build */ "./node_modules/semver/functions/compare-build.js")
+const sort = __webpack_require__(/*! ./functions/sort */ "./node_modules/semver/functions/sort.js")
+const rsort = __webpack_require__(/*! ./functions/rsort */ "./node_modules/semver/functions/rsort.js")
+const gt = __webpack_require__(/*! ./functions/gt */ "./node_modules/semver/functions/gt.js")
+const lt = __webpack_require__(/*! ./functions/lt */ "./node_modules/semver/functions/lt.js")
+const eq = __webpack_require__(/*! ./functions/eq */ "./node_modules/semver/functions/eq.js")
+const neq = __webpack_require__(/*! ./functions/neq */ "./node_modules/semver/functions/neq.js")
+const gte = __webpack_require__(/*! ./functions/gte */ "./node_modules/semver/functions/gte.js")
+const lte = __webpack_require__(/*! ./functions/lte */ "./node_modules/semver/functions/lte.js")
+const cmp = __webpack_require__(/*! ./functions/cmp */ "./node_modules/semver/functions/cmp.js")
+const coerce = __webpack_require__(/*! ./functions/coerce */ "./node_modules/semver/functions/coerce.js")
+const Comparator = __webpack_require__(/*! ./classes/comparator */ "./node_modules/semver/classes/comparator.js")
+const Range = __webpack_require__(/*! ./classes/range */ "./node_modules/semver/classes/range.js")
+const satisfies = __webpack_require__(/*! ./functions/satisfies */ "./node_modules/semver/functions/satisfies.js")
+const toComparators = __webpack_require__(/*! ./ranges/to-comparators */ "./node_modules/semver/ranges/to-comparators.js")
+const maxSatisfying = __webpack_require__(/*! ./ranges/max-satisfying */ "./node_modules/semver/ranges/max-satisfying.js")
+const minSatisfying = __webpack_require__(/*! ./ranges/min-satisfying */ "./node_modules/semver/ranges/min-satisfying.js")
+const minVersion = __webpack_require__(/*! ./ranges/min-version */ "./node_modules/semver/ranges/min-version.js")
+const validRange = __webpack_require__(/*! ./ranges/valid */ "./node_modules/semver/ranges/valid.js")
+const outside = __webpack_require__(/*! ./ranges/outside */ "./node_modules/semver/ranges/outside.js")
+const gtr = __webpack_require__(/*! ./ranges/gtr */ "./node_modules/semver/ranges/gtr.js")
+const ltr = __webpack_require__(/*! ./ranges/ltr */ "./node_modules/semver/ranges/ltr.js")
+const intersects = __webpack_require__(/*! ./ranges/intersects */ "./node_modules/semver/ranges/intersects.js")
+const simplifyRange = __webpack_require__(/*! ./ranges/simplify */ "./node_modules/semver/ranges/simplify.js")
+const subset = __webpack_require__(/*! ./ranges/subset */ "./node_modules/semver/ranges/subset.js")
 module.exports = {
   parse,
   valid,
@@ -4115,10 +4129,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js ***!
-  \***********************************************************************************/
+/***/ "./node_modules/semver/internal/constants.js":
+/*!***************************************************!*\
+  !*** ./node_modules/semver/internal/constants.js ***!
+  \***************************************************/
 /***/ ((module) => {
 
 // Note: this is the semver.org version of the spec that it implements
@@ -4160,10 +4174,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js ***!
-  \*******************************************************************************/
+/***/ "./node_modules/semver/internal/debug.js":
+/*!***********************************************!*\
+  !*** ./node_modules/semver/internal/debug.js ***!
+  \***********************************************/
 /***/ ((module) => {
 
 const debug = (
@@ -4179,10 +4193,10 @@ module.exports = debug
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/identifiers.js":
-/*!*************************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/identifiers.js ***!
-  \*************************************************************************************/
+/***/ "./node_modules/semver/internal/identifiers.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/semver/internal/identifiers.js ***!
+  \*****************************************************/
 /***/ ((module) => {
 
 const numeric = /^[0-9]+$/
@@ -4212,10 +4226,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/lrucache.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/lrucache.js ***!
-  \**********************************************************************************/
+/***/ "./node_modules/semver/internal/lrucache.js":
+/*!**************************************************!*\
+  !*** ./node_modules/semver/internal/lrucache.js ***!
+  \**************************************************/
 /***/ ((module) => {
 
 class LRUCache {
@@ -4262,10 +4276,10 @@ module.exports = LRUCache
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js ***!
-  \***************************************************************************************/
+/***/ "./node_modules/semver/internal/parse-options.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/semver/internal/parse-options.js ***!
+  \*******************************************************/
 /***/ ((module) => {
 
 // parse out just the options we care about
@@ -4287,18 +4301,18 @@ module.exports = parseOptions
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js ***!
-  \****************************************************************************/
+/***/ "./node_modules/semver/internal/re.js":
+/*!********************************************!*\
+  !*** ./node_modules/semver/internal/re.js ***!
+  \********************************************/
 /***/ ((module, exports, __webpack_require__) => {
 
 const {
   MAX_SAFE_COMPONENT_LENGTH,
   MAX_SAFE_BUILD_LENGTH,
   MAX_LENGTH,
-} = __webpack_require__(/*! ./constants */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js")
-const debug = __webpack_require__(/*! ./debug */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js")
+} = __webpack_require__(/*! ./constants */ "./node_modules/semver/internal/constants.js")
+const debug = __webpack_require__(/*! ./debug */ "./node_modules/semver/internal/debug.js")
 exports = module.exports = {}
 
 // The actual regexps go on exports.re
@@ -4514,27 +4528,27 @@ createToken('GTE0PRE', '^\\s*>=\\s*0\\.0\\.0-0\\s*$')
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/gtr.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/gtr.js ***!
-  \***************************************************************************/
+/***/ "./node_modules/semver/ranges/gtr.js":
+/*!*******************************************!*\
+  !*** ./node_modules/semver/ranges/gtr.js ***!
+  \*******************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 // Determine if version is greater than all the versions possible in the range.
-const outside = __webpack_require__(/*! ./outside */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js")
+const outside = __webpack_require__(/*! ./outside */ "./node_modules/semver/ranges/outside.js")
 const gtr = (version, range, options) => outside(version, range, '>', options)
 module.exports = gtr
 
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/intersects.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/intersects.js ***!
-  \**********************************************************************************/
+/***/ "./node_modules/semver/ranges/intersects.js":
+/*!**************************************************!*\
+  !*** ./node_modules/semver/ranges/intersects.js ***!
+  \**************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
 const intersects = (r1, r2, options) => {
   r1 = new Range(r1, options)
   r2 = new Range(r2, options)
@@ -4545,13 +4559,13 @@ module.exports = intersects
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/ltr.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/ltr.js ***!
-  \***************************************************************************/
+/***/ "./node_modules/semver/ranges/ltr.js":
+/*!*******************************************!*\
+  !*** ./node_modules/semver/ranges/ltr.js ***!
+  \*******************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const outside = __webpack_require__(/*! ./outside */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js")
+const outside = __webpack_require__(/*! ./outside */ "./node_modules/semver/ranges/outside.js")
 // Determine if version is less than all the versions possible in the range
 const ltr = (version, range, options) => outside(version, range, '<', options)
 module.exports = ltr
@@ -4559,14 +4573,14 @@ module.exports = ltr
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/max-satisfying.js":
-/*!**************************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/max-satisfying.js ***!
-  \**************************************************************************************/
+/***/ "./node_modules/semver/ranges/max-satisfying.js":
+/*!******************************************************!*\
+  !*** ./node_modules/semver/ranges/max-satisfying.js ***!
+  \******************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
 
 const maxSatisfying = (versions, range, options) => {
   let max = null
@@ -4594,14 +4608,14 @@ module.exports = maxSatisfying
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-satisfying.js":
-/*!**************************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-satisfying.js ***!
-  \**************************************************************************************/
+/***/ "./node_modules/semver/ranges/min-satisfying.js":
+/*!******************************************************!*\
+  !*** ./node_modules/semver/ranges/min-satisfying.js ***!
+  \******************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
 const minSatisfying = (versions, range, options) => {
   let min = null
   let minSV = null
@@ -4628,15 +4642,15 @@ module.exports = minSatisfying
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-version.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-version.js ***!
-  \***********************************************************************************/
+/***/ "./node_modules/semver/ranges/min-version.js":
+/*!***************************************************!*\
+  !*** ./node_modules/semver/ranges/min-version.js ***!
+  \***************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
-const gt = __webpack_require__(/*! ../functions/gt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
+const gt = __webpack_require__(/*! ../functions/gt */ "./node_modules/semver/functions/gt.js")
 
 const minVersion = (range, loose) => {
   range = new Range(range, loose)
@@ -4699,21 +4713,21 @@ module.exports = minVersion
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js ***!
-  \*******************************************************************************/
+/***/ "./node_modules/semver/ranges/outside.js":
+/*!***********************************************!*\
+  !*** ./node_modules/semver/ranges/outside.js ***!
+  \***********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
-const Comparator = __webpack_require__(/*! ../classes/comparator */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const Comparator = __webpack_require__(/*! ../classes/comparator */ "./node_modules/semver/classes/comparator.js")
 const { ANY } = Comparator
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
-const satisfies = __webpack_require__(/*! ../functions/satisfies */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js")
-const gt = __webpack_require__(/*! ../functions/gt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js")
-const lt = __webpack_require__(/*! ../functions/lt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js")
-const lte = __webpack_require__(/*! ../functions/lte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js")
-const gte = __webpack_require__(/*! ../functions/gte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
+const satisfies = __webpack_require__(/*! ../functions/satisfies */ "./node_modules/semver/functions/satisfies.js")
+const gt = __webpack_require__(/*! ../functions/gt */ "./node_modules/semver/functions/gt.js")
+const lt = __webpack_require__(/*! ../functions/lt */ "./node_modules/semver/functions/lt.js")
+const lte = __webpack_require__(/*! ../functions/lte */ "./node_modules/semver/functions/lte.js")
+const gte = __webpack_require__(/*! ../functions/gte */ "./node_modules/semver/functions/gte.js")
 
 const outside = (version, range, hilo, options) => {
   version = new SemVer(version, options)
@@ -4789,17 +4803,17 @@ module.exports = outside
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/simplify.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/simplify.js ***!
-  \********************************************************************************/
+/***/ "./node_modules/semver/ranges/simplify.js":
+/*!************************************************!*\
+  !*** ./node_modules/semver/ranges/simplify.js ***!
+  \************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 // given a set of versions and a range, create a "simplified" range
 // that includes the same versions that the original range does
 // If the original range is shorter than the simplified one, return that.
-const satisfies = __webpack_require__(/*! ../functions/satisfies.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js")
-const compare = __webpack_require__(/*! ../functions/compare.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const satisfies = __webpack_require__(/*! ../functions/satisfies.js */ "./node_modules/semver/functions/satisfies.js")
+const compare = __webpack_require__(/*! ../functions/compare.js */ "./node_modules/semver/functions/compare.js")
 module.exports = (versions, range, options) => {
   const set = []
   let first = null
@@ -4846,17 +4860,17 @@ module.exports = (versions, range, options) => {
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/subset.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/subset.js ***!
-  \******************************************************************************/
+/***/ "./node_modules/semver/ranges/subset.js":
+/*!**********************************************!*\
+  !*** ./node_modules/semver/ranges/subset.js ***!
+  \**********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
-const Comparator = __webpack_require__(/*! ../classes/comparator.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js")
+const Range = __webpack_require__(/*! ../classes/range.js */ "./node_modules/semver/classes/range.js")
+const Comparator = __webpack_require__(/*! ../classes/comparator.js */ "./node_modules/semver/classes/comparator.js")
 const { ANY } = Comparator
-const satisfies = __webpack_require__(/*! ../functions/satisfies.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js")
-const compare = __webpack_require__(/*! ../functions/compare.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const satisfies = __webpack_require__(/*! ../functions/satisfies.js */ "./node_modules/semver/functions/satisfies.js")
+const compare = __webpack_require__(/*! ../functions/compare.js */ "./node_modules/semver/functions/compare.js")
 
 // Complex range `r1 || r2 || ...` is a subset of `R1 || R2 || ...` iff:
 // - Every simple range `r1, r2, ...` is a null set, OR
@@ -5103,13 +5117,13 @@ module.exports = subset
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/to-comparators.js":
-/*!**************************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/to-comparators.js ***!
-  \**************************************************************************************/
+/***/ "./node_modules/semver/ranges/to-comparators.js":
+/*!******************************************************!*\
+  !*** ./node_modules/semver/ranges/to-comparators.js ***!
+  \******************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
 
 // Mostly just for testing and legacy API reasons
 const toComparators = (range, options) =>
@@ -5121,13 +5135,13 @@ module.exports = toComparators
 
 /***/ }),
 
-/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/valid.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/valid.js ***!
-  \*****************************************************************************/
+/***/ "./node_modules/semver/ranges/valid.js":
+/*!*********************************************!*\
+  !*** ./node_modules/semver/ranges/valid.js ***!
+  \*********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
 const validRange = (range, options) => {
   try {
     // Return '*' instead of '' so that truthiness works.
@@ -5796,7 +5810,7 @@ module.exports = ProviderFactory;
   \************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { Readability } = __webpack_require__(/*! @mozilla/readability */ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/index.js");
+const { Readability } = __webpack_require__(/*! @mozilla/readability */ "./node_modules/@mozilla/readability/index.js");
 const HttpClient = __webpack_require__(/*! ../utils/httpClient */ "./src/utils/httpClient.js");
 const YouTubeTranscriptService = __webpack_require__(/*! ./youtubeTranscript */ "./src/services/youtubeTranscript.js");
 
@@ -6741,7 +6755,7 @@ const config = {
                 discord_id: '671095271412727854',
             },
         ],
-        version: '0.3.5',
+        version: '0.3.6',
         description: 'Summarizes the content of articles linked in messages.',
     },
     changelog: [],
@@ -6843,7 +6857,7 @@ class MissingZeresDummy {
           // eslint-disable-next-line no-unused-vars
           const plugin = (Plugin, Library) => {
               const { loaded_successfully } = __webpack_require__(/*! ./utils/modules */ "./src/utils/modules.js");
-              const semver = __webpack_require__(/*! semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/index.js");
+              const semver = __webpack_require__(/*! semver */ "./node_modules/semver/index.js");
               const {
                   /* Library */
                   Utilities,
