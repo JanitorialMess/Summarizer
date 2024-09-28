@@ -12,10 +12,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/@mozilla/readability/Readability-readerable.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/@mozilla/readability/Readability-readerable.js ***!
-  \*********************************************************************/
+/***/ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability-readerable.js":
+/*!*******************************************************************************************************************!*\
+  !*** ./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability-readerable.js ***!
+  \*******************************************************************************************************************/
 /***/ ((module) => {
 
 /*
@@ -130,10 +130,10 @@ if (true) {
 
 /***/ }),
 
-/***/ "./node_modules/@mozilla/readability/Readability.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/@mozilla/readability/Readability.js ***!
-  \**********************************************************/
+/***/ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability.js":
+/*!********************************************************************************************************!*\
+  !*** ./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability.js ***!
+  \********************************************************************************************************/
 /***/ ((module) => {
 
 /*
@@ -2454,15 +2454,15 @@ if (true) {
 
 /***/ }),
 
-/***/ "./node_modules/@mozilla/readability/index.js":
-/*!****************************************************!*\
-  !*** ./node_modules/@mozilla/readability/index.js ***!
-  \****************************************************/
+/***/ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/index.js":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/index.js ***!
+  \**************************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /* eslint-env node */
-var Readability = __webpack_require__(/*! ./Readability */ "./node_modules/@mozilla/readability/Readability.js");
-var isProbablyReaderable = __webpack_require__(/*! ./Readability-readerable */ "./node_modules/@mozilla/readability/Readability-readerable.js");
+var Readability = __webpack_require__(/*! ./Readability */ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability.js");
+var isProbablyReaderable = __webpack_require__(/*! ./Readability-readerable */ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/Readability-readerable.js");
 
 module.exports = {
   Readability: Readability,
@@ -2472,10 +2472,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/semver/classes/comparator.js":
-/*!***************************************************!*\
-  !*** ./node_modules/semver/classes/comparator.js ***!
-  \***************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js ***!
+  \***********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const ANY = Symbol('SemVer ANY')
@@ -2613,20 +2613,20 @@ class Comparator {
 
 module.exports = Comparator
 
-const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/semver/internal/parse-options.js")
-const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/semver/internal/re.js")
-const cmp = __webpack_require__(/*! ../functions/cmp */ "./node_modules/semver/functions/cmp.js")
-const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/semver/internal/debug.js")
-const SemVer = __webpack_require__(/*! ./semver */ "./node_modules/semver/classes/semver.js")
-const Range = __webpack_require__(/*! ./range */ "./node_modules/semver/classes/range.js")
+const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js")
+const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
+const cmp = __webpack_require__(/*! ../functions/cmp */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/cmp.js")
+const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js")
+const SemVer = __webpack_require__(/*! ./semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const Range = __webpack_require__(/*! ./range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/classes/range.js":
-/*!**********************************************!*\
-  !*** ./node_modules/semver/classes/range.js ***!
-  \**********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js ***!
+  \******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 // hoisted class for cyclic dependency
@@ -2829,21 +2829,21 @@ class Range {
 
 module.exports = Range
 
-const LRU = __webpack_require__(/*! ../internal/lrucache */ "./node_modules/semver/internal/lrucache.js")
+const LRU = __webpack_require__(/*! ../internal/lrucache */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/lrucache.js")
 const cache = new LRU()
 
-const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/semver/internal/parse-options.js")
-const Comparator = __webpack_require__(/*! ./comparator */ "./node_modules/semver/classes/comparator.js")
-const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/semver/internal/debug.js")
-const SemVer = __webpack_require__(/*! ./semver */ "./node_modules/semver/classes/semver.js")
+const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js")
+const Comparator = __webpack_require__(/*! ./comparator */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js")
+const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js")
+const SemVer = __webpack_require__(/*! ./semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
 const {
   safeRe: re,
   t,
   comparatorTrimReplace,
   tildeTrimReplace,
   caretTrimReplace,
-} = __webpack_require__(/*! ../internal/re */ "./node_modules/semver/internal/re.js")
-const { FLAG_INCLUDE_PRERELEASE, FLAG_LOOSE } = __webpack_require__(/*! ../internal/constants */ "./node_modules/semver/internal/constants.js")
+} = __webpack_require__(/*! ../internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
+const { FLAG_INCLUDE_PRERELEASE, FLAG_LOOSE } = __webpack_require__(/*! ../internal/constants */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js")
 
 const isNullSet = c => c.value === '<0.0.0-0'
 const isAny = c => c.value === ''
@@ -3173,18 +3173,18 @@ const testSet = (set, version, options) => {
 
 /***/ }),
 
-/***/ "./node_modules/semver/classes/semver.js":
-/*!***********************************************!*\
-  !*** ./node_modules/semver/classes/semver.js ***!
-  \***********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js ***!
+  \*******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/semver/internal/debug.js")
-const { MAX_LENGTH, MAX_SAFE_INTEGER } = __webpack_require__(/*! ../internal/constants */ "./node_modules/semver/internal/constants.js")
-const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/semver/internal/re.js")
+const debug = __webpack_require__(/*! ../internal/debug */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js")
+const { MAX_LENGTH, MAX_SAFE_INTEGER } = __webpack_require__(/*! ../internal/constants */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js")
+const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
 
-const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/semver/internal/parse-options.js")
-const { compareIdentifiers } = __webpack_require__(/*! ../internal/identifiers */ "./node_modules/semver/internal/identifiers.js")
+const parseOptions = __webpack_require__(/*! ../internal/parse-options */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js")
+const { compareIdentifiers } = __webpack_require__(/*! ../internal/identifiers */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/identifiers.js")
 class SemVer {
   constructor (version, options) {
     options = parseOptions(options)
@@ -3485,13 +3485,13 @@ module.exports = SemVer
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/clean.js":
-/*!************************************************!*\
-  !*** ./node_modules/semver/functions/clean.js ***!
-  \************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/clean.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/clean.js ***!
+  \********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const parse = __webpack_require__(/*! ./parse */ "./node_modules/semver/functions/parse.js")
+const parse = __webpack_require__(/*! ./parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
 const clean = (version, options) => {
   const s = parse(version.trim().replace(/^[=v]+/, ''), options)
   return s ? s.version : null
@@ -3501,18 +3501,18 @@ module.exports = clean
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/cmp.js":
-/*!**********************************************!*\
-  !*** ./node_modules/semver/functions/cmp.js ***!
-  \**********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/cmp.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/cmp.js ***!
+  \******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const eq = __webpack_require__(/*! ./eq */ "./node_modules/semver/functions/eq.js")
-const neq = __webpack_require__(/*! ./neq */ "./node_modules/semver/functions/neq.js")
-const gt = __webpack_require__(/*! ./gt */ "./node_modules/semver/functions/gt.js")
-const gte = __webpack_require__(/*! ./gte */ "./node_modules/semver/functions/gte.js")
-const lt = __webpack_require__(/*! ./lt */ "./node_modules/semver/functions/lt.js")
-const lte = __webpack_require__(/*! ./lte */ "./node_modules/semver/functions/lte.js")
+const eq = __webpack_require__(/*! ./eq */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/eq.js")
+const neq = __webpack_require__(/*! ./neq */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/neq.js")
+const gt = __webpack_require__(/*! ./gt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js")
+const gte = __webpack_require__(/*! ./gte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js")
+const lt = __webpack_require__(/*! ./lt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js")
+const lte = __webpack_require__(/*! ./lte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js")
 
 const cmp = (a, op, b, loose) => {
   switch (op) {
@@ -3563,15 +3563,15 @@ module.exports = cmp
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/coerce.js":
-/*!*************************************************!*\
-  !*** ./node_modules/semver/functions/coerce.js ***!
-  \*************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/coerce.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/coerce.js ***!
+  \*********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
-const parse = __webpack_require__(/*! ./parse */ "./node_modules/semver/functions/parse.js")
-const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/semver/internal/re.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const parse = __webpack_require__(/*! ./parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
+const { safeRe: re, t } = __webpack_require__(/*! ../internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
 
 const coerce = (version, options) => {
   if (version instanceof SemVer) {
@@ -3633,13 +3633,13 @@ module.exports = coerce
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/compare-build.js":
-/*!********************************************************!*\
-  !*** ./node_modules/semver/functions/compare-build.js ***!
-  \********************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js ***!
+  \****************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
 const compareBuild = (a, b, loose) => {
   const versionA = new SemVer(a, loose)
   const versionB = new SemVer(b, loose)
@@ -3650,26 +3650,26 @@ module.exports = compareBuild
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/compare-loose.js":
-/*!********************************************************!*\
-  !*** ./node_modules/semver/functions/compare-loose.js ***!
-  \********************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-loose.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-loose.js ***!
+  \****************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 const compareLoose = (a, b) => compare(a, b, true)
 module.exports = compareLoose
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/compare.js":
-/*!**************************************************!*\
-  !*** ./node_modules/semver/functions/compare.js ***!
-  \**************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js ***!
+  \**********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
 const compare = (a, b, loose) =>
   new SemVer(a, loose).compare(new SemVer(b, loose))
 
@@ -3678,13 +3678,13 @@ module.exports = compare
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/diff.js":
-/*!***********************************************!*\
-  !*** ./node_modules/semver/functions/diff.js ***!
-  \***********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/diff.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/diff.js ***!
+  \*******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const parse = __webpack_require__(/*! ./parse.js */ "./node_modules/semver/functions/parse.js")
+const parse = __webpack_require__(/*! ./parse.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
 
 const diff = (version1, version2) => {
   const v1 = parse(version1, null, true)
@@ -3753,52 +3753,52 @@ module.exports = diff
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/eq.js":
-/*!*********************************************!*\
-  !*** ./node_modules/semver/functions/eq.js ***!
-  \*********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/eq.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/eq.js ***!
+  \*****************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 const eq = (a, b, loose) => compare(a, b, loose) === 0
 module.exports = eq
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/gt.js":
-/*!*********************************************!*\
-  !*** ./node_modules/semver/functions/gt.js ***!
-  \*********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js ***!
+  \*****************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 const gt = (a, b, loose) => compare(a, b, loose) > 0
 module.exports = gt
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/gte.js":
-/*!**********************************************!*\
-  !*** ./node_modules/semver/functions/gte.js ***!
-  \**********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js ***!
+  \******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 const gte = (a, b, loose) => compare(a, b, loose) >= 0
 module.exports = gte
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/inc.js":
-/*!**********************************************!*\
-  !*** ./node_modules/semver/functions/inc.js ***!
-  \**********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/inc.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/inc.js ***!
+  \******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
 
 const inc = (version, release, options, identifier, identifierBase) => {
   if (typeof (options) === 'string') {
@@ -3821,78 +3821,78 @@ module.exports = inc
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/lt.js":
-/*!*********************************************!*\
-  !*** ./node_modules/semver/functions/lt.js ***!
-  \*********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js ***!
+  \*****************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 const lt = (a, b, loose) => compare(a, b, loose) < 0
 module.exports = lt
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/lte.js":
-/*!**********************************************!*\
-  !*** ./node_modules/semver/functions/lte.js ***!
-  \**********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js ***!
+  \******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 const lte = (a, b, loose) => compare(a, b, loose) <= 0
 module.exports = lte
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/major.js":
-/*!************************************************!*\
-  !*** ./node_modules/semver/functions/major.js ***!
-  \************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/major.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/major.js ***!
+  \********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
 const major = (a, loose) => new SemVer(a, loose).major
 module.exports = major
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/minor.js":
-/*!************************************************!*\
-  !*** ./node_modules/semver/functions/minor.js ***!
-  \************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/minor.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/minor.js ***!
+  \********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
 const minor = (a, loose) => new SemVer(a, loose).minor
 module.exports = minor
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/neq.js":
-/*!**********************************************!*\
-  !*** ./node_modules/semver/functions/neq.js ***!
-  \**********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/neq.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/neq.js ***!
+  \******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 const neq = (a, b, loose) => compare(a, b, loose) !== 0
 module.exports = neq
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/parse.js":
-/*!************************************************!*\
-  !*** ./node_modules/semver/functions/parse.js ***!
-  \************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js ***!
+  \********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
 const parse = (version, options, throwErrors = false) => {
   if (version instanceof SemVer) {
     return version
@@ -3912,26 +3912,26 @@ module.exports = parse
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/patch.js":
-/*!************************************************!*\
-  !*** ./node_modules/semver/functions/patch.js ***!
-  \************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/patch.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/patch.js ***!
+  \********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
 const patch = (a, loose) => new SemVer(a, loose).patch
 module.exports = patch
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/prerelease.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/semver/functions/prerelease.js ***!
-  \*****************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/prerelease.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/prerelease.js ***!
+  \*************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const parse = __webpack_require__(/*! ./parse */ "./node_modules/semver/functions/parse.js")
+const parse = __webpack_require__(/*! ./parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
 const prerelease = (version, options) => {
   const parsed = parse(version, options)
   return (parsed && parsed.prerelease.length) ? parsed.prerelease : null
@@ -3941,39 +3941,39 @@ module.exports = prerelease
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/rcompare.js":
-/*!***************************************************!*\
-  !*** ./node_modules/semver/functions/rcompare.js ***!
-  \***************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rcompare.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rcompare.js ***!
+  \***********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compare = __webpack_require__(/*! ./compare */ "./node_modules/semver/functions/compare.js")
+const compare = __webpack_require__(/*! ./compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 const rcompare = (a, b, loose) => compare(b, a, loose)
 module.exports = rcompare
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/rsort.js":
-/*!************************************************!*\
-  !*** ./node_modules/semver/functions/rsort.js ***!
-  \************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rsort.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rsort.js ***!
+  \********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compareBuild = __webpack_require__(/*! ./compare-build */ "./node_modules/semver/functions/compare-build.js")
+const compareBuild = __webpack_require__(/*! ./compare-build */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js")
 const rsort = (list, loose) => list.sort((a, b) => compareBuild(b, a, loose))
 module.exports = rsort
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/satisfies.js":
-/*!****************************************************!*\
-  !*** ./node_modules/semver/functions/satisfies.js ***!
-  \****************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js ***!
+  \************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
 const satisfies = (version, range, options) => {
   try {
     range = new Range(range, options)
@@ -3987,26 +3987,26 @@ module.exports = satisfies
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/sort.js":
-/*!***********************************************!*\
-  !*** ./node_modules/semver/functions/sort.js ***!
-  \***********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/sort.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/sort.js ***!
+  \*******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const compareBuild = __webpack_require__(/*! ./compare-build */ "./node_modules/semver/functions/compare-build.js")
+const compareBuild = __webpack_require__(/*! ./compare-build */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js")
 const sort = (list, loose) => list.sort((a, b) => compareBuild(a, b, loose))
 module.exports = sort
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/functions/valid.js":
-/*!************************************************!*\
-  !*** ./node_modules/semver/functions/valid.js ***!
-  \************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/valid.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/valid.js ***!
+  \********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const parse = __webpack_require__(/*! ./parse */ "./node_modules/semver/functions/parse.js")
+const parse = __webpack_require__(/*! ./parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
 const valid = (version, options) => {
   const v = parse(version, options)
   return v ? v.version : null
@@ -4016,54 +4016,54 @@ module.exports = valid
 
 /***/ }),
 
-/***/ "./node_modules/semver/index.js":
-/*!**************************************!*\
-  !*** ./node_modules/semver/index.js ***!
-  \**************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/index.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/index.js ***!
+  \**********************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 // just pre-load all the stuff that index.js lazily exports
-const internalRe = __webpack_require__(/*! ./internal/re */ "./node_modules/semver/internal/re.js")
-const constants = __webpack_require__(/*! ./internal/constants */ "./node_modules/semver/internal/constants.js")
-const SemVer = __webpack_require__(/*! ./classes/semver */ "./node_modules/semver/classes/semver.js")
-const identifiers = __webpack_require__(/*! ./internal/identifiers */ "./node_modules/semver/internal/identifiers.js")
-const parse = __webpack_require__(/*! ./functions/parse */ "./node_modules/semver/functions/parse.js")
-const valid = __webpack_require__(/*! ./functions/valid */ "./node_modules/semver/functions/valid.js")
-const clean = __webpack_require__(/*! ./functions/clean */ "./node_modules/semver/functions/clean.js")
-const inc = __webpack_require__(/*! ./functions/inc */ "./node_modules/semver/functions/inc.js")
-const diff = __webpack_require__(/*! ./functions/diff */ "./node_modules/semver/functions/diff.js")
-const major = __webpack_require__(/*! ./functions/major */ "./node_modules/semver/functions/major.js")
-const minor = __webpack_require__(/*! ./functions/minor */ "./node_modules/semver/functions/minor.js")
-const patch = __webpack_require__(/*! ./functions/patch */ "./node_modules/semver/functions/patch.js")
-const prerelease = __webpack_require__(/*! ./functions/prerelease */ "./node_modules/semver/functions/prerelease.js")
-const compare = __webpack_require__(/*! ./functions/compare */ "./node_modules/semver/functions/compare.js")
-const rcompare = __webpack_require__(/*! ./functions/rcompare */ "./node_modules/semver/functions/rcompare.js")
-const compareLoose = __webpack_require__(/*! ./functions/compare-loose */ "./node_modules/semver/functions/compare-loose.js")
-const compareBuild = __webpack_require__(/*! ./functions/compare-build */ "./node_modules/semver/functions/compare-build.js")
-const sort = __webpack_require__(/*! ./functions/sort */ "./node_modules/semver/functions/sort.js")
-const rsort = __webpack_require__(/*! ./functions/rsort */ "./node_modules/semver/functions/rsort.js")
-const gt = __webpack_require__(/*! ./functions/gt */ "./node_modules/semver/functions/gt.js")
-const lt = __webpack_require__(/*! ./functions/lt */ "./node_modules/semver/functions/lt.js")
-const eq = __webpack_require__(/*! ./functions/eq */ "./node_modules/semver/functions/eq.js")
-const neq = __webpack_require__(/*! ./functions/neq */ "./node_modules/semver/functions/neq.js")
-const gte = __webpack_require__(/*! ./functions/gte */ "./node_modules/semver/functions/gte.js")
-const lte = __webpack_require__(/*! ./functions/lte */ "./node_modules/semver/functions/lte.js")
-const cmp = __webpack_require__(/*! ./functions/cmp */ "./node_modules/semver/functions/cmp.js")
-const coerce = __webpack_require__(/*! ./functions/coerce */ "./node_modules/semver/functions/coerce.js")
-const Comparator = __webpack_require__(/*! ./classes/comparator */ "./node_modules/semver/classes/comparator.js")
-const Range = __webpack_require__(/*! ./classes/range */ "./node_modules/semver/classes/range.js")
-const satisfies = __webpack_require__(/*! ./functions/satisfies */ "./node_modules/semver/functions/satisfies.js")
-const toComparators = __webpack_require__(/*! ./ranges/to-comparators */ "./node_modules/semver/ranges/to-comparators.js")
-const maxSatisfying = __webpack_require__(/*! ./ranges/max-satisfying */ "./node_modules/semver/ranges/max-satisfying.js")
-const minSatisfying = __webpack_require__(/*! ./ranges/min-satisfying */ "./node_modules/semver/ranges/min-satisfying.js")
-const minVersion = __webpack_require__(/*! ./ranges/min-version */ "./node_modules/semver/ranges/min-version.js")
-const validRange = __webpack_require__(/*! ./ranges/valid */ "./node_modules/semver/ranges/valid.js")
-const outside = __webpack_require__(/*! ./ranges/outside */ "./node_modules/semver/ranges/outside.js")
-const gtr = __webpack_require__(/*! ./ranges/gtr */ "./node_modules/semver/ranges/gtr.js")
-const ltr = __webpack_require__(/*! ./ranges/ltr */ "./node_modules/semver/ranges/ltr.js")
-const intersects = __webpack_require__(/*! ./ranges/intersects */ "./node_modules/semver/ranges/intersects.js")
-const simplifyRange = __webpack_require__(/*! ./ranges/simplify */ "./node_modules/semver/ranges/simplify.js")
-const subset = __webpack_require__(/*! ./ranges/subset */ "./node_modules/semver/ranges/subset.js")
+const internalRe = __webpack_require__(/*! ./internal/re */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js")
+const constants = __webpack_require__(/*! ./internal/constants */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js")
+const SemVer = __webpack_require__(/*! ./classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const identifiers = __webpack_require__(/*! ./internal/identifiers */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/identifiers.js")
+const parse = __webpack_require__(/*! ./functions/parse */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/parse.js")
+const valid = __webpack_require__(/*! ./functions/valid */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/valid.js")
+const clean = __webpack_require__(/*! ./functions/clean */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/clean.js")
+const inc = __webpack_require__(/*! ./functions/inc */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/inc.js")
+const diff = __webpack_require__(/*! ./functions/diff */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/diff.js")
+const major = __webpack_require__(/*! ./functions/major */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/major.js")
+const minor = __webpack_require__(/*! ./functions/minor */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/minor.js")
+const patch = __webpack_require__(/*! ./functions/patch */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/patch.js")
+const prerelease = __webpack_require__(/*! ./functions/prerelease */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/prerelease.js")
+const compare = __webpack_require__(/*! ./functions/compare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
+const rcompare = __webpack_require__(/*! ./functions/rcompare */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rcompare.js")
+const compareLoose = __webpack_require__(/*! ./functions/compare-loose */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-loose.js")
+const compareBuild = __webpack_require__(/*! ./functions/compare-build */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare-build.js")
+const sort = __webpack_require__(/*! ./functions/sort */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/sort.js")
+const rsort = __webpack_require__(/*! ./functions/rsort */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/rsort.js")
+const gt = __webpack_require__(/*! ./functions/gt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js")
+const lt = __webpack_require__(/*! ./functions/lt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js")
+const eq = __webpack_require__(/*! ./functions/eq */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/eq.js")
+const neq = __webpack_require__(/*! ./functions/neq */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/neq.js")
+const gte = __webpack_require__(/*! ./functions/gte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js")
+const lte = __webpack_require__(/*! ./functions/lte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js")
+const cmp = __webpack_require__(/*! ./functions/cmp */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/cmp.js")
+const coerce = __webpack_require__(/*! ./functions/coerce */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/coerce.js")
+const Comparator = __webpack_require__(/*! ./classes/comparator */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js")
+const Range = __webpack_require__(/*! ./classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const satisfies = __webpack_require__(/*! ./functions/satisfies */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js")
+const toComparators = __webpack_require__(/*! ./ranges/to-comparators */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/to-comparators.js")
+const maxSatisfying = __webpack_require__(/*! ./ranges/max-satisfying */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/max-satisfying.js")
+const minSatisfying = __webpack_require__(/*! ./ranges/min-satisfying */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-satisfying.js")
+const minVersion = __webpack_require__(/*! ./ranges/min-version */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-version.js")
+const validRange = __webpack_require__(/*! ./ranges/valid */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/valid.js")
+const outside = __webpack_require__(/*! ./ranges/outside */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js")
+const gtr = __webpack_require__(/*! ./ranges/gtr */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/gtr.js")
+const ltr = __webpack_require__(/*! ./ranges/ltr */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/ltr.js")
+const intersects = __webpack_require__(/*! ./ranges/intersects */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/intersects.js")
+const simplifyRange = __webpack_require__(/*! ./ranges/simplify */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/simplify.js")
+const subset = __webpack_require__(/*! ./ranges/subset */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/subset.js")
 module.exports = {
   parse,
   valid,
@@ -4115,10 +4115,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/semver/internal/constants.js":
-/*!***************************************************!*\
-  !*** ./node_modules/semver/internal/constants.js ***!
-  \***************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js ***!
+  \***********************************************************************************/
 /***/ ((module) => {
 
 // Note: this is the semver.org version of the spec that it implements
@@ -4160,10 +4160,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/semver/internal/debug.js":
-/*!***********************************************!*\
-  !*** ./node_modules/semver/internal/debug.js ***!
-  \***********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js ***!
+  \*******************************************************************************/
 /***/ ((module) => {
 
 const debug = (
@@ -4179,10 +4179,10 @@ module.exports = debug
 
 /***/ }),
 
-/***/ "./node_modules/semver/internal/identifiers.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/semver/internal/identifiers.js ***!
-  \*****************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/identifiers.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/identifiers.js ***!
+  \*************************************************************************************/
 /***/ ((module) => {
 
 const numeric = /^[0-9]+$/
@@ -4212,10 +4212,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./node_modules/semver/internal/lrucache.js":
-/*!**************************************************!*\
-  !*** ./node_modules/semver/internal/lrucache.js ***!
-  \**************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/lrucache.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/lrucache.js ***!
+  \**********************************************************************************/
 /***/ ((module) => {
 
 class LRUCache {
@@ -4262,10 +4262,10 @@ module.exports = LRUCache
 
 /***/ }),
 
-/***/ "./node_modules/semver/internal/parse-options.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/semver/internal/parse-options.js ***!
-  \*******************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/parse-options.js ***!
+  \***************************************************************************************/
 /***/ ((module) => {
 
 // parse out just the options we care about
@@ -4287,18 +4287,18 @@ module.exports = parseOptions
 
 /***/ }),
 
-/***/ "./node_modules/semver/internal/re.js":
-/*!********************************************!*\
-  !*** ./node_modules/semver/internal/re.js ***!
-  \********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/re.js ***!
+  \****************************************************************************/
 /***/ ((module, exports, __webpack_require__) => {
 
 const {
   MAX_SAFE_COMPONENT_LENGTH,
   MAX_SAFE_BUILD_LENGTH,
   MAX_LENGTH,
-} = __webpack_require__(/*! ./constants */ "./node_modules/semver/internal/constants.js")
-const debug = __webpack_require__(/*! ./debug */ "./node_modules/semver/internal/debug.js")
+} = __webpack_require__(/*! ./constants */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/constants.js")
+const debug = __webpack_require__(/*! ./debug */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/internal/debug.js")
 exports = module.exports = {}
 
 // The actual regexps go on exports.re
@@ -4514,27 +4514,27 @@ createToken('GTE0PRE', '^\\s*>=\\s*0\\.0\\.0-0\\s*$')
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/gtr.js":
-/*!*******************************************!*\
-  !*** ./node_modules/semver/ranges/gtr.js ***!
-  \*******************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/gtr.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/gtr.js ***!
+  \***************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 // Determine if version is greater than all the versions possible in the range.
-const outside = __webpack_require__(/*! ./outside */ "./node_modules/semver/ranges/outside.js")
+const outside = __webpack_require__(/*! ./outside */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js")
 const gtr = (version, range, options) => outside(version, range, '>', options)
 module.exports = gtr
 
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/intersects.js":
-/*!**************************************************!*\
-  !*** ./node_modules/semver/ranges/intersects.js ***!
-  \**************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/intersects.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/intersects.js ***!
+  \**********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
 const intersects = (r1, r2, options) => {
   r1 = new Range(r1, options)
   r2 = new Range(r2, options)
@@ -4545,13 +4545,13 @@ module.exports = intersects
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/ltr.js":
-/*!*******************************************!*\
-  !*** ./node_modules/semver/ranges/ltr.js ***!
-  \*******************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/ltr.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/ltr.js ***!
+  \***************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const outside = __webpack_require__(/*! ./outside */ "./node_modules/semver/ranges/outside.js")
+const outside = __webpack_require__(/*! ./outside */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js")
 // Determine if version is less than all the versions possible in the range
 const ltr = (version, range, options) => outside(version, range, '<', options)
 module.exports = ltr
@@ -4559,14 +4559,14 @@ module.exports = ltr
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/max-satisfying.js":
-/*!******************************************************!*\
-  !*** ./node_modules/semver/ranges/max-satisfying.js ***!
-  \******************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/max-satisfying.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/max-satisfying.js ***!
+  \**************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
 
 const maxSatisfying = (versions, range, options) => {
   let max = null
@@ -4594,14 +4594,14 @@ module.exports = maxSatisfying
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/min-satisfying.js":
-/*!******************************************************!*\
-  !*** ./node_modules/semver/ranges/min-satisfying.js ***!
-  \******************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-satisfying.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-satisfying.js ***!
+  \**************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
 const minSatisfying = (versions, range, options) => {
   let min = null
   let minSV = null
@@ -4628,15 +4628,15 @@ module.exports = minSatisfying
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/min-version.js":
-/*!***************************************************!*\
-  !*** ./node_modules/semver/ranges/min-version.js ***!
-  \***************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-version.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/min-version.js ***!
+  \***********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
-const gt = __webpack_require__(/*! ../functions/gt */ "./node_modules/semver/functions/gt.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const gt = __webpack_require__(/*! ../functions/gt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js")
 
 const minVersion = (range, loose) => {
   range = new Range(range, loose)
@@ -4699,21 +4699,21 @@ module.exports = minVersion
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/outside.js":
-/*!***********************************************!*\
-  !*** ./node_modules/semver/ranges/outside.js ***!
-  \***********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/outside.js ***!
+  \*******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/semver/classes/semver.js")
-const Comparator = __webpack_require__(/*! ../classes/comparator */ "./node_modules/semver/classes/comparator.js")
+const SemVer = __webpack_require__(/*! ../classes/semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/semver.js")
+const Comparator = __webpack_require__(/*! ../classes/comparator */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js")
 const { ANY } = Comparator
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
-const satisfies = __webpack_require__(/*! ../functions/satisfies */ "./node_modules/semver/functions/satisfies.js")
-const gt = __webpack_require__(/*! ../functions/gt */ "./node_modules/semver/functions/gt.js")
-const lt = __webpack_require__(/*! ../functions/lt */ "./node_modules/semver/functions/lt.js")
-const lte = __webpack_require__(/*! ../functions/lte */ "./node_modules/semver/functions/lte.js")
-const gte = __webpack_require__(/*! ../functions/gte */ "./node_modules/semver/functions/gte.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const satisfies = __webpack_require__(/*! ../functions/satisfies */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js")
+const gt = __webpack_require__(/*! ../functions/gt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gt.js")
+const lt = __webpack_require__(/*! ../functions/lt */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lt.js")
+const lte = __webpack_require__(/*! ../functions/lte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/lte.js")
+const gte = __webpack_require__(/*! ../functions/gte */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/gte.js")
 
 const outside = (version, range, hilo, options) => {
   version = new SemVer(version, options)
@@ -4789,17 +4789,17 @@ module.exports = outside
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/simplify.js":
-/*!************************************************!*\
-  !*** ./node_modules/semver/ranges/simplify.js ***!
-  \************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/simplify.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/simplify.js ***!
+  \********************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 // given a set of versions and a range, create a "simplified" range
 // that includes the same versions that the original range does
 // If the original range is shorter than the simplified one, return that.
-const satisfies = __webpack_require__(/*! ../functions/satisfies.js */ "./node_modules/semver/functions/satisfies.js")
-const compare = __webpack_require__(/*! ../functions/compare.js */ "./node_modules/semver/functions/compare.js")
+const satisfies = __webpack_require__(/*! ../functions/satisfies.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js")
+const compare = __webpack_require__(/*! ../functions/compare.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 module.exports = (versions, range, options) => {
   const set = []
   let first = null
@@ -4846,17 +4846,17 @@ module.exports = (versions, range, options) => {
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/subset.js":
-/*!**********************************************!*\
-  !*** ./node_modules/semver/ranges/subset.js ***!
-  \**********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/subset.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/subset.js ***!
+  \******************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range.js */ "./node_modules/semver/classes/range.js")
-const Comparator = __webpack_require__(/*! ../classes/comparator.js */ "./node_modules/semver/classes/comparator.js")
+const Range = __webpack_require__(/*! ../classes/range.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
+const Comparator = __webpack_require__(/*! ../classes/comparator.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/comparator.js")
 const { ANY } = Comparator
-const satisfies = __webpack_require__(/*! ../functions/satisfies.js */ "./node_modules/semver/functions/satisfies.js")
-const compare = __webpack_require__(/*! ../functions/compare.js */ "./node_modules/semver/functions/compare.js")
+const satisfies = __webpack_require__(/*! ../functions/satisfies.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/satisfies.js")
+const compare = __webpack_require__(/*! ../functions/compare.js */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/functions/compare.js")
 
 // Complex range `r1 || r2 || ...` is a subset of `R1 || R2 || ...` iff:
 // - Every simple range `r1, r2, ...` is a null set, OR
@@ -5103,13 +5103,13 @@ module.exports = subset
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/to-comparators.js":
-/*!******************************************************!*\
-  !*** ./node_modules/semver/ranges/to-comparators.js ***!
-  \******************************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/to-comparators.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/to-comparators.js ***!
+  \**************************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
 
 // Mostly just for testing and legacy API reasons
 const toComparators = (range, options) =>
@@ -5121,13 +5121,13 @@ module.exports = toComparators
 
 /***/ }),
 
-/***/ "./node_modules/semver/ranges/valid.js":
-/*!*********************************************!*\
-  !*** ./node_modules/semver/ranges/valid.js ***!
-  \*********************************************/
+/***/ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/valid.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/.pnpm/semver@7.6.2/node_modules/semver/ranges/valid.js ***!
+  \*****************************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/semver/classes/range.js")
+const Range = __webpack_require__(/*! ../classes/range */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/classes/range.js")
 const validRange = (range, options) => {
   try {
     // Return '*' instead of '' so that truthiness works.
@@ -5232,6 +5232,283 @@ class GroqAPI {
 }
 
 module.exports = GroqAPI;
+
+
+/***/ }),
+
+/***/ "./src/components/Dropdown.js":
+/*!************************************!*\
+  !*** ./src/components/Dropdown.js ***!
+  \************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const { React, SettingField, ReactTools } = (__webpack_require__(/*! ../utils/modules */ "./src/utils/modules.js").ModuleStore);
+
+// Copyright 2018 Zachary Rauen
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+class CloseButton extends React.Component {
+    render() {
+        const size = this.props.size || '14px';
+        return React.createElement(
+            'svg',
+            {
+                className: this.props.className || '',
+                fill: 'currentColor',
+                viewBox: '0 0 24 24',
+                style: { width: size, height: size },
+                onClick: this.props.onClick,
+            },
+            React.createElement('path', {
+                d: 'M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z',
+            })
+        );
+    }
+}
+
+class DownArrow extends React.Component {
+    render() {
+        const size = this.props.size || '16px';
+        return React.createElement(
+            'svg',
+            {
+                className: this.props.className || '',
+                fill: 'currentColor',
+                viewBox: '0 0 24 24',
+                style: { width: size, height: size },
+                onClick: this.props.onClick,
+            },
+            React.createElement('path', {
+                d: 'M8.12 9.29L12 13.17l3.88-3.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-4.59 4.59c-.39.39-1.02.39-1.41 0L6.7 10.7c-.39-.39-.39-1.02 0-1.41.39-.38 1.03-.39 1.42 0z',
+            })
+        );
+    }
+}
+
+class Select extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { open: false, value: this.props.value };
+        this.dropdown = React.createRef();
+        this.onChange = this.onChange.bind(this);
+        this.showMenu = this.showMenu.bind(this);
+        this.hideMenu = this.hideMenu.bind(this);
+        this.clear = this.clear.bind(this);
+    }
+
+    showMenu(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.setState(
+            (state) => ({ open: !state.open }),
+            () => {
+                if (!this.state.open) return;
+
+                document.addEventListener('click', this.hideMenu);
+            }
+        );
+    }
+
+    hideMenu() {
+        this.setState({ open: false }, () => {
+            document.removeEventListener('click', this.hideMenu);
+        });
+    }
+
+    onChange(value) {
+        this.setState({ value });
+        if (this.props.onChange) this.props.onChange(value);
+    }
+
+    get selected() {
+        return this.props.options.find((o) => o.value == this.state.value);
+    }
+
+    get options() {
+        const selected = this.selected;
+        return React.createElement(
+            'div',
+            { className: 'z-select-options' },
+            this.props.options.map((opt) =>
+                React.createElement(
+                    'div',
+                    {
+                        className: `z-select-option${selected?.value == opt.value ? ' selected' : ''}`,
+                        onClick: this.onChange.bind(this, opt.value),
+                    },
+                    opt.label
+                )
+            )
+        );
+    }
+
+    clear(event) {
+        event.stopPropagation();
+        this.onChange(null);
+    }
+
+    render() {
+        const style = this.props.style == 'transparent' ? ' z-select-transparent' : '';
+        const isOpen = this.state.open ? ' menu-open' : '';
+        return React.createElement('div', { className: `z-select${style}${isOpen}`, ref: this.dropdown, onClick: this.showMenu }, [
+            React.createElement('div', { className: 'z-select-value' }, this?.selected?.label ?? this.props.placeholder),
+            React.createElement(
+                'div',
+                { className: 'z-select-icons' },
+                this.props.clearable &&
+                    this.selected &&
+                    React.createElement(CloseButton, { className: 'z-select-clear', onClick: this.clear }),
+                React.createElement(DownArrow, { className: 'z-select-arrow' })
+            ),
+            this.state.open && this.options,
+        ]);
+    }
+}
+
+class Dropdown extends SettingField {
+    constructor(name, note, defaultValue, values, onChange, options = {}) {
+        const { clearable = false, disabled = false, placeholder = '' } = options;
+        super(name, note, onChange, Select, {
+            placeholder: placeholder,
+            clearable: clearable,
+            disabled: disabled,
+            options: values,
+            onChange: (dropdown) => (value) => {
+                dropdown.props.value = value;
+                dropdown.forceUpdate();
+                this.onChange(value);
+            },
+            value: defaultValue,
+        });
+        this.dropdown = null;
+    }
+
+    onAdded() {
+        super.onAdded();
+        this.dropdown = ReactTools.getOwnerInstance(this.getElement());
+    }
+
+    updateOptions(newOptions) {
+        if (this.dropdown && this.dropdown.props) {
+            // Update the options in the Dropdown component
+            this.dropdown.props.options = newOptions;
+
+            // Always select the first option in the new options
+            const newValue = newOptions.length > 0 ? newOptions[0].value : null;
+            this.dropdown.props.value = newValue;
+
+            // Force an update of the entire Dropdown component
+            this.dropdown.forceUpdate();
+
+            // Call onChange with the new value
+            this.onChange(newValue);
+        }
+    }
+
+    setValue(value) {
+        if (this.dropdown && this.dropdown.props) {
+            this.dropdown.props.value = value;
+            this.dropdown.forceUpdate();
+            this.onChange(value);
+        }
+    }
+
+    getValue() {
+        return this.dropdown && this.dropdown.props ? this.dropdown.props.value : null;
+    }
+}
+module.exports = Dropdown;
+
+
+/***/ }),
+
+/***/ "./src/components/TextAreaField.js":
+/*!*****************************************!*\
+  !*** ./src/components/TextAreaField.js ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const { SettingField, TextArea } = (__webpack_require__(/*! ../utils/modules */ "./src/utils/modules.js").ModuleStore);
+
+class TextAreaField extends SettingField {
+    constructor(name, note, value, onChange, options) {
+        const { placeholder = '', disabled = false } = options;
+        super(name, note, onChange, TextArea, {
+            onChange: (textarea) => (val) => {
+                textarea.props.value = val;
+                textarea.forceUpdate();
+                this.onChange(val);
+            },
+            value: value,
+            disabled: disabled,
+            autosize: true,
+            placeholder: placeholder || '',
+        });
+    }
+}
+
+module.exports = TextAreaField;
+
+
+/***/ }),
+
+/***/ "./src/components/Textbox.js":
+/*!***********************************!*\
+  !*** ./src/components/Textbox.js ***!
+  \***********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const { Textbox: OgTextbox } = (__webpack_require__(/*! ../utils/modules */ "./src/utils/modules.js").ModuleStore);
+
+class Textbox extends OgTextbox {
+    constructor(name, note, defaultValue, onChange, options = {}) {
+        super(name, note, defaultValue, onChange, options);
+        this.inputElement = null;
+    }
+
+    getElement() {
+        const element = super.getElement();
+        this.inputElement = element.querySelector('input');
+        return element;
+    }
+
+    updateValue(newApiKey) {
+        this.onChange(newApiKey);
+    }
+
+    onChange(value) {
+        if (this.inputElement) {
+            this.inputElement.value = value;
+        }
+        super.onChange(value);
+    }
+}
+
+module.exports = Textbox;
+
+
+/***/ }),
+
+/***/ "./src/components/index.js":
+/*!*********************************!*\
+  !*** ./src/components/index.js ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const TextAreaField = __webpack_require__(/*! ./TextAreaField */ "./src/components/TextAreaField.js");
+const Textbox = __webpack_require__(/*! ./Textbox */ "./src/components/Textbox.js");
+const Dropdown = __webpack_require__(/*! ./Dropdown */ "./src/components/Dropdown.js");
+
+module.exports = {
+    TextAreaField,
+    Textbox,
+    Dropdown,
+};
 
 
 /***/ }),
@@ -5519,7 +5796,7 @@ module.exports = ProviderFactory;
   \************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const { Readability } = __webpack_require__(/*! @mozilla/readability */ "./node_modules/@mozilla/readability/index.js");
+const { Readability } = __webpack_require__(/*! @mozilla/readability */ "./node_modules/.pnpm/@mozilla+readability@0.5.0/node_modules/@mozilla/readability/index.js");
 const HttpClient = __webpack_require__(/*! ../utils/httpClient */ "./src/utils/httpClient.js");
 const YouTubeTranscriptService = __webpack_require__(/*! ./youtubeTranscript */ "./src/services/youtubeTranscript.js");
 
@@ -5537,8 +5814,10 @@ class SummarizerService {
     }
 
     createProvider(ProviderFactory) {
-        const { providerId, model, apiKey, providerConfig } = this.settings;
-        return ProviderFactory.createProvider(providerId, model, apiKey, providerConfig);
+        const { providerId, model, providerConfig } = this.settings;
+        const provider = this.settings.providers.find((_provider) => _provider.id === providerId);
+        if (!provider) throw new Error(`API key not found for provider: ${providerId}`);
+        return ProviderFactory.createProvider(providerId, model, provider.apiKey, providerConfig);
     }
 
     generateQuery(text) {
@@ -5788,6 +6067,15 @@ module.exports = {
             userAgent: defaultSettings.userAgent,
         };
     },
+    '0.3.5': (settings, defaultSettings) => {
+        // Delete provider entry for OpenAI
+        const providerId = settings.providerId;
+        const provider = settings.providers.find((_provider) => provider.id === providerId);
+        if (provider) {
+            settings[provider].apiKey = settings.apiKey;
+        }
+        return settings;
+    },
 };
 
 
@@ -5835,12 +6123,10 @@ const ContextMenu = window.BdApi?.ContextMenu;
 const Net = window.BdApi?.Net;
 const BetterWebpackModules = window.BdApi.Webpack;
 const TextArea = BetterWebpackModules.getModule((m) => m.TextArea)?.TextArea;
-const EmbedUtils = BetterWebpackModules.getModule(
-    (m) => typeof m === 'object' && Object.values(m).some((v) => typeof v === 'function' && v.toString().includes('1492472454139'))
-);
+const EmbedUtils = BetterWebpackModules.getModule((m) => m.kC && m.o3);
 const sanitizeEmbedProp =
     EmbedUtils &&
-    Object.keys(EmbedUtils).find((k) => typeof EmbedUtils[k] === 'function' && EmbedUtils[k].toString().includes('1492472454139'));
+    Object.keys(EmbedUtils).find((k) => typeof EmbedUtils[k] === 'function' && EmbedUtils[k].toString().includes('uniqueId("embed_")'));
 
 const Logger = {
     info: (...args) => _Logger.info(pluginName, ...args),
@@ -5911,6 +6197,191 @@ function checkVariables() {
 
 const loaded_successfully = checkVariables();
 const ModuleStore = UsedModules;
+
+
+/***/ }),
+
+/***/ "./src/utils/settings.js":
+/*!*******************************!*\
+  !*** ./src/utils/settings.js ***!
+  \*******************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const { SettingPanel, SettingGroup } = (__webpack_require__(/*! ./modules */ "./src/utils/modules.js").ModuleStore);
+const { TextAreaField, Textbox, Dropdown } = __webpack_require__(/*! ../components */ "./src/components/index.js");
+class Settings {
+    constructor(plugin) {
+        this.plugin = plugin;
+    }
+
+    createSetting(type, name, note, defaultValue, onChange, options = {}) {
+        const setting = new type(
+            name,
+            note,
+            defaultValue,
+            (value) => {
+                onChange(value);
+                this.plugin.saveSettings();
+            },
+            options
+        );
+        return setting;
+    }
+
+    createGroup(name, settings) {
+        const group = new SettingGroup(name);
+        settings.forEach((setting) => group.append(setting));
+        return group;
+    }
+
+    getProviderOptions() {
+        return this.plugin.settings.providers.map((provider) => ({
+            label: provider.label,
+            value: provider.id,
+        }));
+    }
+
+    getModelOptions(providerId) {
+        const provider = this.plugin.settings.providers.find((p) => p.id === providerId);
+        if (!provider) return [];
+
+        return provider.models.map((model) => ({
+            label: model.label,
+            value: model.value,
+        }));
+    }
+
+    getCurrentProviderApiKey(providerId) {
+        const currentProvider = this.plugin.settings.providers.find((p) => p.id === providerId);
+        return currentProvider ? currentProvider.apiKey : '';
+    }
+
+    createProviderSettings() {
+        const modelDropdown = new Dropdown(
+            'Model',
+            'Select the LLM model.',
+            this.plugin.settings.model,
+            this.getModelOptions(this.plugin.settings.providerId),
+            (value) => {
+                this.plugin.settings.model = value;
+                this.plugin.saveSettings();
+            }
+        );
+
+        const providerDropdown = new Dropdown(
+            'Provider',
+            'Select the provider for content summarization.',
+            this.plugin.settings.providerId,
+            this.getProviderOptions(),
+            (value) => {
+                this.plugin.settings.providerId = value;
+                this.plugin.saveSettings();
+
+                // Update API key textbox
+                const newApiKey = this.getCurrentProviderApiKey(value);
+                apiKeyTextbox.updateValue(newApiKey);
+
+                // Update model dropdown options
+                const newModelOptions = this.getModelOptions(value);
+                modelDropdown.updateOptions(newModelOptions);
+
+                // Set the model to the first available option for the new provider
+                if (newModelOptions.length > 0) {
+                    this.plugin.settings.model = newModelOptions[0].value;
+                    modelDropdown.setValue(this.plugin.settings.model);
+                    this.plugin.saveSettings();
+                }
+            }
+        );
+
+        const apiKeyTextbox = new Textbox(
+            'API Key',
+            'Enter your API key for the selected provider.',
+            this.getCurrentProviderApiKey(this.plugin.settings.providerId),
+            (value) => {
+                const currentProvider = this.plugin.settings.providers.find((p) => p.id === this.plugin.settings.providerId);
+                if (currentProvider) {
+                    currentProvider.apiKey = value?.trim() || '';
+                    this.plugin.settings.apiKey = value?.trim() || '';
+                }
+                this.plugin.saveSettings();
+            }
+        );
+
+        return [providerDropdown, apiKeyTextbox, modelDropdown];
+    }
+
+    getContentFetchingSettings() {
+        return [
+            this.createSetting(
+                Textbox,
+                'Content Proxy URL',
+                'Specify the URL of the proxy server for retrieving content. Use {{url}} as a placeholder for the actual URL.',
+                this.plugin.settings.contentProxyUrl,
+                (value) => (this.plugin.settings.contentProxyUrl = value),
+                { placeholder: 'https://example.com/proxy?url={{url}}' }
+            ),
+            this.createSetting(
+                Textbox,
+                'YouTube Transcript Fallback URL',
+                'Specify the URL of the fallback server for retrieving YouTube transcripts. Use {{url}} as a placeholder for the actual video URL or {{videoId}} for the video ID.',
+                this.plugin.settings.ytTranscriptFallbackUrl,
+                (value) => (this.plugin.settings.ytTranscriptFallbackUrl = value),
+                { placeholder: 'https://example.com/transcript?videoId={{videoId}}' }
+            ),
+            this.createSetting(
+                Textbox,
+                'User Agent',
+                'Specify the user agent to use for fetching content (user only for content proxies).',
+                this.plugin.settings.userAgent,
+                (value) => (this.plugin.settings.userAgent = value),
+                { placeholder: 'Enter the user agent here...' }
+            ),
+        ];
+    }
+
+    getAIOptions() {
+        return [
+            this.createSetting(
+                TextAreaField,
+                'System Prompt',
+                'Enter the system prompt for the AI assistant. Leave empty to use the default prompt.',
+                this.plugin.settings.systemPrompt,
+                (value) => (this.plugin.settings.systemPrompt = value),
+                { placeholder: 'Enter the system prompt here...' }
+            ),
+            this.createSetting(
+                TextAreaField,
+                'Summary Template',
+                'Enter the template for the content summary in markdown format.',
+                this.plugin.settings.summaryTemplate,
+                (value) => (this.plugin.settings.summaryTemplate = value),
+                { placeholder: 'Enter the summary template here...' }
+            ),
+            this.createSetting(
+                TextAreaField,
+                'Output Template',
+                'Enter the template for the final output. Use {{response}} as a placeholder for the AI-generated summary, {{url}} for the URL, and {{aiName}} for the AI model name.',
+                this.plugin.settings.outputTemplate,
+                (value) => (this.plugin.settings.outputTemplate = value),
+                { placeholder: 'Enter the output template here...' }
+            ),
+        ];
+    }
+
+    getPanel() {
+        return SettingPanel.build(
+            this.plugin.saveSettings.bind(this.plugin),
+            ...this.createProviderSettings(),
+            this.createGroup('Content Fetching Options', this.getContentFetchingSettings()),
+            this.createGroup('AI Options', this.getAIOptions())
+        );
+    }
+}
+
+module.exports = function createSettings(plugin) {
+    return new Settings(plugin);
+};
 
 
 /***/ }),
@@ -6372,20 +6843,12 @@ class MissingZeresDummy {
           // eslint-disable-next-line no-unused-vars
           const plugin = (Plugin, Library) => {
               const { loaded_successfully } = __webpack_require__(/*! ./utils/modules */ "./src/utils/modules.js");
-              const semver = __webpack_require__(/*! semver */ "./node_modules/semver/index.js");
+              const semver = __webpack_require__(/*! semver */ "./node_modules/.pnpm/semver@7.6.2/node_modules/semver/index.js");
               const {
                   /* Library */
                   Utilities,
                   Logger,
                   Dispatcher,
-
-                  /* Settings */
-                  SettingField,
-                  SettingPanel,
-                  SettingGroup,
-                  Dropdown,
-                  Textbox,
-                  Switch,
 
                   /* Discord Modules (From lib) */
                   React,
@@ -6397,12 +6860,12 @@ class MissingZeresDummy {
                   ContextMenu,
 
                   /* Manually found modules */
-                  TextArea,
                   EmbedUtils,
 
                   /* Props */
                   sanitizeEmbedProp,
               } = (__webpack_require__(/*! ./utils/modules */ "./src/utils/modules.js").ModuleStore);
+              const createSettings = __webpack_require__(/*! ./utils/settings */ "./src/utils/settings.js");
               const Toasts = (__webpack_require__(/*! ./utils/toasts */ "./src/utils/toasts.js")["default"]);
               const ProviderFactory = __webpack_require__(/*! ./providers */ "./src/providers/index.js");
               const SummarizerService = __webpack_require__(/*! ./services/summarizer */ "./src/services/summarizer.js");
@@ -6414,30 +6877,21 @@ class MissingZeresDummy {
                   version: config.info.version,
                   providerId: 'gemini',
                   model: 'gemini-1.5-flash',
-                  apiKey: '',
                   providers: [
                       {
                           id: 'gemini',
                           label: 'Google Gemini',
+                          apiKey: '',
                           models: [
                               { label: 'Gemini 1.5 Pro', value: 'gemini-1.5-pro' },
                               { label: 'Gemini 1.5 Flash', value: 'gemini-1.5-flash' },
                               { label: 'Gemini 1.0 Pro', value: 'gemini-1.0-pro' },
                           ],
                       },
-                      //   {
-                      //       id: 'openai',
-                      //       label: 'OpenAI',
-                      //       models: [
-                      //           { label: 'GPT-4o', value: 'gpt-4o' },
-                      //           { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
-                      //           { label: 'GPT-4', value: 'gpt-4' },
-                      //           { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
-                      //       ],
-                      //   },
                       {
                           id: 'groq',
                           label: 'Groq',
+                          apiKey: '',
                           models: [
                               { label: 'Llama 3 70B', value: 'llama3-70b-8192' },
                               { label: 'Llama 3 8B', value: 'llama3-8b-8192' },
@@ -6469,6 +6923,7 @@ class MissingZeresDummy {
               return class Summarizer extends Plugin {
                   constructor() {
                       super();
+                      this.settingPanel = createSettings(this);
                       this.settings = this.migrateSettings(Utilities.loadSettings(config.info.name, 'settings', defaultSettings));
                   }
 
@@ -6546,23 +7001,8 @@ class MissingZeresDummy {
                       }
                   };
 
-                  async updateProviderCache() {
-                      try {
-                          const availableProviders = await Promise.all(
-                              ProviderFactory.getAvailableProviders().map(async (provider) => ({
-                                  ...provider,
-                                  models: await provider.classRef.getAvailableModels(),
-                              }))
-                          );
-                          this.settings.cachedProviders = availableProviders;
-                          this.saveSettings();
-                      } catch (error) {
-                          Logger.err('Failed to update provider cache:', error);
-                      }
-                  }
-
                   validateSettings() {
-                      const requiredSettings = ['apiKey', 'providerId', 'model'];
+                      const requiredSettings = ['providerId', 'model'];
                       const invalidSettings = requiredSettings.filter((setting) => !this.settings[setting]);
 
                       if (invalidSettings.length) {
@@ -6615,7 +7055,7 @@ class MissingZeresDummy {
                           if (this.settings.localMode || message.author.id !== UserStore.getCurrentUser().id) {
                               message.content = summary;
 
-                              EmbedUtils.sanitizeEmbed = (channelId, embedId, embed) => embed;
+                              EmbedUtils[sanitizeEmbedProp] = (channelId, embedId, embed) => embed;
 
                               Dispatcher.dispatch({
                                   type: 'MESSAGE_UPDATE',
@@ -6629,7 +7069,7 @@ class MissingZeresDummy {
                       } catch (error) {
                           this.handleError(key, error);
                       } finally {
-                          EmbedUtils.sanitizeEmbed = ogSanitizeEmbed;
+                          EmbedUtils[sanitizeEmbedProp] = ogSanitizeEmbed;
                       }
                   }
 
@@ -6652,133 +7092,9 @@ class MissingZeresDummy {
                       ContextMenu.unpatch('message', this.messageContextPatch);
                   }
 
-                  getSettingsPanel = () => {
-                      const availableProviders = this.settings.providers;
-                      const providerOptions = availableProviders.map((provider) => ({
-                          label: provider.label,
-                          value: provider.id,
-                      }));
-
-                      const modelOptions = availableProviders.reduce((options, provider) => {
-                          const providerModels = provider.models.map((model) => ({
-                              label: `${model.label}`,
-                              value: model.value,
-                          }));
-                          return [...options, ...providerModels];
-                      }, []);
-
-                      class TextAreaField extends SettingField {
-                          constructor(name, note, value, onChange, options) {
-                              const { placeholder = '', disabled = false } = options;
-                              super(name, note, onChange, TextArea, {
-                                  onChange: (textarea) => (val) => {
-                                      textarea.props.value = val;
-                                      textarea.forceUpdate();
-                                      this.onChange(val);
-                                  },
-                                  value: value,
-                                  disabled: disabled,
-                                  autosize: true,
-                                  placeholder: placeholder || '',
-                              });
-                          }
-                      }
-
-                      return SettingPanel.build(
-                          this.saveSettings.bind(this),
-                          new Switch(
-                              'Keep Changes Local',
-                              'Choose whether to keep the message edits local or send the modified message.',
-                              this.settings.localMode,
-                              (value) => {
-                                  this.settings.localMode = value;
-                              }
-                          ),
-                          new Dropdown(
-                              'Provider',
-                              'Select the provider for content summarization.',
-                              this.settings.providerId || availableProviders[0].id,
-                              providerOptions,
-                              (value) => {
-                                  this.settings.providerId = value;
-                              }
-                          ),
-                          new Dropdown('Model', 'Select the LLM model.', this.settings.model, modelOptions, (value) => {
-                              this.settings.model = value;
-                          }),
-                          new Textbox('API Key', 'Enter your API key for the selected provider.', this.settings.apiKey, (value) => {
-                              this.settings.apiKey = value.trim();
-                          }),
-                          new SettingGroup('Content Fetching Options')
-                              .append(
-                                  new Textbox(
-                                      'Content Proxy URL',
-                                      'Specify the URL of the proxy server for retrieving content. Use {{url}} as a placeholder for the actual URL.',
-                                      this.settings.contentProxyUrl,
-                                      (value) => {
-                                          this.settings.contentProxyUrl = value.trim();
-                                      },
-                                      { placeholder: 'https://example.com/proxy?url={{url}}' }
-                                  )
-                              )
-                              .append(
-                                  new Textbox(
-                                      'YouTube Transcript Fallback URL',
-                                      'Specify the URL of the fallback server for retrieving YouTube transcripts. Use {{url}} as a placeholder for the actual video URL or {{videoId}} for the video ID.',
-                                      this.settings.ytTranscriptFallbackUrl,
-                                      (value) => {
-                                          this.settings.ytTranscriptFallbackUrl = value.trim();
-                                      },
-                                      { placeholder: 'https://example.com/transcript?videoId={{videoId}}' }
-                                  )
-                              )
-                              .append(
-                                  new Textbox(
-                                      'User Agent',
-                                      'Specify the user agent to use for fetching content (user only for content proxies).',
-                                      this.settings.userAgent,
-                                      (value) => {
-                                          this.settings.userAgent = value.trim();
-                                      },
-                                      { placeholder: 'Enter the user agent here...' }
-                                  )
-                              ),
-                          new SettingGroup('AI Options')
-                              .append(
-                                  new TextAreaField(
-                                      'System Prompt',
-                                      'Enter the system prompt for the AI assistant. Leave empty to use the default prompt.',
-                                      this.settings.systemPrompt,
-                                      (value) => {
-                                          this.settings.systemPrompt = value;
-                                      },
-                                      { placeholder: 'Enter the system prompt here...' }
-                                  )
-                              )
-                              .append(
-                                  new TextAreaField(
-                                      'Summary Template',
-                                      'Enter the template for the content summary in markdown format.',
-                                      this.settings.summaryTemplate,
-                                      (value) => {
-                                          this.settings.summaryTemplate = value;
-                                      },
-                                      { placeholder: 'Enter the summary template here...' }
-                                  )
-                              )
-                              .append(
-                                  new TextAreaField(
-                                      'Output Template',
-                                      'Enter the template for the final output. Use {{response}} as a placeholder for the AI-generated summary, {{url}} for the URL, and {{aiName}} for the AI model name.',
-                                      this.settings.outputTemplate,
-                                      (value) => {
-                                          this.settings.outputTemplate = value;
-                                      },
-                                      { placeholder: 'Enter the output template here...' }
-                                  )
-                              )
-                      );
-                  };
+                  getSettingsPanel() {
+                      return this.settingPanel.getPanel();
+                  }
 
                   saveSettings() {
                       Utilities.saveSettings(config.info.name, this.settings);

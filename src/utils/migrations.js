@@ -19,4 +19,13 @@ module.exports = {
             userAgent: defaultSettings.userAgent,
         };
     },
+    '0.3.5': (settings, defaultSettings) => {
+        // Delete provider entry for OpenAI
+        const providerId = settings.providerId;
+        const provider = settings.providers.find((_provider) => provider.id === providerId);
+        if (provider) {
+            settings[provider].apiKey = settings.apiKey;
+        }
+        return settings;
+    },
 };

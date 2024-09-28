@@ -1,3 +1,8 @@
+## [0.3.5](/JanitorialMess/Summarizer/compare/v0.3.4...v0.3.5) (2024-06-20)
+
+### ✨ Features
+
+* Custom toasts implementation ([82b9525](/JanitorialMess/Summarizer/commit/82b9525f24fa0231e4cfaa63e37a20c2f1f4b1b8))
 ## [0.3.4](/JanitorialMess/Summarizer/compare/v0.3.3...v0.3.4) (2024-06-04)
 
 ### ✨ Features

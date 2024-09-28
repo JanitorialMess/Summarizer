@@ -16,8 +16,10 @@ class SummarizerService {
     }
 
     createProvider(ProviderFactory) {
-        const { providerId, model, apiKey, providerConfig } = this.settings;
-        return ProviderFactory.createProvider(providerId, model, apiKey, providerConfig);
+        const { providerId, model, providerConfig } = this.settings;
+        const provider = this.settings.providers.find((_provider) => _provider.id === providerId);
+        if (!provider) throw new Error(`API key not found for provider: ${providerId}`);
+        return ProviderFactory.createProvider(providerId, model, provider.apiKey, providerConfig);
     }
 
     generateQuery(text) {

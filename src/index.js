@@ -116,14 +116,6 @@ export default !global.ZeresPluginLibrary
                   Logger,
                   Dispatcher,
 
-                  /* Settings */
-                  SettingField,
-                  SettingPanel,
-                  SettingGroup,
-                  Dropdown,
-                  Textbox,
-                  Switch,
-
                   /* Discord Modules (From lib) */
                   React,
                   UserStore,
@@ -134,12 +126,12 @@ export default !global.ZeresPluginLibrary
                   ContextMenu,
 
                   /* Manually found modules */
-                  TextArea,
                   EmbedUtils,
 
                   /* Props */
                   sanitizeEmbedProp,
               } = require('./utils/modules').ModuleStore;
+              const createSettings = require('./utils/settings');
               const Toasts = require('./utils/toasts').default;
               const ProviderFactory = require('./providers');
               const SummarizerService = require('./services/summarizer');
@@ -151,30 +143,21 @@ export default !global.ZeresPluginLibrary
                   version: config.info.version,
                   providerId: 'gemini',
                   model: 'gemini-1.5-flash',
-                  apiKey: '',
                   providers: [
                       {
                           id: 'gemini',
                           label: 'Google Gemini',
+                          apiKey: '',
                           models: [
                               { label: 'Gemini 1.5 Pro', value: 'gemini-1.5-pro' },
                               { label: 'Gemini 1.5 Flash', value: 'gemini-1.5-flash' },
                               { label: 'Gemini 1.0 Pro', value: 'gemini-1.0-pro' },
                           ],
                       },
-                      //   {
-                      //       id: 'openai',
-                      //       label: 'OpenAI',
-                      //       models: [
-                      //           { label: 'GPT-4o', value: 'gpt-4o' },
-                      //           { label: 'GPT-4 Turbo', value: 'gpt-4-turbo' },
-                      //           { label: 'GPT-4', value: 'gpt-4' },
-                      //           { label: 'GPT-3.5 Turbo', value: 'gpt-3.5-turbo' },
-                      //       ],
-                      //   },
                       {
                           id: 'groq',
                           label: 'Groq',
+                          apiKey: '',
                           models: [
                               { label: 'Llama 3 70B', value: 'llama3-70b-8192' },
                               { label: 'Llama 3 8B', value: 'llama3-8b-8192' },
@@ -206,6 +189,7 @@ export default !global.ZeresPluginLibrary
               return class Summarizer extends Plugin {
                   constructor() {
                       super();
+                      this.settingPanel = createSettings(this);
                       this.settings = this.migrateSettings(Utilities.loadSettings(config.info.name, 'settings', defaultSettings));
                   }
 
@@ -283,23 +267,8 @@ export default !global.ZeresPluginLibrary
                       }
                   };
 
-                  async updateProviderCache() {
-                      try {
-                          const availableProviders = await Promise.all(
-                              ProviderFactory.getAvailableProviders().map(async (provider) => ({
-                                  ...provider,
-                                  models: await provider.classRef.getAvailableModels(),
-                              }))
-                          );
-                          this.settings.cachedProviders = availableProviders;
-                          this.saveSettings();
-                      } catch (error) {
-                          Logger.err('Failed to update provider cache:', error);
-                      }
-                  }
-
                   validateSettings() {
-                      const requiredSettings = ['apiKey', 'providerId', 'model'];
+                      const requiredSettings = ['providerId', 'model'];
                       const invalidSettings = requiredSettings.filter((setting) => !this.settings[setting]);
 
                       if (invalidSettings.length) {
@@ -352,7 +321,7 @@ export default !global.ZeresPluginLibrary
                           if (this.settings.localMode || message.author.id !== UserStore.getCurrentUser().id) {
                               message.content = summary;
 
-                              EmbedUtils.sanitizeEmbed = (channelId, embedId, embed) => embed;
+                              EmbedUtils[sanitizeEmbedProp] = (channelId, embedId, embed) => embed;
 
                               Dispatcher.dispatch({
                                   type: 'MESSAGE_UPDATE',
@@ -366,7 +335,7 @@ export default !global.ZeresPluginLibrary
                       } catch (error) {
                           this.handleError(key, error);
                       } finally {
-                          EmbedUtils.sanitizeEmbed = ogSanitizeEmbed;
+                          EmbedUtils[sanitizeEmbedProp] = ogSanitizeEmbed;
                       }
                   }
 
@@ -389,133 +358,9 @@ export default !global.ZeresPluginLibrary
                       ContextMenu.unpatch('message', this.messageContextPatch);
                   }
 
-                  getSettingsPanel = () => {
-                      const availableProviders = this.settings.providers;
-                      const providerOptions = availableProviders.map((provider) => ({
-                          label: provider.label,
-                          value: provider.id,
-                      }));
-
-                      const modelOptions = availableProviders.reduce((options, provider) => {
-                          const providerModels = provider.models.map((model) => ({
-                              label: `${model.label}`,
-                              value: model.value,
-                          }));
-                          return [...options, ...providerModels];
-                      }, []);
-
-                      class TextAreaField extends SettingField {
-                          constructor(name, note, value, onChange, options) {
-                              const { placeholder = '', disabled = false } = options;
-                              super(name, note, onChange, TextArea, {
-                                  onChange: (textarea) => (val) => {
-                                      textarea.props.value = val;
-                                      textarea.forceUpdate();
-                                      this.onChange(val);
-                                  },
-                                  value: value,
-                                  disabled: disabled,
-                                  autosize: true,
-                                  placeholder: placeholder || '',
-                              });
-                          }
-                      }
-
-                      return SettingPanel.build(
-                          this.saveSettings.bind(this),
-                          new Switch(
-                              'Keep Changes Local',
-                              'Choose whether to keep the message edits local or send the modified message.',
-                              this.settings.localMode,
-                              (value) => {
-                                  this.settings.localMode = value;
-                              }
-                          ),
-                          new Dropdown(
-                              'Provider',
-                              'Select the provider for content summarization.',
-                              this.settings.providerId || availableProviders[0].id,
-                              providerOptions,
-                              (value) => {
-                                  this.settings.providerId = value;
-                              }
-                          ),
-                          new Dropdown('Model', 'Select the LLM model.', this.settings.model, modelOptions, (value) => {
-                              this.settings.model = value;
-                          }),
-                          new Textbox('API Key', 'Enter your API key for the selected provider.', this.settings.apiKey, (value) => {
-                              this.settings.apiKey = value.trim();
-                          }),
-                          new SettingGroup('Content Fetching Options')
-                              .append(
-                                  new Textbox(
-                                      'Content Proxy URL',
-                                      'Specify the URL of the proxy server for retrieving content. Use {{url}} as a placeholder for the actual URL.',
-                                      this.settings.contentProxyUrl,
-                                      (value) => {
-                                          this.settings.contentProxyUrl = value.trim();
-                                      },
-                                      { placeholder: 'https://example.com/proxy?url={{url}}' }
-                                  )
-                              )
-                              .append(
-                                  new Textbox(
-                                      'YouTube Transcript Fallback URL',
-                                      'Specify the URL of the fallback server for retrieving YouTube transcripts. Use {{url}} as a placeholder for the actual video URL or {{videoId}} for the video ID.',
-                                      this.settings.ytTranscriptFallbackUrl,
-                                      (value) => {
-                                          this.settings.ytTranscriptFallbackUrl = value.trim();
-                                      },
-                                      { placeholder: 'https://example.com/transcript?videoId={{videoId}}' }
-                                  )
-                              )
-                              .append(
-                                  new Textbox(
-                                      'User Agent',
-                                      'Specify the user agent to use for fetching content (user only for content proxies).',
-                                      this.settings.userAgent,
-                                      (value) => {
-                                          this.settings.userAgent = value.trim();
-                                      },
-                                      { placeholder: 'Enter the user agent here...' }
-                                  )
-                              ),
-                          new SettingGroup('AI Options')
-                              .append(
-                                  new TextAreaField(
-                                      'System Prompt',
-                                      'Enter the system prompt for the AI assistant. Leave empty to use the default prompt.',
-                                      this.settings.systemPrompt,
-                                      (value) => {
-                                          this.settings.systemPrompt = value;
-                                      },
-                                      { placeholder: 'Enter the system prompt here...' }
-                                  )
-                              )
-                              .append(
-                                  new TextAreaField(
-                                      'Summary Template',
-                                      'Enter the template for the content summary in markdown format.',
-                                      this.settings.summaryTemplate,
-                                      (value) => {
-                                          this.settings.summaryTemplate = value;
-                                      },
-                                      { placeholder: 'Enter the summary template here...' }
-                                  )
-                              )
-                              .append(
-                                  new TextAreaField(
-                                      'Output Template',
-                                      'Enter the template for the final output. Use {{response}} as a placeholder for the AI-generated summary, {{url}} for the URL, and {{aiName}} for the AI model name.',
-                                      this.settings.outputTemplate,
-                                      (value) => {
-                                          this.settings.outputTemplate = value;
-                                      },
-                                      { placeholder: 'Enter the output template here...' }
-                                  )
-                              )
-                      );
-                  };
+                  getSettingsPanel() {
+                      return this.settingPanel.getPanel();
+                  }
 
                   saveSettings() {
                       Utilities.saveSettings(config.info.name, this.settings);
