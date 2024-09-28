@@ -28,12 +28,10 @@ const ContextMenu = window.BdApi?.ContextMenu;
 const Net = window.BdApi?.Net;
 const BetterWebpackModules = window.BdApi.Webpack;
 const TextArea = BetterWebpackModules.getModule((m) => m.TextArea)?.TextArea;
-const EmbedUtils = BetterWebpackModules.getModule(
-    (m) => typeof m === 'object' && Object.values(m).some((v) => typeof v === 'function' && v.toString().includes('1492472454139'))
-);
+const EmbedUtils = BetterWebpackModules.getModule((m) => m.kC && m.o3);
 const sanitizeEmbedProp =
     EmbedUtils &&
-    Object.keys(EmbedUtils).find((k) => typeof EmbedUtils[k] === 'function' && EmbedUtils[k].toString().includes('1492472454139'));
+    Object.keys(EmbedUtils).find((k) => typeof EmbedUtils[k] === 'function' && EmbedUtils[k].toString().includes('uniqueId("embed_")'));
 
 const Logger = {
     info: (...args) => _Logger.info(pluginName, ...args),
